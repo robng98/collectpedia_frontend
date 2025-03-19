@@ -1,0 +1,529 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  color: #ffffff;
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 150px); // Set a fixed height based on viewport minus header
+}
+
+// Left Column - User Sidebar
+.user-sidebar {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+// Middle Column - Content Main
+.content-main {
+  min-width: 0; // Ensures content doesn't overflow in flexbox
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+// Right Column - Stats Column
+.stats-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // Ensures content doesn't overflow in flexbox
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 8px; // Reduced padding
+  margin-bottom: 12px; // Reduced margin
+  background-color: #213471;
+  border-radius: 8px;
+  text-align: center;
+
+  img {
+    border-radius: 50%;
+    width: 80px; // Smaller image
+    height: 80px;
+    margin-bottom: 8px; // Reduced margin
+    border: 3px solid #1e40af;
+    object-fit: cover;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+      font-size: 18px; // Smaller font
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 2px 0 0; // Reduced margin
+      color: #C4C4C4;
+      font-size: 12px; // Smaller font
+    }
+  }
+}
+
+.quick-links {
+  margin-bottom: 12px; // Reduced margin
+  padding: 10px; // Reduced padding
+
+  h3 {
+    margin-bottom: 10px; // Reduced margin
+    font-size: 16px; // Smaller font
+  }
+}
+
+.quick-link-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #C4C4C4;
+  padding: 6px; // Reduced padding
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  font-size: 14px; // Smaller font
+
+  &:hover {
+    background-color: #344887;
+    color: white;
+  }
+
+  mat-icon {
+    color: #6E84BB;
+    font-size: 18px; // Smaller icons
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.selected-collection {
+  transition: all 0.3s ease;
+  padding: 10px; // Reduced padding
+
+  h3 {
+    font-size: 16px; // Smaller font
+  }
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Right Column - Content Main
+.content-main {
+  min-width: 0; // Ensures content doesn't overflow in flexbox
+}
+
+.section-title {
+  color: #f5f5f5;
+  font-size: 18px; // Smaller font
+  font-weight: bold;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  padding: 10px 0 8px; // Reduced padding
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 12px; // Reduced margin
+  gap: 10px; // Reduced gap
+
+  .stat-card {
+    background-color: #213471;
+    padding: 10px; // Reduced padding
+    border-radius: 8px;
+    text-align: center;
+    flex: 1;
+    min-width: 80px; // Smaller minimum width
+    transition: 0.3s;
+
+    &:hover {
+      transform: translateY(-3px); // Less dramatic effect
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-value {
+      margin: 0;
+      font-size: 18px; // Smaller font
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .stat-label {
+      margin: 2px 0 0; // Reduced margin
+      color: #C4C4C4;
+      font-size: 12px; // Smaller font
+    }
+  }
+}
+
+// Chart Styles
+.issues-over-time {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem; // Reduced margin
+
+  .chart {
+    height: 200px; // Fixed smaller height
+    background-color: #213471;
+    border-radius: 8px;
+    padding: 0.5rem; // Reduced padding
+  }
+
+  .no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; // Consistent with chart height
+    color: #888;
+    font-style: italic;
+    font-size: 14px; // Smaller font
+  }
+}
+
+// Dark theme chart styles
+::ng-deep {
+  .dark-theme-chart {
+    .ngx-charts {
+      text {
+        fill: #ffffff !important;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 400;
+        font-size: 10px; // Smaller font
+      }
+
+      .tick {
+        text {
+          fill: #e2e8f0 !important;
+          font-size: 10px; // Smaller font
+        }
+
+        line {
+          stroke: #4a5568 !important;
+          stroke-width: 0.5;
+        }
+      }
+
+      .gridline-path {
+        stroke: #4a5568 !important;
+        stroke-width: 0.5;
+      }
+
+      .line-series {
+        .line {
+          stroke-width: 2; // Thinner lines
+        }
+      }
+
+      .line-highlight {
+        stroke-width: 3; // Thinner highlight
+      }
+
+      .tooltip-anchor {
+        fill: #ffffff;
+      }
+
+      .tooltip-container {
+        background: #1e293b !important;
+        color: #ffffff !important;
+        border-radius: 6px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border: 1px solid #334155;
+      }
+
+      .legend-title {
+        color: #ffffff !important;
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      .legend-label {
+        color: #f1f5f9 !important;
+        
+        .legend-label-text {
+          color: #f1f5f9 !important;
+        }
+      }
+
+      .legend-item {
+        &:hover {
+          color: #ffffff !important;
+        }
+      }
+
+      .advanced-pie-legend {
+        color: #ffffff !important;
+      }
+
+      .chart-label {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem; // Reduced margin
+
+  .section-title {
+    padding: 0;
+  }
+}
+
+.chart-controls {
+  display: flex;
+  gap: 0.5rem; // Reduced gap
+}
+
+.toggle-button {
+  background-color: #304878;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem; // Reduced padding
+  cursor: pointer;
+  font-size: 12px; // Smaller font
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #4362a5;
+  }
+}
+
+// Table Styles
+.collections-table {
+  width: 100%;
+
+  th.mat-header-cell {
+    color: #FFFFFF;
+    font-weight: 500;
+    background-color: #1e3a8a;
+    padding: 8px 12px; // Reduced padding
+    font-size: 14px; // Smaller font
+  }
+
+  td.mat-cell {
+    color: #C4C4C4;
+    padding: 6px 12px; // Reduced padding
+    font-size: 13px; // Smaller font
+  }
+}
+
+.selected-row {
+  background-color: #344887 !important;
+  font-weight: 500;
+
+  td {
+    color: white !important;
+  }
+}
+
+.paginator {
+  background-color: #213471;
+  color: white;
+  height: auto;
+  min-height: 40px; // More compact paginator
+}
+
+@media (max-width: 992px) {
+  .layout-container {
+    flex-direction: column;
+  }
+
+  .user-sidebar {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats {
+    flex-direction: column;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .chart-controls {
+      margin-top: 10px;
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .layout-container {
+    height: auto; // Remove fixed height for mobile
+    flex-direction: column;
+  }
+
+  .user-sidebar, .content-main, .stats-column {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 20px;
+    max-height: none;
+    overflow-y: visible;
+  }
+  
+  .popular-stats-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  // ...existing code...
+  
+  .popular-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .popular-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Keep Material overrides
+.paginator {
+  display: flex;
+  justify-content: center;
+
+  @include mat.paginator-overrides(
+    (
+      container-text-color: #f8fafc,
+      container-background-color: #1e3a8a,
+    ));
+}
+
+::ng-deep .mat-mdc-select-value-text {
+  color: #f8fafc !important;
+}
+
+::ng-deep .mat-mdc-select-arrow {
+  color: #f8fafc !important;
+}
+
+::ng-deep .mat-mdc-paginator-page-size-label,
+::ng-deep .mat-mdc-paginator-range-label {
+  color: #f8fafc;
+  font-size: 12px; // Smaller font
+}
+
+// Most Popular items
+.most-popular {
+  margin-top: 12px; // Reduced margin
+
+  h3 {
+    font-size: 16px; // Smaller font
+    margin-bottom: 8px; // Reduced margin
+  }
+}
+
+.popular-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); // Smaller cards
+  gap: 10px; // Reduced gap
+}
+
+.popular-stat-card {
+  background-color: #213471;
+  padding: 10px; // Reduced padding
+  border-radius: 8px;
+  text-align: left;
+  transition: 0.3s;
+
+  &:hover {
+    transform: translateY(-2px); // Less dramatic effect
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .popular-item-label {
+    margin: 0;
+    font-size: 12px; // Smaller font
+    color: #c4c4c4;
+  }
+
+  .popular-item-value {
+    margin: 3px 0 0; // Reduced margin
+    font-size: 14px; // Smaller font
+    font-weight: 600;
+    color: #FFFFFF;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Spinner styles - updated for full-page overlay
+.centralized-spinner-container {
+  position: fixed; // Changed from absolute to fixed
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999; // Increased z-index to ensure it's above everything
+  background-color: rgba(0, 0, 0, 0.7); // Darker semi-transparent background
+  backdrop-filter: blur(3px); // Add slight blur effect for better visibility
+}
+
+.content-hidden {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+::ng-deep .centralized-spinner-container .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
+::ng-deep .centralized-spinner-container .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: #ffffff;
+}
+
+.disabled-row {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+// Add these styles to the existing SCSS file
+
+// .sortable-header {
+//   cursor: pointer;
+//   user-select: none;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   transition: background-color 0.2s;
+  
+//   &:hover {
+//     background-color: #344887;
+//   }
+// }
+
+// .sort-icon {
+//   font-size: 16px;
+//   height: 16px;
+//   width: 16px;
+//   margin-left: 4px;
+// }

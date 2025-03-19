@@ -1,0 +1,95 @@
+@use '@angular/material' as mat;
+
+// :app-serie {
+//   @include mat.button-overrides((
+//     container-color: orange,
+//     label-text-color: red,
+//   ));
+// }
+
+:root {
+  --heading-font: 'Montserrat', sans-serif;
+  --body-font: 'Inter', sans-serif;
+  --accent-font: 'Comic Neue', cursive;
+
+  @include mat.table-overrides((background-color: #213471,
+      header-headline-color: #fff,
+      row-item-label-text-color: #c4c4c4,
+    ));
+
+  @include mat.paginator-overrides((container-background-color: #1e3a8a,
+      container-text-color: #fff,
+      enabled-icon-color: #fff,
+      disabled-icon-color: #dccfcf,
+    ));
+
+  .table-container {
+    min-height: 20rem;
+    max-height: 36rem;
+    /* Set your preferred height */
+    overflow-y: auto;
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  /* Make header sticky */
+  .mat-mdc-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #1e3a8a;
+    /* Match your header background color */
+  }
+
+  .search-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #1e40af;
+    background-color: #1e3a8a;
+    padding-right: 7px;
+    border-left: 0;
+  }
+
+  .search-button {
+    display: flex;
+    min-width: 84px;
+    max-width: 480px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+    height: 40px;
+    padding: 0 16px;
+    font-size: 0.875rem;
+    font-weight: bold;
+
+    @media (min-width: 480px) {
+      height: 48px;
+      padding: 0 20px;
+      font-size: 1rem;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  h1, h2, h3 {
+    font-family: var(--heading-font);
+  }
+  
+  body {
+    font-family: var(--body-font);
+  }
+
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

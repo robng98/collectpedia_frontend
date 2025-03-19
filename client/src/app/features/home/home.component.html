@@ -1,0 +1,61 @@
+<div class="px-40 flex flex-1 justify-center py-5 bg-blue-950">
+  <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+    <div class="hero-section"
+      style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, hsla(0, 0%, 0%, 0.55) 100%), url("/comicsmanga.jpg");'>
+      <div class="hero-content">
+        <h1>Bem-vindo ao Collectpedia!</h1>
+        <h2>Seu site de consultas e catalogação de comics e mangás.</h2>
+      </div>
+
+      <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
+        <div class="search-container">
+          <div class="search-input-group">
+            <div class="search-icon">
+              <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
+            </div>
+            <input class="search-input" placeholder="Digite sua busca aqui" name="search"
+              [(ngModel)]="searchParams.search" required #searchInput="ngModel" />
+            <div class="search-button-container">
+              <button mat-raised-button class="search-button" [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
+                <span>Buscar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-center w-full">
+          <mat-form-field appearance="fill" class="search-input-group mt-2 max-w-28">
+            <mat-select [(ngModel)]="searchParams.type" name="type" required #typeSelect="ngModel">
+              <mat-option value="comics">
+                <mat-icon>menu_book</mat-icon>
+                <span>/co</span>
+              </mat-option>
+              <mat-option value="mangas">
+                <mat-icon>import_contacts</mat-icon>
+                <span>/ma</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+
+    <h2 class="section-title">Novas adições</h2>
+    
+    <swiper-container pagination="true" pagination-clickable="true"
+    keyboard="true" loop="true" direction="vertical" mousewheel="true"
+     autoplay-delay="5000" autoplay-disable-on-interaction="false">
+      <swiper-slide class="flex justify-center" *ngFor="let issue of lastAddedIssues; let i = index" [attr.data-swiper-slide-index]="i">
+        <div class="issue-card">
+          <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'>
+          </div>
+          <div class="text-center">
+            <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+  </div>
+</div>

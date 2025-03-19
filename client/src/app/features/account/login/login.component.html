@@ -1,0 +1,53 @@
+<div class="flex justify-center items-center min-h-[80vh] px-4 flex-grow">
+  <div class="w-full max-w-md">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="bg-[#1e3a8a] text-white py-4 px-6">
+        <h2 class="text-xl font-bold">Login</h2>
+      </div>
+      
+      <div class="p-6">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Email">
+            <mat-error *ngIf="loginForm.get('email')?.errors?.['required']">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
+              Invalid email format
+            </mat-error>
+          </mat-form-field>
+          
+          <mat-form-field appearance="fill" class="w-full mb-4">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Password">
+            <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">
+              Password is required
+            </mat-error>
+          </mat-form-field>
+          
+          <div *ngIf="errorMessage" class="text-red-500 mb-4">
+            {{ errorMessage }}
+          </div>
+          
+          <div class="flex justify-center">
+            <button 
+              type="submit" 
+              mat-raised-button 
+              [disabled]="loginForm.invalid || isSubmitting" 
+              class="search-button bg-[#1e3a8a] text-white w-full">
+              {{ isSubmitting ? 'Loading...' : 'Login' }}
+            </button>
+          </div>
+        </form>
+        
+        <div class="mt-6 text-center">
+          <p class="text-gray-600">
+            Ainda não é cadastrado? 
+            <a routerLink="/account/register" class="text-[#1e3a8a] font-medium hover:underline">Registre-se!</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

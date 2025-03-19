@@ -1,0 +1,233 @@
+<div class="gap-1 px-6 py-5 pb-28 flex flex-1 justify-center">
+    <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
+        <div class="flex flex-wrap justify-between gap-3 p-4">
+            <div class="flex min-w-72 flex-col gap-3">
+                <p class="text-[#FFFFFF] tracking-light text-[32px] font-bold leading-tight">
+                    Registrar Edições Selecionadas
+                </p>
+                <p class="text-[#C4C4C4] text-base font-normal leading-normal pl-3">
+                    Complete os detalhes para adicionar as edições à sua coleção.
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-6">
+            <!-- Selected Issues Panel -->
+            <div class="flex-1 min-w-[300px]">
+                <div class="border-none rounded-t-md flex flex-col w-[100%] bg-[#213471] mb-4">
+                    <div class="flex justify-between items-center px-4 py-3">
+                        <h2 class="text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em]">
+                            Edições Selecionadas
+                        </h2>
+
+                        <!-- Toggle between batch and individual mode -->
+                        <button mat-icon-button (click)="toggleIssueMode()" type="button" class="text-white"
+                            [matTooltip]="useBatchMode ? 'Mudar para modo individual' : 'Mudar para modo em lote'">
+                            <mat-icon>{{ useBatchMode ? 'view_list' : 'view_module' }}</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="p-4">
+                        <!-- Master checkbox to select/deselect all -->
+                        <div class="flex items-center mb-2 bg-blue-900 px-4 py-2 rounded">
+                            <mat-checkbox [checked]="allIssuesSelected" [indeterminate]="someIssuesSelected"
+                                (change)="toggleAllIssues($event)" color="primary">
+                                <span class="text-white">Selecionar todas ({{ selectedIssueCount }}/{{
+                                    selectedIssues.length }})</span>
+                            </mat-checkbox>
+                        </div>
+
+                        <div class="flex items-center justify-between bg-blue-800 px-4 py-2 rounded mt-2 mb-3">
+                            <span class="text-white">Status de configuração</span>
+                            <span class="bg-green-700 text-white px-2 py-1 rounded-full text-sm">
+                                {{ configuredIssueCount }}/{{ selectedIssueCount }} configurados
+                            </span>
+                        </div>
+
+                        <!-- Issue list with checkboxes -->
+                        <form [formGroup]="registrationForm">
+                            <div formArrayName="issues" class="issues-container max-h-[360px] overflow-y-auto pr-2">
+                                @for (issue of selectedIssues; track issue.id; let i = $index) {
+                                <div [formGroupName]="i" class="mb-2">
+                                    <div class="flex items-center gap-4 bg-blue-950 px-4 min-h-[72px] py-2 rounded"
+                                    [ngClass]="{'border-l-4 border-green-500': isIssueConfigured(i)}">
+                                    <!-- Selection checkbox -->
+                                    <mat-checkbox formControlName="selected" color="primary"></mat-checkbox>
+                    
+                                    <div class="text-[#FFFFFF] flex items-center justify-center rounded bg-[#1e3a8a] shrink-0 size-12">
+                                        <mat-icon aria-hidden="false">menu_book</mat-icon>
+                                    </div>
+                                    <div class="flex flex-col justify-center flex-grow">
+                                        <p class="text-[#FFFFFF] text-base font-medium leading-normal line-clamp-1">
+                                            {{ issue.serieNome }}
+                                        </p>
+                                        <p class="text-[#C4C4C4] text-sm font-normal leading-normal line-clamp-2">
+                                            #{{ issue.numero }} - {{ issue.unMonetaria }} {{ issue.preco }}
+                                        </p>
+                                    </div>
+                    
+                                    <!-- Configured indicator with detailed tooltip -->
+                                    <div *ngIf="isIssueConfigured(i)" class="mr-2" 
+                                         matTooltip="Exemplar configurado: data de aquisição e estado de conservação definidos">
+                                        <mat-icon class="text-green-500">check_circle</mat-icon>
+                                    </div>
+                    
+                                    <!-- Not configured indicator with tooltip -->
+                                    <div *ngIf="!isIssueConfigured(i) && issuesFormArray.at(i).get('selected')?.value" class="mr-2"
+                                         matTooltip="Exemplar não configurado: defina a data de aquisição e estado de conservação">
+                                        <mat-icon class="text-yellow-500">warning</mat-icon>
+                                    </div>
+                    
+                                    <!-- Expander for individual controls -->
+                                    @if (!useBatchMode) {
+                                    <button mat-icon-button type="button"
+                                        [attr.aria-label]="'Expandir edição ' + issue.numero"
+                                        (click)="issue.expanded = !issue.expanded">
+                                        <mat-icon>{{ issue.expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+                                    </button>
+                                    }
+                                </div>
+
+                                    <!-- Individual issue properties (shown when expanded) -->
+                                    @if (!useBatchMode && issue.expanded) {
+                                    <div class="pl-12 pr-4 py-3 bg-blue-900 rounded-b mb-1">
+                                        <div class="mb-3">
+                                            <mat-form-field appearance="fill" class="w-full bg-blue-950 rounded">
+                                                <mat-label class="text-[#FFFFFF]">Data de Aquisição</mat-label>
+                                                <input [max]="maxDate" matInput [matDatepicker]="issuePicker"
+                                                    formControlName="acquisitionDate">
+                                                <mat-datepicker-toggle matSuffix
+                                                    [for]="issuePicker"></mat-datepicker-toggle>
+                                                <mat-datepicker #issuePicker></mat-datepicker>
+                                            </mat-form-field>
+                                        </div>
+                                        <div>
+                                            <mat-form-field appearance="fill" class="w-full bg-blue-950 rounded">
+                                                <mat-label class="text-[#FFFFFF]">Estado de Conservação</mat-label>
+                                                <mat-select formControlName="grade">
+                                                    @for (grade of grades; track grade) {
+                                                    <mat-option [value]="grade">{{ grade }}</mat-option>
+                                                    }
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    }
+                                </div>
+                                }
+                            </div>
+                        </form>
+
+                        @if (selectedIssues.length === 0) {
+                        <div class="flex items-center justify-center py-6 text-[#C4C4C4] text-base">
+                            Nenhuma edição selecionada. Volte e selecione edições para registrar.
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registration Form Panel -->
+            <div class="flex-1 min-w-[300px]">
+                <div class="border-none rounded-t-md flex flex-col w-[100%] bg-[#213471]">
+                    <h2 class="text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 py-3">
+                        {{ useBatchMode ? 'Configuração em Lote' : 'Detalhes da Coleção' }}
+                    </h2>
+
+                    @if (errorMessage) {
+                    <div class="mx-4 mb-4 p-3 bg-red-800 text-[#FFFFFF] rounded">
+                        {{ errorMessage }}
+                    </div>
+                    }
+
+                    <!-- Batch form for all selected issues -->
+                    @if (useBatchMode) {
+                    <form [formGroup]="batchForm" class="p-4">
+                        <!-- Acquisition Date -->
+                        <div class="mb-4">
+                            <mat-form-field appearance="fill" class="w-full bg-[#1e3a8a] rounded">
+                                <mat-label class="text-[#FFFFFF]">Data de Aquisição</mat-label>
+                                <input [max]="maxDate" matInput [matDatepicker]="picker" formControlName="acquisitionDate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                                <mat-error
+                                    *ngIf="batchForm.get('acquisitionDate')?.invalid && batchForm.get('acquisitionDate')?.touched">
+                                    Data de aquisição é obrigatória
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Conservation Grade -->
+                        <div class="mb-4">
+                            <mat-form-field appearance="fill" class="w-full bg-[#1e3a8a] rounded">
+                                <mat-label class="text-[#FFFFFF]">Estado de Conservação</mat-label>
+                                <mat-select formControlName="grade">
+                                    @for (grade of grades; track grade) {
+                                    <mat-option [value]="grade">{{ grade }}</mat-option>
+                                    }
+                                </mat-select>
+                                <mat-error *ngIf="batchForm.get('grade')?.invalid && batchForm.get('grade')?.touched">
+                                    Estado de conservação é obrigatório
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Apply to selected issues button -->
+                        <div class="mb-4">
+                            <button mat-flat-button type="button" (click)="applyBatchValues()"
+                                class="w-full bg-indigo-700 text-[#FFFFFF]"
+                                [disabled]="selectedIssueCount === 0 || batchForm.invalid">
+                                Aplicar a {{ selectedIssueCount }} edições selecionadas
+                            </button>
+                        </div>
+                    </form>
+                    }
+
+                    <!-- Collection selection form -->
+                    <div class="px-4 pb-4">
+                        <div class="mb-4">
+                            <mat-form-field appearance="fill" class="w-full bg-[#1e3a8a] rounded">
+                                <mat-label class="text-[#FFFFFF]">Adicionar à Coleção</mat-label>
+                                <mat-select
+                                    [formControl]="useBatchMode ? batchCollectionIdControl : registrationCollectionIdControl">
+                                    @for (collection of collections; track collection.id) {
+                                    <mat-option [value]="collection.id">{{ collection.nomeColecao }}</mat-option>
+                                    }
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="(useBatchMode ? batchCollectionIdControl.invalid : registrationCollectionIdControl.invalid) && 
+                                   (useBatchMode ? batchCollectionIdControl.touched : registrationCollectionIdControl.touched)">
+                                    Seleção de coleção é obrigatória
+                                </mat-error>
+                            </mat-form-field>
+
+                            @if (collections.length === 0) {
+                            <div class="text-[#C4C4C4] text-sm mt-2">
+                                Você não possui coleções.
+                                <a routerLink="/collections/new" class="text-blue-400 hover:underline">Criar uma nova
+                                    coleção</a>
+                            </div>
+                            }
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="flex justify-end gap-4 mt-6">
+                            <button mat-flat-button type="button" (click)="cancelRegistration()"
+                                class="bg-[#383838] text-[#FFFFFF]">
+                                Cancelar
+                            </button>
+                            <!-- Find the submit button and update its disabled condition -->
+                            <button mat-flat-button type="button" (click)="onSubmit()"
+                            class="bg-[#1e40af] text-[#FFFFFF]" [disabled]="useBatchMode 
+                            ? (batchForm.invalid || selectedIssueCount === 0 || !batchValuesApplied)
+                            : (registrationForm.invalid || selectedIssueCount === 0)">
+                            <span *ngIf="isSubmitting">Registrando...</span>
+                            <span *ngIf="!isSubmitting">Registrar {{ selectedIssueCount }} Edições</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

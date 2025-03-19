@@ -1,0 +1,103 @@
+<div class="change-email-dialog">
+  <h2 mat-dialog-title class="dialog-title">Trocar Email</h2>
+  
+  <div mat-dialog-content>
+    <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmit()">
+      <div class="form-content">
+        <!-- Error message -->
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Success message -->
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+
+        <!-- Current Email Display -->
+        <div class="current-email">
+          <p>Email atual: <strong>{{ currentEmail }}</strong></p>
+        </div>
+
+        <!-- New Email -->
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Novo Email</mat-label>
+          <input 
+            matInput 
+            type="email" 
+            formControlName="newEmail"
+            [disabled]="isSubmitting">
+          <mat-error *ngIf="changeEmailForm.get('newEmail')?.errors?.['required'] && 
+                            changeEmailForm.get('newEmail')?.touched">
+            Novo email é obrigatório
+          </mat-error>
+          <mat-error *ngIf="changeEmailForm.get('newEmail')?.errors?.['email'] && 
+                            changeEmailForm.get('newEmail')?.touched">
+            Digite um email válido
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Email field -->
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Confirmar Novo Email</mat-label>
+          <input 
+            matInput 
+            type="email" 
+            formControlName="confirmEmail"
+            [disabled]="isSubmitting">
+          <mat-error *ngIf="changeEmailForm.get('confirmEmail')?.errors?.['required'] && 
+                            changeEmailForm.get('confirmEmail')?.touched">
+            Confirmação de email é obrigatória
+          </mat-error>
+          <mat-error *ngIf="changeEmailForm.get('confirmEmail')?.errors?.['email'] && 
+                            changeEmailForm.get('confirmEmail')?.touched">
+            Digite um email válido
+          </mat-error>
+          <mat-error *ngIf="changeEmailForm.get('confirmEmail')?.errors?.['emailMismatch'] && 
+                            changeEmailForm.get('confirmEmail')?.touched">
+            Os emails não coincidem
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Current Password for verification -->
+        <!-- <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Senha Atual</mat-label>
+          <input 
+            matInput 
+            type="password" 
+            formControlName="currentPassword"
+            [disabled]="isSubmitting">
+          <mat-error *ngIf="changeEmailForm.get('currentPassword')?.errors?.['required'] && 
+                            changeEmailForm.get('currentPassword')?.touched">
+            Senha atual é obrigatória para confirmar alteração
+          </mat-error>
+          <mat-error *ngIf="changeEmailForm.get('currentPassword')?.errors?.['incorrect']">
+            Senha incorreta. Por favor, tente novamente.
+          </mat-error>
+        </mat-form-field> -->
+      </div>
+
+      <!-- Loading spinner during submission -->
+      <div *ngIf="isSubmitting" class="spinner-container">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    </form>
+  </div>
+  
+  <div mat-dialog-actions class="dialog-actions">
+    <button 
+      mat-button 
+      type="button"
+      [disabled]="isSubmitting" 
+      (click)="onCancel()">
+      Cancelar
+    </button>
+    <button 
+      mat-raised-button 
+      color="primary"
+      [disabled]="changeEmailForm.invalid || isSubmitting" 
+      (click)="onSubmit()">
+      Atualizar Email
+    </button>
+  </div>
+</div>

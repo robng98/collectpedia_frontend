@@ -1,0 +1,76 @@
+<div class="layout-container flex h-full grow flex-col">
+    <!-- Overlay Loading Spinner -->
+    <!-- Loading Indicator (Centralized) -->
+    <div *ngIf="isLoading" class="centralized-spinner-container">
+        <mat-spinner diameter="60" color="accent"></mat-spinner>
+    </div>
+
+    <div class="content-wrapper flex-grow">
+        <div class="layout-content-container">
+            <div class="search-header">
+                <div class="search-info">
+                    <p class="search-title">Resultados da busca '{{searchParams.search}}'</p>
+                    <p class="search-results-count">Mostrando {{(currentPage-1) * pageSize + 1}} - {{(currentPage-1) *
+                        pageSize + searchResults.length}} de {{totalItems}} resultados</p>
+                </div>
+
+                <!-- Sorting Controls -->
+                <div class="sorting-controls flex gap-4 items-center">
+                    <div class="sort-label text-white">Ordenar por:</div>
+                    <div class="sort-options flex gap-2">
+                        <button class="sort-button px-3 py-1 rounded"
+                            [class.active]="searchParams.sortBy === 'nomeInter'"
+                            (click)="updateSorting('nomeInter', !searchParams.isDescending)">
+                            Nome
+                            <span *ngIf="searchParams.sortBy === 'nomeInter'">
+                                {{ searchParams.isDescending ? '↓' : '↑' }}
+                            </span>
+                        </button>
+                        <button class="sort-button px-3 py-1 rounded"
+                            [class.active]="searchParams.sortBy === 'cicloNum'"
+                            (click)="updateSorting('cicloNum', !searchParams.isDescending)">
+                            Volume
+                            <span *ngIf="searchParams.sortBy === 'cicloNum'">
+                                {{ searchParams.isDescending ? '↓' : '↑' }}
+                            </span>
+                        </button>
+                        <!-- Removed ID filter button -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results List -->
+            <div class=" max-h-[calc(100%-15rem)] min-h-[calc(70%)]">
+                @for (result of searchResults; track $index) {
+                @if (firstCovers.length === searchResults.length) {
+                <div class="flex items-center gap-4 bg-blue-950 px-4 min-h-[72px] py-3 result-card"
+                    (click)="navigateToDetail(result.id, result.editoraId, result)" [style.cursor]="'pointer'">
+                    <div class="result-image" style='background-image: url("{{firstCovers[$index].fotoCapa}}");'>
+                    </div>
+                    <div class="result-content">
+                        <p class="result-title"> <b>{{result.nomeInter}}</b> Vol. {{result.cicloNum}} </p>
+                        <div class="result-details pt-3">
+                            @if (result.mangaStats) {
+                            {{result.mangaStats.nomeJap}} - {{result.mangaStats.demografia}} -
+                            }
+                            <a class="capitalize">{{result.estadoPubAtual.toLowerCase()}}</a>
+                        </div>
+                    </div>
+                </div>
+                }
+                }
+
+                <!-- Empty State -->
+                <div *ngIf="searchResults.length === 0" class="empty-state text-center py-8">
+                    <p class="text-white text-lg">Nenhum resultado encontrado para sua busca.</p>
+                </div>
+            </div>
+
+            <!-- Pagination Controls -->
+            <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
+                class="mat-paginator-container bg-blue-950 text-white my-4">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

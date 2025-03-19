@@ -1,0 +1,222 @@
+<div class="flex flex-1 justify-center py-5 bg-blue-950">
+    <div class="layout-container flex flex-1 max-w-[1200px] px-4">
+        <!-- Left Column - Serie Info -->
+        <div class="serie-info flex-1 max-w-[300px] mr-6">
+            @if (currentSerie && currentEditora && currentEdicao) {
+            <!-- Serie Header Section - Removed background color -->
+            <div class="serie-header mb-6 ">
+                <h2 class="text-[#FFFFFF] text-[28px] font-bold leading-tight mb-2">
+                    {{currentSerie.nomeInter}}
+                </h2>
+                <p class="text-[#C4C4C4] text-lg pl-3 mb-5">
+                    {{currentEdicao.dataLancamento.slice(0,4)}}
+                </p>
+
+                @if (currentSerie.mangaStats) {
+                <div class="serie-detail mt-4 mb-6">
+                    <div class="flex flex-col mb-4">
+                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">Nome Original</p>
+                        <div class=" p-3 text-left">
+                            <p class="text-[#FFFFFF] text-sm font-medium">
+                            {{currentSerie.mangaStats.nomeJap}}
+                        </p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">Demografia</p>
+                        <div class=" p-3 text-left">
+                            <p class="text-[#FFFFFF] text-sm font-medium">
+                            {{currentSerie.mangaStats.demografia}}
+                        </p>
+                        </div>
+                    </div>
+                </div>
+                }
+                <!-- Serie Details with better spacing -->
+                <div class="serie-details">
+                    <div class="flex flex-col mb-4">
+                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">
+                            Editora</p>
+                        <div class=" p-3 text-left">
+                            <p class="text-[#FFFFFF] text-sm font-medium">
+                                {{currentEditora.nome}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col mb-4">
+                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">
+                            Status</p>
+                        <div class=" p-3 text-left">
+                            <p class="text-[#FFFFFF] text-sm font-medium capitalize">
+                                {{currentSerie.estadoPubAtual.toLowerCase()}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-3">
+                            Gêneros</p>
+                        <mat-chip-listbox multiple class="genre-chips">
+                            <mat-chip *ngFor="let genero of currentSerie.generos" class="capitalize genre-chip">
+                                {{genero.tipo}}
+                            </mat-chip>
+                        </mat-chip-listbox>
+                    </div>
+
+                    <div class="flex flex-col mb-4">
+                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">
+                            Número de Edições</p>
+                        <div class=" p-3 text-left">
+                            <p class="text-[#FFFFFF] text-lg font-bold">
+                                {{currentSerie.numEdicoes}}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            }
+        </div>
+
+        <!-- Middle Column - Edicoes Table (2/3) -->
+        <div class="content-main flex-[2] flex flex-col ml-14 mr-8">
+            <div class="section-header">
+                <h3 class="section-title text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-3">
+                    Edições Disponíveis</h3>
+            </div>
+
+            <form [formGroup]="selectionForm" (ngSubmit)="onSubmit()">
+                <div class="table-container border-none rounded-t-md flex flex-col w-[100%] bg-[#213471]">
+                    <div>
+                        <table mat-table [dataSource]="dataSource" [trackBy]="trackByEdicao">
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="titulo">
+                                <th mat-header-cell *matHeaderCellDef> Título </th>
+                                <td mat-cell *matCellDef="let edicao" class="text-neutral-100"> {{edicao.serieNome}}
+                                </td>
+                            </ng-container>
+
+                            <!-- Position Column -->
+                            <ng-container matColumnDef="numero">
+                                <th mat-header-cell *matHeaderCellDef> No. </th>
+                                <td mat-cell *matCellDef="let edicao"> {{edicao.numero}} </td>
+                            </ng-container>
+
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="preco">
+                                <th mat-header-cell *matHeaderCellDef> Preço </th>
+                                <td mat-cell *matCellDef="let edicao"> {{edicao.unMonetaria}} {{edicao.preco}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="selecao">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isAllSelected()"
+                                        [indeterminate]="isSomeSelected() && !isAllSelected()"
+                                        [aria-label]="checkboxLabel()">
+                                    </mat-checkbox>
+                                </th>
+                                <td mat-cell *matCellDef="let edicao">
+                                    <mat-checkbox [formControl]="isSelected(edicao.id)"
+                                        (click)="$event.stopPropagation()"></mat-checkbox>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                                (click)="onEdicaoChange(row.id)" class="cursor-pointer hover:bg-[#344887]"></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageNumber - 1"
+                    [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)" class="paginator"
+                    showFirstLastButtons aria-label="Select issues page.">
+                </mat-paginator>
+
+                <div class="flex justify-end mt-4">
+                    <button mat-flat-button class="submit-button" [disabled]="!isSomeSelected() && !isAllSelected()">
+                        <span>Adicionar à coleção</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Right Column - Edicao Details -->
+        <div class="stats-column flex-1 flex flex-col">
+            @if (currentEdicao) {
+            <div class="section-header">
+                <h2 class="section-title text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-3">
+                    Detalhes da Edição
+                </h2>
+            </div>
+
+            <!-- Cover Image -->
+            <div class="bg-[#213471] rounded-lg p-2 mb-4">
+                <div class="bg-center bg-no-repeat aspect-[17/26] bg-cover rounded"
+                    style='background-image: url("{{currentEdicao.fotoCapa}}");'>
+                </div>
+            </div>
+
+            <!-- Issue Details as Cards -->
+            <div class="stats">
+                <div class="stat-card rounded-t-md ">
+                    <p class="stat-value">#{{currentEdicao.numero}}</p>
+                    <p class="stat-label">Número</p>
+                </div>
+                <div class="stat-card rounded-t-md ">
+                    <p class="stat-value">{{currentEdicao.unMonetaria}} {{currentEdicao.preco}}</p>
+                    <p class="stat-label">Preço</p>
+                </div>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="bg-[#213471]">
+                @if (currentSerie.mangaStats) {
+                <div class="popular-stat-card">
+                    <p class="popular-item-label">Mangaka</p>
+                    <p class="popular-item-value">{{getCurrentContribuicao('Mangaka')}}</p>
+                </div>
+                } @else {
+                <div class="popular-stat-card">
+                    <p class="popular-item-label">Roteirista</p>
+                    <p class="popular-item-value">{{getCurrentContribuicao('Roteirista')}}</p>
+                </div>
+                <div class="popular-stat-card">
+                    <p class="popular-item-label">Desenhista</p>
+                    <p class="popular-item-value">{{getCurrentContribuicao('Desenhista')}}</p>
+                </div>
+                }
+
+                @if (currentTankobon.id != -1) {
+                <div class="popular-stat-card">
+                    <p class="popular-item-label">Quantidade de Capítulos</p>
+                    <p class="popular-item-value">{{currentTankobon.numeroCapitulos}}</p>
+                </div>
+                }
+
+                <div class="popular-stat-card">
+                    <p class="popular-item-label">Mês de Publicação</p>
+                    <p class="popular-item-value">{{currentEdicao.dataLancamento.slice(0,7)}}</p>
+                </div>
+
+                <!-- You can add this after the contributors section if you want to show pagination controls -->
+                <!-- For example, after the "popular-stat-card" sections that display contributors -->
+
+                <!-- Only add if there are a lot of contributors to display -->
+                <div *ngIf="contribuicoesTotalItems > contribuicoesPageSize" class="mt-4">
+                    <mat-paginator 
+                        [length]="contribuicoesTotalItems"
+                        [pageSize]="contribuicoesPageSize"
+                        [pageIndex]="contribuicoesPage - 1"
+                        [pageSizeOptions]="[10, 25, 50, 100]"
+                        (page)="onContribuicoesPageChange($event)"
+                        class="paginator"
+                        aria-label="Select contributors page">
+                    </mat-paginator>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

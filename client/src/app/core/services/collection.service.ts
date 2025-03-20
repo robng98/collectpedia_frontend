@@ -38,8 +38,9 @@ export class CollectionService {
     return this.http.get<Pagination<Collection>>(`${this.baseUrl}colecao`, { params: httpParams });
   }
 
-  getCollectionById(collectionId: number): Observable<Collection> {
-    return this.http.get<Collection>(`${this.baseUrl}colecao/${collectionId}`);
+  getCollectionIssuesById(collectionId: number): Observable<Pagination<Exemplar>> {
+    const httpParams = new HttpParams().set('ColecaoId', collectionId.toString());
+    return this.http.get<Pagination<Exemplar>>(`${this.baseUrl}exemplar`, {params: httpParams});
   }
 
   addIssuesToCollection(request: ExemplarRequest): Observable<Exemplar[]> {

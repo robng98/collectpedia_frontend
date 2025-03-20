@@ -6,6 +6,15 @@ import { ColecaoStatistics } from '../../shared/models/colecao-statistics.model'
 import { Pagination } from '../../shared/models/pagination';
 import { environment } from '../../../environments/environment';
 
+interface SearchParams {
+  pageNumber?: number;
+  pageSize?: number;
+  sortBy?: string;
+  isDescending?: boolean;
+  nomeColecao?: string;
+  colecaoId?: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,13 +24,7 @@ export class CollectionService {
   constructor(private http: HttpClient) { }
 
   // Updated to support pagination and sorting
-  getUserCollections(params: {
-    pageNumber?: number;
-    pageSize?: number;
-    sortBy?: string;
-    isDescending?: boolean;
-    nomeColecao?: string;
-  } = {}): Observable<Pagination<Collection>> {
+  getUserCollections(params: SearchParams = {}): Observable<Pagination<Collection>> {
     let httpParams = new HttpParams();
     
     // Add pagination parameters
@@ -38,8 +41,18 @@ export class CollectionService {
     return this.http.get<Pagination<Collection>>(`${this.baseUrl}colecao`, { params: httpParams });
   }
 
-  getCollectionIssuesById(collectionId: number): Observable<Pagination<Exemplar>> {
-    const httpParams = new HttpParams().set('ColecaoId', collectionId.toString());
+  getCollectionIssuesById(params: SearchParams = {}): Observable<Pagination<Exemplar>> {
+    let httpParams = new HttpParams();
+
+    // Add pagination parameters
+    if (params.pageNumber) httpParams = httpParams.append('PageNumber', params.pageNumber.toString());
+    if (params.pageSize) httpParams = httpParams.append('PageSize', params.pageSize.toString());
+    
+    // Add sorting parameters
+    if (params.sortBy) httpParams = httpParams.append('SortBy', params.sortBy);
+    if (params.isDescending !== undefined) httpParams = httpParams.append('IsDescending', params.isDescending.toString());
+    if (params.colecaoId) httpParams = httpParams.append('ColecaoId', params.colecaoId.toString());
+
     return this.http.get<Pagination<Exemplar>>(`${this.baseUrl}exemplar`, {params: httpParams});
   }
 

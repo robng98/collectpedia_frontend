@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Criar Nova Coleção</h2>
+<mat-dialog-content>
+  <form [formGroup]="collectionForm" (ngSubmit)="onSubmit()">
+    <p>Insira um nome para a sua nova coleção.</p>
+    
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nome da Coleção</mat-label>
+      <input matInput formControlName="collectionName" autocomplete="off">
+      <mat-error *ngIf="collectionForm.get('collectionName')?.hasError('required')">
+        O nome da coleção é obrigatório
+      </mat-error>
+      <mat-error *ngIf="collectionForm.get('collectionName')?.hasError('minlength')">
+        O nome deve ter pelo menos 3 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button [disabled]="isLoading" (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="primary" [disabled]="collectionForm.invalid || isLoading" (click)="onSubmit()">
+    <mat-spinner *ngIf="isLoading" diameter="20" class="spinner-button"></mat-spinner>
+    <span *ngIf="!isLoading">Criar</span>
+  </button>
+</mat-dialog-actions>

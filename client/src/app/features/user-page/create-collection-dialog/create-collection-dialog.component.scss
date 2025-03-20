@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-message {
+  color: #f44336;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+
+.spinner-button {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+::ng-deep .mat-mdc-dialog-container {
+  padding: 24px;
+}
+
+button {
+  margin-left: 8px;
+}

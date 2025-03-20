@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { ExemplarRequest, Collection, Exemplar } from "../../shared/models/colecao";
 import { ColecaoStatistics } from '../../shared/models/colecao-statistics.model';
 import { Pagination } from '../../shared/models/pagination';
@@ -73,5 +73,14 @@ export class CollectionService {
 
   getCollectionStatistics(collectionId: number): Observable<ColecaoStatistics> {
     return this.http.get<ColecaoStatistics>(`${this.baseUrl}colecao/${collectionId}/statistics`);
+  }
+
+  deleteExemplar(exemplarId: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}exemplar/delete/${exemplarId}`);
+  }
+
+  deleteMultipleExemplars(exemplarIds: number[]): Observable<any[]> {
+    const requests = exemplarIds.map(id => this.deleteExemplar(id));
+    return forkJoin(requests);
   }
 }

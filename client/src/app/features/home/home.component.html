@@ -16,7 +16,8 @@
             <input class="search-input" placeholder="Digite sua busca aqui" name="search"
               [(ngModel)]="searchParams.search" required #searchInput="ngModel" />
             <div class="search-button-container">
-              <button mat-raised-button class="search-button" [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
+              <button mat-raised-button class="search-button"
+                [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
                 <span>Buscar</span>
               </button>
             </div>
@@ -39,23 +40,66 @@
       </form>
     </div>
 
-    <h2 class="section-title">Novas adições</h2>
-    
-    <swiper-container pagination="true" pagination-clickable="true"
-    keyboard="true" loop="true" direction="vertical" mousewheel="true"
-     autoplay-delay="5000" autoplay-disable-on-interaction="false">
-      <swiper-slide class="flex justify-center" *ngFor="let issue of lastAddedIssues; let i = index" [attr.data-swiper-slide-index]="i">
-        <div class="issue-card">
-          <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'>
+    <div class="flex flex-row mt-5 justify-between">
+      <div class="flex-1 max-w-[30%]">
+        <h2 class="section-title mb-5">Novas adições</h2>
+
+        <swiper-container pagination="true" pagination-clickable="true" keyboard="true" loop="true" direction="vertical"
+          mousewheel="true" autoplay-delay="5000" autoplay-disable-on-interaction="false">
+          <swiper-slide class="flex ml-6 justify-center" *ngFor="let issue of lastAddedIssues; let i = index"
+            [attr.data-swiper-slide-index]="i">
+            <div class="issue-card">
+              <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'>
+              </div>
+              <div class="text-center">
+                <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>
+              </div>
+            </div>
+          </swiper-slide>
+        </swiper-container>
+      </div>
+      <div class="flex-1 flex flex-col max-w-[60%]">
+        <h2 class="section-title mb-12">Principais editoras</h2>
+        <div class="flex flex-row gap-12">
+          <div class="flex flex-col align-top items-center ml-20">
+
+            <div class=" aspect-square max-h-[40%] mb-4">
+              <img class="h-full rounded-md"
+                src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-dc-comics.png"
+                alt="DC Comics" />
+            </div>
+            <div class="text-center">
+              <p class="issue-title">DC Comics</p>
+            </div>
           </div>
-          <div class="text-center">
-            <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>
+
+          <div class="flex flex-col align-top items-center">
+            <div class=" aspect-square max-h-[40%] mb-4">
+              <img class="h-full rounded-md"
+                src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-marvel-comics.png"
+                alt="Marvel Comics" />
+            </div>
+            <div class="text-center">
+              <p class="issue-title">Marvel Comics</p>
+            </div>
           </div>
+
+          <div class="flex flex-col align-top items-center">
+            <div class=" aspect-square max-h-[40%] mb-4">
+              <img class="h-full rounded-md"
+                src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-shueisha.png"
+                alt="Shueisha" />
+            </div>
+            <div class="text-center">
+              <p class="issue-title">Shueisha</p>
+            </div>
+          </div>
+
         </div>
-      </swiper-slide>
-    </swiper-container>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+      </div>
 
+      <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+
+    </div>
   </div>
-</div>

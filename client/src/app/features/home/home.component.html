@@ -41,7 +41,7 @@
     </div>
 
     <div class="flex flex-row mt-5 justify-between">
-      <div class="flex-1 max-w-[30%]">
+      <div class="flex-1 max-w-[30%] min-h-full">
         <h2 class="section-title mb-5">Novas adições</h2>
 
         <swiper-container pagination="true" pagination-clickable="true" keyboard="true" loop="true" direction="vertical"
@@ -51,9 +51,9 @@
             <div class="issue-card">
               <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'>
               </div>
-              <div class="text-center">
+              <!-- <div class="text-center">
                 <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>
-              </div>
+              </div> -->
             </div>
           </swiper-slide>
         </swiper-container>
@@ -63,7 +63,7 @@
         <div class="flex flex-row gap-12">
           <div class="flex flex-col align-top items-center ml-20">
 
-            <div class=" aspect-square max-h-[40%] mb-4">
+            <div class=" aspect-square max-h-[120px] mb-4">
               <img class="h-full rounded-md"
                 src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-dc-comics.png"
                 alt="DC Comics" />
@@ -74,7 +74,7 @@
           </div>
 
           <div class="flex flex-col align-top items-center">
-            <div class=" aspect-square max-h-[40%] mb-4">
+            <div class=" aspect-square max-h-[120px] mb-4">
               <img class="h-full rounded-md"
                 src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-marvel-comics.png"
                 alt="Marvel Comics" />
@@ -85,7 +85,7 @@
           </div>
 
           <div class="flex flex-col align-top items-center">
-            <div class=" aspect-square max-h-[40%] mb-4">
+            <div class=" aspect-square max-h-[120px] mb-4">
               <img class="h-full rounded-md"
                 src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-shueisha.png"
                 alt="Shueisha" />

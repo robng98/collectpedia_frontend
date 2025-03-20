@@ -18,12 +18,14 @@
                     <input class="search-input" placeholder="Buscar" name="search"
                         [(ngModel)]="searchParams.search" required />
                     <div class="flex items-center mt-2">
-                        <mat-form-field appearance="fill" class="max-w-20">
-                            <mat-select [(ngModel)]="searchParams.type" name="type" required>
-                                <mat-option value="comics">/co</mat-option>
-                                <mat-option value="mangas">/ma</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                        <div class="mt-2">
+                            <mat-form-field appearance="fill" class="max-w-24">
+                                <mat-select [(ngModel)]="searchParams.type" name="type" required>
+                                    <mat-option value="comics">/co</mat-option>
+                                    <mat-option value="mangas">/ma</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                         <button type="submit" mat-icon-button [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
                             <mat-icon>arrow_forward</mat-icon>
                         </button>

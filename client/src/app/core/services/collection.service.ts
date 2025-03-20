@@ -47,11 +47,14 @@ export class CollectionService {
   }
 
   createCollection(name: string): Observable<Collection> {
-    return this.http.post<Collection>(`${this.baseUrl}colecao/create`, { nomeColecao: name });
+    const params = {
+      nomeColecao: name
+    }
+    return this.http.post<Collection>(`${this.baseUrl}colecao/create`, params);
   }
 
   deleteCollection(collectionId: number): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}colecao/${collectionId}`);
+    return this.http.delete<any>(`${this.baseUrl}colecao/delete/${collectionId}`);
   }
 
   getCollectionStatistics(collectionId: number): Observable<ColecaoStatistics> {

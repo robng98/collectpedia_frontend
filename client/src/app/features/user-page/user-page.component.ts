@@ -22,6 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { timer, Subject, Observable, of } from 'rxjs';
 import { switchMap, takeUntil, finalize } from 'rxjs/operators';
 import { Collection } from '../../shared/models/colecao';
+import {CollectionIssuesDialogComponent} from './collection-issues-dialog/collection-issues-dialog.component';
 
 interface UserStats {
   collections: number;
@@ -562,8 +563,26 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   // Track the start time of loading for minimum loading duration
   private loadingStartTime = 0;
 
-  // // Method to handle sort change
-  // onSortChange(sortState: Sort) {
-  //   // Custom sorting logic if needed
-  // }
+  // Add this new method to open the collection details dialog
+  openCollectionIssuesDialog(collectionId: number): void {
+    if (this.isLoading) {
+      return; // Prevent opening dialog while loading
+    }
+    
+    // Create a responsive dialog size based on screen dimensions
+    const dialogWidth = window.innerWidth > 1400 ? '70vw' : '85vw';
+    const dialogHeight = window.innerHeight > 900 ? '80vh' : '85vh';
+    
+    // Open the dialog with optimized dimensions
+    this.dialog.open(CollectionIssuesDialogComponent, {
+      data: { collectionId: collectionId },
+      panelClass: 'custom-dialog',
+      width: dialogWidth,
+      maxWidth: '1200px',
+      height: dialogHeight,
+      maxHeight: '90vh',
+      autoFocus: false,
+      restoreFocus: true
+    });
+  }
 }

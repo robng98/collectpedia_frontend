@@ -1,0 +1,390 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-height: 85vh; // Increased from 80vh for better use of screen real estate
+  max-width: 1200px; // Set a maximum width for very large screens
+  min-width: 800px; // Slightly increased minimum width for better content display
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: calc(85vh - 120px); // Adjusted to match new max-height
+  overflow: hidden; // Prevent overflow from the container itself
+}
+
+.loading-container, .error-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  gap: 20px;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  gap: 20px;
+  overflow: hidden; // Prevent overflow from the content container
+}
+
+.issues-container {
+  flex: 0 0 45%; // Fixed width (45%) to ensure consistent layout
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden; // Hide overflow, let child elements handle scrolling
+}
+
+.issues-accordion {
+  overflow-y: auto;
+  overflow-x: hidden; // Hide horizontal overflow
+  flex-grow: 1;
+  margin-bottom: 10px;
+  padding-right: 4px; // Add padding for scrollbar
+}
+
+.exemplares-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 8px 0;
+  width: 100%; // Ensure full width
+}
+
+.exemplar-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  width: 100%; // Ensure full width
+}
+
+.exemplar-item:hover {
+  background-color: rgba(63, 81, 181, 0.05);
+}
+
+.exemplar-item.selected {
+  background-color: rgba(63, 81, 181, 0.25);
+  border-left: 4px solid #3f51b5;
+  padding-left: 6px; // Compensate for the border
+}
+
+.exemplar-image {
+  width: 50px;
+  height: 75px;
+  min-width: 50px; // Add min-width to prevent shrinking
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.exemplar-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.no-image {
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.exemplar-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0; // Allow text truncation
+}
+
+.exemplar-title {
+  font-weight: 500;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.exemplar-metadata {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #666;
+}
+
+.issue-details-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; // Allow vertical scrolling
+  overflow-x: hidden; // Hide horizontal overflow
+  padding: 0 10px;
+}
+
+.cover-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  max-height: 350px; // Increased for better image display
+  overflow: hidden;
+}
+
+.cover-image {
+  max-width: 100%;
+  max-height: 350px; // Adjusted to match container
+  object-fit: contain;
+}
+
+.no-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  height: 300px;
+  width: 100%;
+  color: #757575;
+}
+
+.no-cover mat-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+}
+
+.issue-info {
+  padding: 10px 0;
+  width: 100%;
+}
+
+.info-section {
+  margin: 20px 0;
+  width: 100%;
+}
+
+.info-section h4 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.info-row {
+  margin: 8px 0;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+}
+
+.info-label {
+  font-weight: bold;
+  color: #666;
+  min-width: 140px;
+  max-width: 140px;
+}
+
+.info-value {
+  color: #333;
+  flex: 1;
+  word-break: break-word; // Allow long text to wrap
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  gap: 15px;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+}
+
+mat-paginator {
+  margin-top: auto;
+}
+
+// Tooltip styles for long text
+.truncated-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+// Optimize Material expansion panel styles
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 16px 16px !important; // Reduce padding
+}
+
+::ng-deep .mat-expansion-panel-header {
+  padding: 0 16px !important; // Reduce padding
+}
+
+::ng-deep .mat-expansion-panel {
+  margin-bottom: 8px !important;
+  background-color: rgba(33, 52, 113, 0.6);
+  
+  .mat-expansion-panel-header {
+    padding: 0 16px;
+    height: auto;
+    min-height: 48px;
+  }
+  
+  .mat-expansion-panel-header-title {
+    color: white;
+    font-weight: 500;
+  }
+  
+  .mat-expansion-panel-header-description {
+    color: #c4c4c4;
+    justify-content: flex-end;
+  }
+  
+  .mat-expansion-panel-body {
+    padding: 0 16px 16px;
+  }
+}
+
+// Fix pagination appearance
+::ng-deep .mat-paginator {
+  background-color: transparent;
+  
+  .mat-paginator-container {
+    min-height: 48px;
+  }
+  
+  .mat-paginator-page-size-label,
+  .mat-paginator-range-label {
+    color: #e0e0e0;
+  }
+  
+  .mat-select-value-text {
+    color: #e0e0e0;
+  }
+  
+  .mat-icon-button {
+    color: #e0e0e0;
+  }
+}
+
+// Custom scrollbar styles for better appearance
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 241, 241, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 85, 85, 0.8);
+}
+
+// Add hover effect to close button
+::ng-deep .mat-mdc-dialog-actions button {
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Enhanced dark mode styling
+::ng-deep.custom-dialog .mat-mdc-dialog-surface {
+  background-color: #152547;
+  color: white;
+}
+
+::ng-deep.custom-dialog .mat-mdc-dialog-title {
+  color: white;
+}
+
+// Responsive layout
+@media screen and (max-width: 1200px) {
+  .dialog-container {
+    min-width: 85vw;
+    max-width: 85vw;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .dialog-container {
+    min-width: 90vw;
+    max-width: 90vw;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .content-container {
+    flex-direction: column;
+  }
+  
+  .issues-container {
+    flex: 0 0 auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 350px;
+  }
+  
+  .issue-details-container {
+    max-height: calc(85vh - 500px);
+  }
+  
+  .dialog-content {
+    height: auto;
+    max-height: calc(85vh - 120px);
+    overflow-y: auto;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .dialog-container {
+    max-height: 95vh;
+  }
+  
+  .dialog-content {
+    height: calc(95vh - 120px);
+  }
+  
+  .cover-container {
+    max-height: 200px;
+  }
+  
+  .cover-image {
+    max-height: 200px;
+  }
+}

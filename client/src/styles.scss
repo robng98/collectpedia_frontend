@@ -90,6 +90,55 @@
 
 }
 
+// Custom dialog styles
+.custom-dialog .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #152547; // Dark blue background
+  color: white;
+  padding: 0;
+  
+  .mat-mdc-dialog-surface {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .mat-mdc-dialog-title {
+    color: white;
+    font-weight: 500;
+    padding: 16px 24px;
+    margin: 0;
+    background-color: #1e3a8a;
+  }
+  
+  .mat-mdc-dialog-content {
+    color: #e0e0e0;
+  }
+  
+  .mat-mdc-dialog-actions {
+    padding: 12px 24px;
+    background-color: #1e3a8a;
+    margin-bottom: 0;
+  }
+}
+
+// Custom scrollbar styles for all dialogs
+.mat-mdc-dialog-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.mat-mdc-dialog-container::-webkit-scrollbar-track {
+  background: rgba(241, 241, 241, 0.1);
+}
+
+.mat-mdc-dialog-container::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.5);
+  border-radius: 4px;
+}
+
+.mat-mdc-dialog-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 85, 85, 0.8);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

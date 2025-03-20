@@ -1,0 +1,121 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>{{collection?.nomeColecao || 'Detalhes da Coleção'}}</h2>
+
+  <mat-dialog-content class="dialog-content">
+    <div *ngIf="isLoading" class="loading-container">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <p>{{error}}</p>
+      <button mat-raised-button color="primary" (click)="closeDialog()">Fechar</button>
+    </div>
+
+    <div *ngIf="!isLoading && !error" class="content-container">
+      <!-- Left side: Accordion of series with their issues -->
+      <div class="issues-container">
+        <div *ngIf="groupedExemplares.length === 0" class="empty-state">
+          <mat-icon>library_books</mat-icon>
+          <p>Esta coleção não possui exemplares cadastrados</p>
+        </div>
+        
+        <mat-accordion *ngIf="groupedExemplares.length > 0" class="issues-accordion" multi>
+          <mat-expansion-panel *ngFor="let group of groupedExemplares" 
+                              [expanded]="group.expanded">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="truncated-text" [title]="group.serieName">
+                {{group.serieName}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{group.exemplares.length}} exemplar(es)
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="exemplares-list">
+              <div *ngFor="let exemplar of group.exemplares" 
+                   class="exemplar-item" 
+                   [class.selected]="selectedIssue?.id === exemplar.id"
+                   (click)="selectIssue(exemplar)">
+                <div class="exemplar-image">
+                  <img *ngIf="exemplar.fotoCapa" [src]="exemplar.fotoCapa" alt="Capa">
+                  <div *ngIf="!exemplar.fotoCapa" class="no-image">
+                    <mat-icon>image_not_supported</mat-icon>
+                  </div>
+                </div>
+                <div class="exemplar-info">
+                  <div class="exemplar-title" [title]="exemplar.serieNome + ' #' + exemplar.numero">
+                    {{exemplar.serieNome}} #{{exemplar.numero}}
+                  </div>
+                  <div class="exemplar-metadata">
+                    <span>Adquirido em: {{formatDate(exemplar.dataAquisicao)}}</span>
+                    <span>Estado: {{getConditionLabel(exemplar.estadoConservacao)}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+        
+        <!-- Pagination for large collections -->
+        <mat-paginator 
+          *ngIf="totalItems > pageSize"
+          [length]="totalItems" 
+          [pageSize]="pageSize" 
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="onPageChange($event)"
+          showFirstLastButtons>
+        </mat-paginator>
+      </div>
+
+      <!-- Right side: Selected issue details -->
+      <div class="issue-details-container" *ngIf="selectedIssue">
+        <div class="cover-container">
+          <img *ngIf="selectedIssue.fotoCapa" [src]="selectedIssue.fotoCapa" 
+               alt="Capa da edição" class="cover-image">
+          <div *ngIf="!selectedIssue.fotoCapa" class="no-cover">
+            <mat-icon>image_not_supported</mat-icon>
+            <p>Sem capa disponível</p>
+          </div>
+        </div>
+
+        <div class="issue-info">
+          <h3 class="truncated-text" [title]="selectedIssue.serieNome + ' #' + selectedIssue.numero">
+            {{selectedIssue.serieNome}} #{{selectedIssue.numero}}
+          </h3>
+          
+          <div class="info-section">
+            <h4>Detalhes do Exemplar</h4>
+            
+            <div class="info-row">
+              <span class="info-label">Estado:</span>
+              <span class="info-value">{{getConditionLabel(selectedIssue.estadoConservacao)}}</span>
+            </div>
+            
+            <div class="info-row">
+              <span class="info-label">Data de aquisição:</span>
+              <span class="info-value">{{formatDate(selectedIssue.dataAquisicao)}}</span>
+            </div>
+          </div>
+          
+          <div class="info-section">
+            <h4>Detalhes da Edição</h4>
+            
+            <div class="info-row">
+              <span class="info-label">Data de lançamento:</span>
+              <span class="info-value">{{formatDate(selectedIssue.dataLancamento)}}</span>
+            </div>
+            
+            <div class="info-row" *ngIf="selectedIssue.preco">
+              <span class="info-label">Preço original:</span>
+              <span class="info-value">{{selectedIssue.unMonetaria}} {{selectedIssue.preco}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="closeDialog()">Fechar</button>
+  </mat-dialog-actions>
+</div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, inject, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CollectionService } from '../../../core/services/collection.service';
 import { Collection } from '../../../shared/models/colecao';
@@ -7,13 +7,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
-import { HttpParams } from '@angular/common/http';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { EdicaoService } from '../../../core/services/edicao.service';
 import { Edicao } from '../../../shared/models/edicao';
 import { forkJoin, of } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 interface GroupedExemplar {
   serieId: number;
@@ -33,12 +36,15 @@ interface GroupedExemplar {
     MatProgressSpinnerModule,
     MatChipsModule,
     MatExpansionModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCheckboxModule,
+    MatSnackBarModule
   ],
   templateUrl: './collection-issues-dialog.component.html',
   styleUrls: ['./collection-issues-dialog.component.scss']
 })
 export class CollectionIssuesDialogComponent implements OnInit {
+  private router = inject(Router);
   // Collection data
   collection: Collection | null = null;
   collectionIssues: any[] = [];
@@ -58,11 +64,16 @@ export class CollectionIssuesDialogComponent implements OnInit {
   pageIndex = 0;
   pageSizeOptions = [25, 50, 100, 500];
 
+  // Selection properties
+  selection = new SelectionModel<number>(true, []);
+  isDeleting = false;
+
   constructor(
     private collectionService: CollectionService,
     private edicaoService: EdicaoService,
     private dialogRef: MatDialogRef<CollectionIssuesDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { collectionId: number },
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -151,9 +162,17 @@ export class CollectionIssuesDialogComponent implements OnInit {
         results.forEach(result => {
           if (result.edicao) {
             // Combine exemplar with its edicao data
+            // Important: preserve the original exemplar ID
             const enrichedExemplar = {
               ...result.exemplar,
-              ...result.edicao
+              serieId: result.edicao.serieId,
+              serieNome: result.edicao.serieNome,
+              numero: result.edicao.numero,
+              dataLancamento: result.edicao.dataLancamento,
+              preco: result.edicao.preco,
+              unMonetaria: result.edicao.unMonetaria,
+              fotoCapa: result.edicao.fotoCapa || result.exemplar.fotoCapa
+              // Don't override id or other key exemplar properties
             };
             
             const serieId = result.edicao.serieId;
@@ -218,5 +237,83 @@ export class CollectionIssuesDialogComponent implements OnInit {
   // Return condition label
   getConditionLabel(condition: string): string {
     return condition === 'string' ? 'N/A' : condition;
+  }
+
+  // Selection methods
+  isSelected(exemplarId: number): boolean {
+    return this.selection.isSelected(exemplarId);
+  }
+
+  // Change parameter type to any to accept both MouseEvent and MatCheckboxChange
+  toggleSelection(exemplar: any, event: any): void {
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+    }
+    // Ensure we're using the exemplar's unique ID
+    this.selection.toggle(exemplar.id);
+  }
+
+  // Change parameter type to any to accept both MouseEvent and MatCheckboxChange
+  masterToggle(serieId: number, event: any): void {
+    if (event && event.stopPropagation) {
+      event.stopPropagation();
+    }
+    
+    const group = this.groupedExemplares.find(g => g.serieId === serieId);
+    if (!group) return;
+    
+    if (this.isAllSelectedInGroup(serieId)) {
+      // Deselect all exemplars in this group by their unique IDs
+      group.exemplares.forEach(exemplar => this.selection.deselect(exemplar.id));
+    } else {
+      // Select all exemplars in this group by their unique IDs
+      group.exemplares.forEach(exemplar => this.selection.select(exemplar.id));
+    }
+  }
+
+  isAllSelectedInGroup(serieId: number): boolean {
+    const group = this.groupedExemplares.find(g => g.serieId === serieId);
+    if (!group || group.exemplares.length === 0) return false;
+    
+    // Check each exemplar by its unique ID
+    return group.exemplares.every(exemplar => this.selection.isSelected(exemplar.id));
+  }
+
+  isSomeSelectedInGroup(serieId: number): boolean {
+    const group = this.groupedExemplares.find(g => g.serieId === serieId);
+    if (!group || group.exemplares.length === 0) return false;
+    
+    // Check each exemplar by its unique ID
+    return group.exemplares.some(exemplar => this.selection.isSelected(exemplar.id))
+      && !this.isAllSelectedInGroup(serieId);
+  }
+
+  deleteSelectedExemplars(): void {
+    if (this.selection.isEmpty()) return;
+    
+    const selectedIds = this.selection.selected;
+    const confirmDelete = confirm(`Tem certeza que deseja remover ${selectedIds.length} exemplar(es) da sua coleção?`);
+    
+    if (!confirmDelete) return;
+    
+    this.isDeleting = true;
+    
+    this.collectionService.deleteMultipleExemplars(selectedIds)
+      .pipe(finalize(() => this.isDeleting = false))
+      .subscribe({
+        next: () => {
+          this.snackBar.open(`${selectedIds.length} exemplar(es) removido(s) com sucesso!`, 'Fechar', {
+            duration: 3000
+          });
+          this.selection.clear();
+          this.loadCollectionIssues();
+        },
+        error: (error) => {
+          console.error('Erro ao remover exemplares:', error);
+          this.snackBar.open('Ocorreu um erro ao remover os exemplares.', 'Fechar', {
+            duration: 5000
+          });
+        }
+      });
   }
 }

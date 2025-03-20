@@ -24,6 +24,12 @@
                               [expanded]="group.expanded">
             <mat-expansion-panel-header>
               <mat-panel-title class="truncated-text" [title]="group.serieName">
+                <mat-checkbox 
+                  [checked]="isAllSelectedInGroup(group.serieId)" 
+                  [indeterminate]="isSomeSelectedInGroup(group.serieId)"
+                  (change)="$event ? masterToggle(group.serieId, $event) : null"
+                  (click)="$event.stopPropagation()">
+                </mat-checkbox>
                 {{group.serieName}}
               </mat-panel-title>
               <mat-panel-description>
@@ -36,6 +42,13 @@
                    class="exemplar-item" 
                    [class.selected]="selectedIssue?.id === exemplar.id"
                    (click)="selectIssue(exemplar)">
+                <div class="exemplar-checkbox">
+                  <mat-checkbox 
+                    [checked]="isSelected(exemplar.id)"
+                    (change)="toggleSelection(exemplar, $event)"
+                    (click)="$event.stopPropagation()">
+                  </mat-checkbox>
+                </div>
                 <div class="exemplar-image">
                   <img *ngIf="exemplar.fotoCapa" [src]="exemplar.fotoCapa" alt="Capa">
                   <div *ngIf="!exemplar.fotoCapa" class="no-image">
@@ -66,6 +79,17 @@
           showFirstLastButtons
           class="paginator">
         </mat-paginator>
+
+         <!-- Action buttons for deletion -->
+        <div class="actions-toolbar mb-3" align="end" *ngIf="groupedExemplares.length > 0">
+          <button mat-raised-button color="warn" 
+                  [disabled]="selection.isEmpty() || isDeleting"
+                  (click)="deleteSelectedExemplars()">
+            <mat-icon>delete</mat-icon>
+            Remover Selecionados ({{selection.selected.length}})
+          </button>
+        </div>
+
       </div>
 
       <!-- Right side: Selected issue details -->
@@ -109,11 +133,12 @@
             </div>
           </div>
         </div>
+        
+        <mat-dialog-actions align="end">
+          <button mat-flat-button class="submit-button" (click)="closeDialog()">Fechar</button>
+        </mat-dialog-actions>
       </div>
     </div>
   </mat-dialog-content>
 
-  <mat-dialog-actions align="end">
-    <button mat-flat-button class="submit-button" (click)="closeDialog()">Fechar</button>
-  </mat-dialog-actions>
 </div>

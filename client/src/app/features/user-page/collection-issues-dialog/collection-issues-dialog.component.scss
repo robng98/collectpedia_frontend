@@ -1,10 +1,23 @@
+:root{
+  --primary-color: #1e3a8a;
+  --secondary-color: #4263c3;
+  --background-color: #152547;
+  --surface-color: #213471;
+  --on-surface-color: #ffffff;
+  --on-background-color: #ffffff;
+  --on-primary-color: #ffffff;
+  --on-secondary-color: #ffffff;
+  
+  --dialog-y-size: 95vh;
+}
+
 .dialog-container {
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 100%;
-  min-height: 85vh;
-  max-height: 85vh; // Increased from 80vh for better use of screen real estate
+  min-height: var(--dialog-y-size);
+  max-height: var(--dialog-y-size); // Increased from 80vh for better use of screen real estate
   max-width: 1200px; // Set a maximum width for very large screens
   min-width: 800px; // Slightly increased minimum width for better content display
   color: #ffffff;
@@ -14,7 +27,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  height: calc(85vh - 120px); // Adjusted to match new max-height
+  height: calc(var(--dialog-y-size)); // Adjusted to match new max-height
   overflow: hidden; // Prevent overflow from the container itself
   background-color: #1e3a8a; // Dark blue background matching serie component
 }
@@ -165,7 +178,7 @@
   height: 100%;
   overflow-y: auto; // Allow vertical scrolling
   overflow-x: hidden; // Hide horizontal overflow
-  padding: 0 10px;
+  
   
   scrollbar-width: thin;
   scrollbar-color: #4263c3 #1e3a8a;
@@ -399,12 +412,12 @@ mat-paginator {
   }
   
   .issue-details-container {
-    max-height: calc(85vh - 500px);
+    max-height: calc(var(--dialog-y-size));
   }
   
   .dialog-content {
     height: auto;
-    max-height: calc(85vh - 120px);
+    max-height: calc(var(--dialog-y-size) - 120px);
     overflow-y: auto;
   }
 }

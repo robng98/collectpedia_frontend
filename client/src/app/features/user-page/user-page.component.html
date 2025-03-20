@@ -53,10 +53,9 @@
           <p class="text-sm text-gray-400">
             <!-- {{ collections.find(c => c.id === selectedCollectionId)?.exemplares?.length || 0 }} edições -->
           </p>
-          <button mat-button (click)="openCollectionIssuesDialog(selectedCollectionId)" 
-                  [disabled]="isLoading || !selectedCollectionId" 
-                  class="info-action-button">
-            <mat-icon>visibility</mat-icon> Ver detalhes
+          <button mat-flat-button (click)="openCollectionIssuesDialog(selectedCollectionId)" 
+                  [disabled]="isLoading || !selectedCollectionId" >
+            Ver detalhes
           </button>
         </div>
       </div>

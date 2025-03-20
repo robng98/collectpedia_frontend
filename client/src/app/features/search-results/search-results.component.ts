@@ -50,6 +50,8 @@ export class SearchResultsComponent implements OnInit {
         this.searchParams.type = params['type'];
         this.searchParams.pageNumber = params['pageNumber'] ? Number(params['pageNumber']) : 1;
         this.searchParams.pageSize = params['pageSize'] ? Number(params['pageSize']) : 10;
+        this.searchParams.sortBy = params['sortBy'] ? params['sortBy'] : 'NomeInter';
+        this.searchParams.isDescending = params['isDescending'] ? params['isDescending'] === true : false;
         this.currentPage = this.searchParams.pageNumber;
         this.pageSize = this.searchParams.pageSize;
         

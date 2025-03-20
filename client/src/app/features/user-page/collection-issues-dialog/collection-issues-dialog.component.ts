@@ -54,9 +54,9 @@ export class CollectionIssuesDialogComponent implements OnInit {
   
   // Pagination
   totalItems = 0;
-  pageSize = 10;
-  pageNumber = 1;
-  pageSizeOptions = [5, 10, 25];
+  pageSize = 25;
+  pageIndex = 0;
+  pageSizeOptions = [25, 50, 100, 500];
 
   constructor(
     private collectionService: CollectionService,
@@ -78,7 +78,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
     }
 
     this.collectionService.getUserCollections({
-      pageNumber: 1,
       pageSize: 1,
       sortBy: 'id',
       isDescending: false,
@@ -102,8 +101,16 @@ export class CollectionIssuesDialogComponent implements OnInit {
     if (!this.data.collectionId) return;
     
     this.isLoading = true;
+
+    const params = {
+        pageNumber: this.pageIndex + 1,
+        pageSize: this.pageSize,
+        sortBy: 'id',
+        isDescending: false,
+        colecaoId: this.data.collectionId
+    };
     
-    this.collectionService.getCollectionIssuesById(this.data.collectionId).subscribe({
+    this.collectionService.getCollectionIssuesById(params).subscribe({
       next: (response) => {
         this.collectionIssues = response.data;
         this.totalItems = response.totalCount;
@@ -189,7 +196,7 @@ export class CollectionIssuesDialogComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
-    this.pageNumber = event.pageIndex + 1;
+    this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadCollectionIssues();
   }
@@ -210,14 +217,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
 
   // Return condition label
   getConditionLabel(condition: string): string {
-    switch (condition) {
-      case 'MINT': return 'Perfeito';
-      case 'NEAR_MINT': return 'Quase Perfeito';
-      case 'VERY_GOOD': return 'Muito Bom';
-      case 'GOOD': return 'Bom';
-      case 'FAIR': return 'Regular';
-      case 'POOR': return 'Ruim';
-      default: return condition || 'N/A';
-    }
+    return condition === 'string' ? 'N/A' : condition;
   }
 }

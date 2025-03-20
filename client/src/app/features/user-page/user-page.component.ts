@@ -16,6 +16,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { ChangeEmailDialogComponent } from './change-email-dialog/change-email-dialog.component';
 import { CreateCollectionDialogComponent } from './create-collection-dialog/create-collection-dialog.component';
+import { DeleteCollectionDialogComponent } from './delete-collection-dialog/delete-collection-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { timer, Subject, Observable, of } from 'rxjs';
@@ -535,6 +536,22 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Collection was created successfully
+        // Reload the collections data
+        this.pageIndex = 0; // Reset to first page
+        this.loadUserData();
+      }
+    });
+  }
+
+  openDeleteCollectionDialog(): void {
+    const dialogRef = this.dialog.open(DeleteCollectionDialogComponent, {
+      width: '400px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        // Collection was deleted successfully
         // Reload the collections data
         this.pageIndex = 0; // Reset to first page
         this.loadUserData();

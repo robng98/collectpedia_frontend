@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Deletar Coleção</h2>
+<mat-dialog-content>
+  <form [formGroup]="deleteForm" (ngSubmit)="onSubmit()">
+    <p class="warning-text">Atenção: Esta ação não pode ser desfeita.</p>
+    <p>Selecione a coleção que deseja excluir:</p>
+    
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Coleção</mat-label>
+      <mat-select formControlName="collectionId">
+        <mat-option *ngIf="isLoadingCollections" disabled>Carregando coleções...</mat-option>
+        <mat-option *ngFor="let collection of collections" [value]="collection.id">
+          {{ collection.nomeColecao }} ({{ collection.exemplares?.length || 0 }} exemplares)
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="deleteForm.get('collectionId')?.hasError('required')">
+        Por favor, selecione uma coleção
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button [disabled]="isLoading" (click)="onCancel()">Cancelar</button>
+  <button mat-raised-button color="warn" [disabled]="deleteForm.invalid || isLoading" (click)="onSubmit()">
+    <mat-spinner *ngIf="isLoading" diameter="20" class="spinner-button"></mat-spinner>
+    <span *ngIf="!isLoading">Deletar</span>
+  </button>
+</mat-dialog-actions>

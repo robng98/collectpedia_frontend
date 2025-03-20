@@ -23,7 +23,7 @@
             <mat-icon>add_circle</mat-icon>
             <span>Criar Nova Coleção</span>
           </a>
-          <a routerLink="/collections" class="quick-link-item">
+          <a class="quick-link-item cursor-pointer" (click)="openDeleteCollectionDialog()">
             <mat-icon>delete_forever</mat-icon>
             <span>Deletar Coleção</span>
           </a>

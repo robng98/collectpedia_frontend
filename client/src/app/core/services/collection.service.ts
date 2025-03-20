@@ -49,7 +49,7 @@ export class CollectionService {
   createCollection(name: string): Observable<Collection> {
     const params = {
       nomeColecao: name
-    }
+    };
     return this.http.post<Collection>(`${this.baseUrl}colecao/create`, params);
   }
 

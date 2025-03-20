@@ -324,14 +324,47 @@ export class RegisterIssuesComponent implements OnInit {
       .filter(control => control.get('selected')?.value)
       .map(control => control.get('id')?.value);
     
-    const formData = {
-      issueIds: selectedIssueIds,
-      collectionId: this.batchForm.value.collectionId,
-      estadoConservacao: this.batchForm.value.grade,           // Changed from grade
-      dataAquisicao: this.batchForm.value.acquisitionDate      // Changed from acquisitionDate
+    // Process each issue ID individually
+    let successCount = 0;
+    let processedCount = 0;
+    
+    const processIssue = (index: number) => {
+      if (index >= selectedIssueIds.length) {
+        // All done
+        if (successCount === selectedIssueIds.length) {
+          this.router.navigate(["/collections", this.batchForm.value.collectionId]);
+        } else {
+          this.isSubmitting = false;
+        }
+        return;
+      }
+      
+      const formData = {
+        edicaoId: selectedIssueIds[index],  // Single ID, not array
+        colecaoId: this.batchForm.value.collectionId,
+        estadoConservacao: this.batchForm.value.grade,
+        dataAquisicao: this.batchForm.value.acquisitionDate
+      };
+      
+      this.collectionService.addIssuesToCollection(formData)
+        .pipe(catchError(err => {
+          console.error(`Error registering issue ${selectedIssueIds[index]}`, err);
+          processedCount++;
+          if (processedCount === selectedIssueIds.length) {
+            this.isSubmitting = false;
+          }
+          return of(null);
+        }))
+        .subscribe(response => {
+          processedCount++;
+          if (response) {
+            successCount++;
+          }
+          processIssue(index + 1);
+        });
     };
-
-    this.processSubmission(formData);
+    
+    processIssue(0);
   }
 
   submitIndividualForm(): void {
@@ -346,14 +379,13 @@ export class RegisterIssuesComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = null;
 
-    // Process each selected issue individually
     const selectedIssues = this.issuesFormArray.controls.filter(control => control.get('selected')?.value);
     const requests = selectedIssues.map(control => {
       return {
-        issueIds: [control.get('id')?.value],
-        collectionId: this.registrationForm.value.collectionId,
-        estadoConservacao: control.get('grade')?.value,        // Changed from grade
-        dataAquisicao: control.get('acquisitionDate')?.value   // Changed from acquisitionDate
+        edicaoId: control.get('id')?.value,  // Changed from edicaoIds array
+        colecaoId: this.registrationForm.value.collectionId,
+        estadoConservacao: control.get('grade')?.value,
+        dataAquisicao: control.get('acquisitionDate')?.value
       };
     });
 
@@ -388,10 +420,12 @@ export class RegisterIssuesComponent implements OnInit {
   processSubmission(formData: any): void {
     // Ensure formData has the correct property names before passing to the service
     const exemplarRequest = {
-      issueIds: formData.issueIds,
-      collectionId: formData.collectionId,
-      estadoConservacao: formData.estadoConservacao || formData.grade,       // Support both property names
-      dataAquisicao: formData.dataAquisicao || formData.acquisitionDate      // Support both property names
+      edicaoId: Array.isArray(formData.edicaoIds) 
+        ? formData.edicaoIds[0] 
+        : formData.edicaoIds,   // Take the first ID
+      colecaoId: formData.colecaoId || formData.collectionId,
+      estadoConservacao: formData.estadoConservacao || formData.grade,
+      dataAquisicao: formData.dataAquisicao || formData.acquisitionDate
     };
     
     this.collectionService.addIssuesToCollection(exemplarRequest)
@@ -409,7 +443,7 @@ export class RegisterIssuesComponent implements OnInit {
         (response) => {
           if (response) {
             // Navigate to collection detail page
-            this.router.navigate(["/collections", formData.collectionId]);
+            this.router.navigate(["/collections", formData.colecaoId || formData.collectionId]);
           }
         }
       );

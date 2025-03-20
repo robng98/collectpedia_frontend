@@ -18,4 +18,6 @@ export type Collection = {
   export type ExemplarRequest = {
     estadoConservacao: string;
     dataAquisicao: string;
+    edicaoId: number;
+    colecaoId: number;  
   }

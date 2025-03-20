@@ -108,27 +108,29 @@
 
         <!-- Chart Section -->
         <div class="issues-over-time">
-          <div class="section-header">
-            <h3 class="section-title">Progresso Mensal do Acervo</h3>
-            <div class="chart-controls">
-              <button (click)="toggleDisplayMode()" class="toggle-button">
-                {{ displayMode === 'total' ? 'Mostrar por Coleção' : 'Mostrar Total' }}
-              </button>
+          <div *ngIf="userStats.issues > 0" class="mt-6">
+            <div class="section-header">
+              <h3 class="section-title">Progresso Mensal do Acervo</h3>
+              <div class="chart-controls">
+                <button (click)="toggleDisplayMode()" class="toggle-button">
+                  {{ displayMode === 'total' ? 'Mostrar por Coleção' : 'Mostrar Total' }}
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="chart">
-            @if (issuesOverTime.length > 0) {
-            <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [results]="issuesOverTime" [gradient]="true"
-              [xAxis]="xAxis" [yAxis]="yAxis" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
-              [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
-               [autoScale]="true" [curve]="curve" [animations]="animations"
-              [tooltipDisabled]="false" [legendTitle]="'Coleções'" class="dark-theme-chart">
-            </ngx-charts-line-chart>
-            } @else {
-            <div class="no-data">
-              <p>Não há dados de aquisição disponíveis</p>
+            <div class="chart">
+              @if (issuesOverTime.length > 0) {
+              <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [results]="issuesOverTime" [gradient]="true"
+                [xAxis]="xAxis" [yAxis]="yAxis" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                 [autoScale]="true" [curve]="curve" [animations]="animations"
+                [tooltipDisabled]="false" [legendTitle]="'Coleções'" class="dark-theme-chart">
+              </ngx-charts-line-chart>
+              } @else {
+              <div class="no-data">
+                <p>Não há dados de aquisição disponíveis</p>
+              </div>
+              }
             </div>
-            }
           </div>
         </div>
       </div>

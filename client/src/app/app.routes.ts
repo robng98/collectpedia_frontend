@@ -6,6 +6,7 @@ import { LoginComponent } from './features/account/login/login.component';
 import { RegisterComponent } from './features/account/register/register.component';
 import { UserPageComponent } from './features/user-page/user-page.component';
 import { RegisterIssuesComponent } from './features/register-issues/register-issues.component';
+import { ComicsPageComponent } from './features/summary-page/comics-page/comics-page.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -15,5 +16,6 @@ export const routes: Routes = [
     {path: 'serie/:serieId', component: SerieComponent},
     {path: 'user', component: UserPageComponent},
     {path: "register-issues", component: RegisterIssuesComponent},
+    {path: "summary/comics", component: ComicsPageComponent},
     {path: '**', redirectTo: '', pathMatch: 'full'},
 ];

@@ -574,7 +574,7 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     const dialogHeight = window.innerHeight > 900 ? '80vh' : '85vh';
     
     // Open the dialog with optimized dimensions
-    this.dialog.open(CollectionIssuesDialogComponent, {
+    const dialogRef = this.dialog.open(CollectionIssuesDialogComponent, {
       data: { collectionId: collectionId },
       panelClass: 'custom-dialog',
       width: dialogWidth,
@@ -582,7 +582,28 @@ export class UserPageComponent implements OnInit, AfterViewInit {
       height: dialogHeight,
       maxHeight: '88vh',
       autoFocus: false,
-      restoreFocus: true
+      restoreFocus: true,
+      // Don't close when clicking outside - we handle this in the component
+      disableClose: false
+    });
+
+    // Subscribe to the dialog close event
+    dialogRef.afterClosed().subscribe(hasChanges => {
+      // If changes were made (exemplars were deleted), reload data
+      if (hasChanges) {
+        // Show loading spinner while reloading data
+        this.isLoading = true;
+        
+        // Reset to first page when data is updated
+        this.pageIndex = 0;
+        
+        this.loadUserData();
+        
+        // If we had a selected collection, reload its detailed stats
+        if (this.selectedCollectionId) {
+          this.loadCollectionDetailedStats(this.selectedCollectionId);
+        }
+      }
     });
   }
 }

@@ -68,13 +68,22 @@ export class CollectionIssuesDialogComponent implements OnInit {
   selection = new SelectionModel<number>(true, []);
   isDeleting = false;
 
+  // Track if any changes were made
+  hasChanges = false;
+
   constructor(
     private collectionService: CollectionService,
     private edicaoService: EdicaoService,
     private dialogRef: MatDialogRef<CollectionIssuesDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { collectionId: number },
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    // Set the return value for when the dialog is closed by clicking outside
+    this.dialogRef.backdropClick().subscribe(() => {
+      // Close the dialog and pass back the hasChanges value
+      this.dialogRef.close(this.hasChanges);
+    });
+  }
 
   ngOnInit(): void {
     this.loadCollection();
@@ -225,7 +234,8 @@ export class CollectionIssuesDialogComponent implements OnInit {
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    // Pass back whether changes were made
+    this.dialogRef.close(this.hasChanges);
   }
 
   // Format date for display
@@ -302,6 +312,9 @@ export class CollectionIssuesDialogComponent implements OnInit {
       .pipe(finalize(() => this.isDeleting = false))
       .subscribe({
         next: () => {
+          // Set flag to indicate changes were made
+          this.hasChanges = true;
+          
           this.snackBar.open(`${selectedIds.length} exemplar(es) removido(s) com sucesso!`, 'Fechar', {
             duration: 3000
           });

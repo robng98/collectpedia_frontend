@@ -15,6 +15,7 @@ import { ColecaoStatistics } from '../../shared/models/colecao-statistics.model'
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { ChangeEmailDialogComponent } from './change-email-dialog/change-email-dialog.component';
+import { CreateCollectionDialogComponent } from './create-collection-dialog/create-collection-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { timer, Subject, Observable, of } from 'rxjs';
@@ -521,6 +522,22 @@ export class UserPageComponent implements OnInit, AfterViewInit {
       if (result === true) {
         // Email was changed successfully
         // Could show a notification or update UI if needed
+      }
+    });
+  }
+
+  openCreateCollectionDialog(): void {
+    const dialogRef = this.dialog.open(CreateCollectionDialogComponent, {
+      width: '400px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Collection was created successfully
+        // Reload the collections data
+        this.pageIndex = 0; // Reset to first page
+        this.loadUserData();
       }
     });
   }

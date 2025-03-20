@@ -19,7 +19,7 @@
       <div class="quick-links bg-[#213471] rounded-lg p-4 mb-4">
         <h3 class="text-xl font-semibold text-white mb-3">Ações Rápidas</h3>
         <div class="flex flex-col space-y-2">
-          <a routerLink="/collections/new" class="quick-link-item">
+          <a class="quick-link-item cursor-pointer" (click)="openCreateCollectionDialog()">
             <mat-icon>add_circle</mat-icon>
             <span>Criar Nova Coleção</span>
           </a>

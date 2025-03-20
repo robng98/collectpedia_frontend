@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
+  min-height: 85vh;
   max-height: 85vh; // Increased from 80vh for better use of screen real estate
   max-width: 1200px; // Set a maximum width for very large screens
   min-width: 800px; // Slightly increased minimum width for better content display
@@ -29,6 +30,11 @@
   color: #ffffff;
 }
 
+::ng-deep .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
+::ng-deep .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
+  stroke: #ffffff;
+}
+
 .content-container {
   display: flex;
   flex-direction: row;
@@ -39,7 +45,7 @@
 }
 
 .issues-container {
-  flex: 0 0 45%; // Fixed width (45%) to ensure consistent layout
+  flex: 0 0 60%; // Fixed width (45%) to ensure consistent layout
   min-width: 300px;
   display: flex;
   flex-direction: column;
@@ -64,6 +70,13 @@
   gap: 12px;
   padding: 8px 0;
   width: 100%; // Ensure full width
+
+  :hover .exemplar-title {
+    color: #f1eded;
+  }
+  :hover .exemplar-metadata {
+    color: #fff;
+  }
 }
 
 .exemplar-item {
@@ -85,6 +98,13 @@
   background-color: #213471;
   border-left: 4px solid rgb(43, 96, 201);
   padding-left: 6px; // Compensate for the border
+
+  .exemplar-title {
+    color: #e0e0e0;
+  }
+  .exemplar-metadata {
+    color: #ffffff;
+  }
 }
 
 .exemplar-image {
@@ -128,14 +148,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #FFFFFF;
+  color: #1e3a8a;
 }
 
 .exemplar-metadata {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  color: #C4C4C4;
+  color: #4263c3;
 }
 
 .issue-details-container {
@@ -252,7 +272,9 @@ mat-paginator {
   text-overflow: ellipsis;
   max-width: 100%;
 }
-
+.mat-expansion-panel .mat-expansion-panel-header-title{
+  color:#1e3a8a
+}
 // Optimize Material expansion panel styles
 ::ng-deep .mat-expansion-panel-body {
   padding: 0 16px 16px !important; // Reduce padding
@@ -278,8 +300,9 @@ mat-paginator {
   }
   
   .mat-expansion-panel-header-description {
-    color: #c4c4c4;
+    color: #4263c3;
     justify-content: flex-end;
+    max-width: 35%;
   }
   
   .mat-expansion-panel-body {

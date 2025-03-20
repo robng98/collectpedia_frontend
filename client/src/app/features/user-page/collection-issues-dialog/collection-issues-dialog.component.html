@@ -80,9 +80,6 @@
         </div>
 
         <div class="issue-info">
-          <h3 class="section-title truncated-text" [title]="selectedIssue.serieNome + ' #' + selectedIssue.numero">
-            {{selectedIssue.serieNome}} #{{selectedIssue.numero}}
-          </h3>
           
           <div class="info-section">
             <h4>Detalhes do Exemplar</h4>
@@ -117,6 +114,6 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button class="submit-button" (click)="closeDialog()">Fechar</button>
+    <button mat-flat-button class="submit-button" (click)="closeDialog()">Fechar</button>
   </mat-dialog-actions>
 </div>

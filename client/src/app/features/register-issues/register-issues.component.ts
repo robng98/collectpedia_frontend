@@ -332,7 +332,7 @@ export class RegisterIssuesComponent implements OnInit {
       if (index >= selectedIssueIds.length) {
         // All done
         if (successCount === selectedIssueIds.length) {
-          this.router.navigate(["/collections", this.batchForm.value.collectionId]);
+          this.router.navigate(["/user"]);
         } else {
           this.isSubmitting = false;
         }
@@ -393,7 +393,7 @@ export class RegisterIssuesComponent implements OnInit {
     const processRequests = (index = 0) => {
       if (index >= requests.length) {
         // All done, navigate to collection
-        this.router.navigate(["/collections", this.registrationForm.value.collectionId]);
+        this.router.navigate(["/user"]);
         return;
       }
 
@@ -443,7 +443,7 @@ export class RegisterIssuesComponent implements OnInit {
         (response) => {
           if (response) {
             // Navigate to collection detail page
-            this.router.navigate(["/collections", formData.colecaoId || formData.collectionId]);
+            this.router.navigate(["/user"]);
           }
         }
       );

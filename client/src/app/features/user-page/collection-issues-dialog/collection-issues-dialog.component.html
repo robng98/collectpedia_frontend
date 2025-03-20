@@ -8,7 +8,7 @@
 
     <div *ngIf="error" class="error-message">
       <p>{{error}}</p>
-      <button mat-raised-button color="primary" (click)="closeDialog()">Fechar</button>
+      <button mat-flat-button class="submit-button" (click)="closeDialog()">Fechar</button>
     </div>
 
     <div *ngIf="!isLoading && !error" class="content-container">
@@ -63,7 +63,8 @@
           [pageIndex]="pageIndex"
           [pageSizeOptions]="pageSizeOptions"
           (page)="onPageChange($event)"
-          showFirstLastButtons>
+          showFirstLastButtons
+          class="paginator">
         </mat-paginator>
       </div>
 
@@ -79,7 +80,7 @@
         </div>
 
         <div class="issue-info">
-          <h3 class="truncated-text" [title]="selectedIssue.serieNome + ' #' + selectedIssue.numero">
+          <h3 class="section-title truncated-text" [title]="selectedIssue.serieNome + ' #' + selectedIssue.numero">
             {{selectedIssue.serieNome}} #{{selectedIssue.numero}}
           </h3>
           
@@ -116,6 +117,6 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button (click)="closeDialog()">Fechar</button>
+    <button mat-button class="submit-button" (click)="closeDialog()">Fechar</button>
   </mat-dialog-actions>
 </div>

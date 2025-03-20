@@ -578,9 +578,9 @@ export class UserPageComponent implements OnInit, AfterViewInit {
       data: { collectionId: collectionId },
       panelClass: 'custom-dialog',
       width: dialogWidth,
-      maxWidth: '1200px',
+      maxWidth: '1000px',
       height: dialogHeight,
-      maxHeight: '90vh',
+      maxHeight: '88vh',
       autoFocus: false,
       restoreFocus: true
     });

@@ -6,6 +6,7 @@
   max-height: 85vh; // Increased from 80vh for better use of screen real estate
   max-width: 1200px; // Set a maximum width for very large screens
   min-width: 800px; // Slightly increased minimum width for better content display
+  color: #ffffff;
 }
 
 .dialog-content {
@@ -14,6 +15,7 @@
   flex-grow: 1;
   height: calc(85vh - 120px); // Adjusted to match new max-height
   overflow: hidden; // Prevent overflow from the container itself
+  background-color: #1e3a8a; // Dark blue background matching serie component
 }
 
 .loading-container, .error-message {
@@ -24,6 +26,7 @@
   height: 100%;
   width: 100%;
   gap: 20px;
+  color: #ffffff;
 }
 
 .content-container {
@@ -50,6 +53,9 @@
   flex-grow: 1;
   margin-bottom: 10px;
   padding-right: 4px; // Add padding for scrollbar
+  
+  scrollbar-width: thin;
+  scrollbar-color: #4263c3 #1e3a8a;
 }
 
 .exemplares-list {
@@ -68,15 +74,16 @@
   transition: background-color 0.2s;
   cursor: pointer;
   width: 100%; // Ensure full width
+  color: #ffffff;
 }
 
 .exemplar-item:hover {
-  background-color: rgba(63, 81, 181, 0.05);
+  background-color: #344887;
 }
 
 .exemplar-item.selected {
-  background-color: rgba(63, 81, 181, 0.25);
-  border-left: 4px solid #3f51b5;
+  background-color: #213471;
+  border-left: 4px solid rgb(43, 96, 201);
   padding-left: 6px; // Compensate for the border
 }
 
@@ -88,7 +95,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
+  background-color: #213471;
   border-radius: 4px;
 }
 
@@ -99,7 +106,7 @@
 }
 
 .no-image {
-  color: #aaa;
+  color: #C4C4C4;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,13 +128,14 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #FFFFFF;
 }
 
 .exemplar-metadata {
   display: flex;
   flex-direction: column;
   font-size: 14px;
-  color: #666;
+  color: #C4C4C4;
 }
 
 .issue-details-container {
@@ -138,6 +146,9 @@
   overflow-y: auto; // Allow vertical scrolling
   overflow-x: hidden; // Hide horizontal overflow
   padding: 0 10px;
+  
+  scrollbar-width: thin;
+  scrollbar-color: #4263c3 #1e3a8a;
 }
 
 .cover-container {
@@ -146,6 +157,9 @@
   margin-bottom: 16px;
   max-height: 350px; // Increased for better image display
   overflow: hidden;
+  background-color: #213471;
+  border-radius: 8px;
+  padding: 8px;
 }
 
 .cover-image {
@@ -159,10 +173,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
+  background-color: #213471;
   height: 300px;
   width: 100%;
-  color: #757575;
+  color: #C4C4C4;
 }
 
 .no-cover mat-icon {
@@ -182,10 +196,11 @@
 }
 
 .info-section h4 {
-  color: #333;
+  color: #FFFFFF;
   font-size: 18px;
+  font-weight: bold;
   margin-bottom: 12px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #344887;
   padding-bottom: 8px;
 }
 
@@ -199,13 +214,13 @@
 
 .info-label {
   font-weight: bold;
-  color: #666;
+  color: #C4C4C4;
   min-width: 140px;
   max-width: 140px;
 }
 
 .info-value {
-  color: #333;
+  color: #FFFFFF;
   flex: 1;
   word-break: break-word; // Allow long text to wrap
 }
@@ -216,7 +231,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #666;
+  color: #C4C4C4;
   gap: 15px;
 }
 

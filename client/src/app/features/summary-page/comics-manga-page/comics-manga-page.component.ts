@@ -193,6 +193,6 @@ export class ComicsMangaPageComponent implements OnInit {
    * Navigate to different content type
    */
   navigateToType(type: string): void {
-    this.router.navigate(['/summary', type]);
+    this.router.navigate(['/summary/series', type]);
   }
 }

@@ -26,7 +26,8 @@ import { Contribuicao } from '../../shared/models/contribuicao';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { timer } from 'rxjs';
+import { forkJoin, timer } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-serie',
@@ -143,20 +144,26 @@ export class SerieComponent implements OnInit {
     this.pageNumber = 1;
     this.loadData();
 
-
     this.isLoading = true;
+    // Create a 1500ms timer for consistent spinner display
+    const loadingTimer = timer(1500);
+    
     this.publisherService.getPublisherById(this.editoraIdParam).subscribe({
       next: (response) => {
-        // console.log(response);
         this.currentEditora = response;
-        this.isLoading = false;
+        // Don't set isLoading=false yet, wait for timer
       },
       error: (error) => {
         console.log(error);
-        this.isLoading = false;
+        // Don't set isLoading=false yet, wait for timer
+      },
+      complete: () => {
+        // Wait for both the API call and timer before hiding spinner
+        loadingTimer.subscribe(() => {
+          this.isLoading = false;
+        });
       }
     });
-
   };
 
   initForm(): void {
@@ -184,6 +191,9 @@ export class SerieComponent implements OnInit {
 
   loadData() {
     this.isLoading = true;
+    // Create a 1500ms timer for consistent spinner display
+    const loadingTimer = timer(1500);
+    
     this.params = this.params.set('PageSize', this.pageSize.toString());
     this.params = this.params.set('PageNumber', this.pageNumber.toString());
     this.params = this.params.set('SortBy', 'id');
@@ -202,12 +212,18 @@ export class SerieComponent implements OnInit {
         }
 
         this.initFormControls();
-        this.isLoading = false;
+        // Don't set isLoading=false yet, wait for timer
       },
       error: (error) => {
         console.log(error);
-        this.isLoading = false;
+        // Don't set isLoading=false yet, wait for timer
       },
+      complete: () => {
+        // Wait for both the API call and timer before hiding spinner
+        loadingTimer.subscribe(() => {
+          this.isLoading = false;
+        });
+      }
     });
 
   }
@@ -221,7 +237,7 @@ export class SerieComponent implements OnInit {
     this.isLoadingDetails = true;
     
     // Add delay to make spinner visible for at least 1500ms
-    const loadingTimer = timer(1500);
+    const loadingTimer = timer(1250);
     
     this.edicoesService.getEdicaoById(edicaoId).subscribe({
       next: (response) => {

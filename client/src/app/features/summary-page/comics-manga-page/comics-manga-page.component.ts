@@ -21,10 +21,10 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
     MatPaginatorModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './comics-page.component.html',
-  styleUrl: './comics-page.component.scss'
+  templateUrl: './comics-manga-page.component.html',
+  styleUrl: './comics-manga-page.component.scss'
 })
-export class ComicsPageComponent implements OnInit {
+export class ComicsMangaPageComponent implements OnInit {
   private serieService = inject(SerieService);
   private edicaoService = inject(EdicaoService);
   private router = inject(Router);
@@ -41,8 +41,8 @@ export class ComicsPageComponent implements OnInit {
   // Pagination properties
   totalItems = 0;
   currentPage = 1;
-  pageSize = 10;
-  pageSizeOptions = [10, 24, 48, 96];
+  pageSize = 5;
+  pageSizeOptions = [2, 24, 48, 96];
   isLoading = false;
 
   // Temporary storage for newly loaded results

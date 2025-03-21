@@ -8,7 +8,7 @@
         <div class="layout-content-container">
             <div class="comics-header">
                 <div class="comics-info">
-                    <h1 class="page-title">Quadrinhos</h1>
+                    <h1 class="page-title">Todos os Comics</h1>
                     <p class="comics-results-count">
                         Mostrando {{(currentPage-1) * pageSize + 1}} -
                         {{calculateUpperBound()}}
@@ -20,7 +20,6 @@
                 <div class="flex items-center">
                     <!-- Sorting Controls -->
                     <div class="sorting-controls flex gap-4 items-center">
-                        <div class="sort-label text-white">Ordenar por:</div>
                         <div class="sort-options flex gap-2">
                             <button class="sort-button px-3 py-1 rounded"
                                 [class.active]="searchParams.sortBy === 'nomeInter'"
@@ -42,7 +41,7 @@
                     </div>
 
                     <!-- View Toggle Button -->
-                    <div class="view-toggle ml-4">
+                    <div class="view-toggle ml-20">
                         <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
                             (click)="toggleViewMode()">
                             <span *ngIf="viewMode === 'card'">
@@ -79,42 +78,34 @@
                 </div>
             </div>
 
-            <!-- List View -->
-            <div class="comics-list px-8" *ngIf="viewMode === 'list'">
-                @for (serie of comicSeries; track $index) {
-                @if (firstCovers.length === comicSeries.length) {
-                <div class="comic-list-item" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
-                    <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
-                    </div>
-                    <div class="comic-list-content">
-                        <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
-                        <div class="comic-list-details pt-2">
-                            <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span>
+            <!-- List View with contained scrolling -->
+            <div class="comics-list-container" *ngIf="viewMode === 'list'">
+                <div class="comics-list">
+                    @for (serie of comicSeries; track $index) {
+                    @if (firstCovers.length === comicSeries.length) {
+                    <div class="comic-list-item" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
+                        <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                        </div>
+                        <div class="comic-list-content">
+                            <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
+                            <div class="comic-list-details pt-2">
+                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="comic-list-item" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
-                    <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
-                    </div>
-                    <div class="comic-list-content">
-                        <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
-                        <div class="comic-list-details pt-2">
-                            <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span>
-                        </div>
-                    </div>
-                </div>
-                }
-                }
+                    }
+                    }
 
-                <!-- Empty State -->
-                <div *ngIf="comicSeries.length === 0 && !isLoading" class="empty-state">
-                    <p>Nenhum título de quadrinhos encontrado.</p>
+                    <!-- Empty State -->
+                    <div *ngIf="comicSeries.length === 0 && !isLoading" class="empty-state">
+                        <p>Nenhum título de quadrinhos encontrado.</p>
+                    </div>
                 </div>
             </div>
 
             <!-- Pagination Controls -->
             <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
-                [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
+                 [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
                 class="comics-paginator">
             </mat-paginator>
         </div>

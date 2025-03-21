@@ -37,18 +37,5 @@ export class EdicaoService {
   getEdicaoById(edicaoId: number) {
     return this.http.get<Edicao>(this.baseUrl + 'edicao/' + edicaoId);
   }
-  
-  // searchByType(searchParams: SearchParams) {
-  //   let params = new HttpParams();
-  //   let type = searchParams.type;
-  //   if (searchParams.search) {
-  //     params = params.append('NomeInter', searchParams.search);
-  //   }
-
-  //   params = params.append('PageSize', searchParams.pageSize);
-  //   params = params.append('PageNumber', searchParams.pageNumber);
-
-  //   return this.http.get<Array<Serie>>(this.baseUrl + 'serie/' + type, {params});
-  // }
 
 }

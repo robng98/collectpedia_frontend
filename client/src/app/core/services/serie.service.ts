@@ -27,4 +27,8 @@ export class SerieService {
 
     return this.http.get<Pagination<Serie>>(this.baseUrl + 'serie/' + type, {params});
   }
+
+  getSerieById(id: number): Observable<Serie> {
+    return this.http.get<Serie>(this.baseUrl + 'serie/' + id);
+  }
 }

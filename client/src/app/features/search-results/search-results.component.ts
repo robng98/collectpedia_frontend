@@ -28,6 +28,9 @@ export class SearchResultsComponent implements OnInit {
   private edicaoService = inject(EdicaoService);
   private router = inject(Router);
   
+  // Add Math for pagination calculations
+  private Math = Math;
+  
   searchParams = new SearchParams();
   searchResults: Serie[] = [];
   firstCovers: PrimeiraCapaSerie[] = [];
@@ -36,8 +39,11 @@ export class SearchResultsComponent implements OnInit {
   totalItems = 0;
   currentPage = 1;
   pageSize = 10;
-  pageSizeOptions = [5, 10, 25, 50];
+  pageSizeOptions = [10, 25, 50];
   isLoading = false;
+
+  // View mode state (same as comics-manga-page)
+  viewMode: 'card' | 'list' = 'list';
 
   // Temporary storage for newly loaded results
   private tempResults: Serie[] = [];
@@ -116,6 +122,13 @@ export class SearchResultsComponent implements OnInit {
   }
 
   /**
+   * Calculates the upper bound for pagination display
+   */
+  calculateUpperBound(): number {
+    return Math.min((this.currentPage - 1) * this.pageSize + this.searchResults.length, this.totalItems);
+  }
+
+  /**
    * Handles page change events from the paginator
    */
   onPageChange(event: PageEvent) {
@@ -160,6 +173,13 @@ export class SearchResultsComponent implements OnInit {
     });
     
     this.loadResults();
+  }
+  
+  /**
+   * Toggle between card and list view
+   */
+  toggleViewMode(): void {
+    this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
   }
 
   navigateToDetail(id:number, editoraId: number, serie: Serie): void {

@@ -6,11 +6,12 @@ import { PublisherService } from '../../../core/services/publisher.service';
 import { FormsModule } from '@angular/forms';
 import { Serie } from '../../../shared/models/serie';
 import { Pagination } from '../../../shared/models/pagination';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-publisher-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, MatProgressSpinnerModule],
   templateUrl: './publisher-page.component.html',
   styleUrl: './publisher-page.component.scss'
 })

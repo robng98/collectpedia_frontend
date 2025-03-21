@@ -1,10 +1,9 @@
 <div class="publisher-container">
   <h1 class="main-title">Editoras</h1>
 
-  <!-- Loading indicator -->
-  <div *ngIf="loading" class="loading-spinner">
-    <div class="spinner"></div>
-    <p>Carregando...</p>
+  <!-- Loading indicator - using the project's centralized spinner style -->
+  <div *ngIf="loading" class="centralized-spinner-container">
+    <mat-spinner diameter="60" color="accent"></mat-spinner>
   </div>
 
   <!-- Error message -->
@@ -22,6 +21,12 @@
             class="publisher-card" 
             [class.active]="selectedPublisher?.id === publisher.id"
             (click)="selectPublisher(publisher.id)">
+          <div class="publisher-logo-container">
+            <img *ngIf="publisher.logo" [src]="publisher.logo" alt="{{ publisher.nome }} logo" class="publisher-logo">
+            <div *ngIf="!publisher.logo" class="publisher-logo-placeholder">
+              <span>{{ publisher.nome.charAt(0) }}</span>
+            </div>
+          </div>
           <div class="publisher-info">
             <h3>{{ publisher.nome }}</h3>
             <p>{{ publisher.totalSeries }} séries</p>
@@ -38,7 +43,15 @@
     <!-- Selected publisher details -->
     <div *ngIf="selectedPublisher" class="selected-publisher">
       <div class="publisher-header">
-        <h2>{{ selectedPublisher.nome }}</h2>
+        <div class="publisher-header-content">
+          <div class="selected-publisher-logo-container">
+            <img *ngIf="selectedPublisher.logo" [src]="selectedPublisher.logo" alt="{{ selectedPublisher.nome }} logo" class="selected-publisher-logo">
+            <div *ngIf="!selectedPublisher.logo" class="selected-publisher-logo-placeholder">
+              <span>{{ selectedPublisher.nome.charAt(0) }}</span>
+            </div>
+          </div>
+          <h2>{{ selectedPublisher.nome }}</h2>
+        </div>
         <button class="back-button" (click)="clearSelection()">Voltar para lista</button>
       </div>
 
@@ -66,6 +79,4 @@
       </div>
     </div>
   </div>
-
-  <!-- Add pagination controls if needed in the future -->
 </div>

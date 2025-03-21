@@ -8,16 +8,30 @@
         <div class="layout-content-container">
             <div class="comics-header">
                 <div class="comics-info">
-                    <h1 class="page-title">Todos os Comics</h1>
-                    <p class="comics-results-count">
+                    <h1 class="page-title">{{ pageTitle }}</h1>
+                    <p class="comics-results-count ml-5">
                         Mostrando {{(currentPage-1) * pageSize + 1}} -
                         {{calculateUpperBound()}}
                         de {{totalItems}} títulos
                     </p>
                 </div>
 
-                <!-- Sorting and View Controls -->
+                <!-- Content Type and Sorting Controls -->
                 <div class="flex items-center">
+                    <!-- Content Type Selector -->
+                    <div class="content-type-selector flex gap-4 mr-6">
+                        <button class="content-type-button px-3 py-1 rounded"
+                            [class.active]="contentType === 'comics'"
+                            (click)="navigateToType('comics')">
+                            Comics
+                        </button>
+                        <button class="content-type-button px-3 py-1 rounded"
+                            [class.active]="contentType === 'mangas'"
+                            (click)="navigateToType('mangas')">
+                            Mangá
+                        </button>
+                    </div>
+
                     <!-- Sorting Controls -->
                     <div class="sorting-controls flex gap-4 items-center">
                         <div class="sort-options flex gap-2">
@@ -41,7 +55,7 @@
                     </div>
 
                     <!-- View Toggle Button -->
-                    <div class="view-toggle ml-20">
+                    <div class="view-toggle ml-4">
                         <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
                             (click)="toggleViewMode()">
                             <span *ngIf="viewMode === 'card'">
@@ -56,7 +70,7 @@
             </div>
 
             <!-- Card View -->
-            <div class="comics-grid mx-20" *ngIf="viewMode === 'card'">
+            <div class="comics-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
                 @for (serie of comicSeries; track $index) {
                 @if (firstCovers.length === comicSeries.length) {
                 <div class="comic-card w-4/5" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
@@ -65,7 +79,16 @@
                     </div>
                     <div class="comic-info">
                         <h3 class="comic-title">{{serie.nomeInter}}</h3>
-                        <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
+                        @if (contentType === 'comics') {
+                            <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
+                        }
+                        <!-- Manga-specific information -->
+                        @if (contentType === 'mangas' && serie.mangaStats) {
+                        <div class="manga-info">
+                            <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
+                            <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
+                        </div>
+                        }
                         <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
                     </div>
                 </div>
@@ -89,6 +112,10 @@
                         <div class="comic-list-content">
                             <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
                             <div class="comic-list-details pt-2">
+                                <!-- Manga-specific information -->
+                                @if (contentType === 'mangas' && serie.mangaStats) {
+                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} - 
+                                }
                                 <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span>
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -28,8 +28,13 @@ export class ComicsMangaPageComponent implements OnInit {
   private serieService = inject(SerieService);
   private edicaoService = inject(EdicaoService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   
   private Math = Math;
+
+  // Content type
+  contentType: string = 'comics';
+  pageTitle: string = 'Todos os Comics';
 
   // Series data
   comicSeries: Serie[] = [];
@@ -42,7 +47,7 @@ export class ComicsMangaPageComponent implements OnInit {
   totalItems = 0;
   currentPage = 1;
   pageSize = 5;
-  pageSizeOptions = [2, 24, 48, 96];
+  pageSizeOptions = [5, 10, 20, 50];
   isLoading = false;
 
   // Temporary storage for newly loaded results
@@ -54,14 +59,30 @@ export class ComicsMangaPageComponent implements OnInit {
   viewMode: 'card' | 'list' = 'card';
 
   ngOnInit(): void {
-    // Initialize searchParams for comics type
-    this.searchParams.type = 'comics';
-    this.searchParams.pageNumber = 1;
-    this.searchParams.pageSize = this.pageSize;
-    this.searchParams.sortBy = 'nomeInter';
-    this.searchParams.isDescending = false;
-    
-    this.loadComicSeries();
+    // Subscribe to route parameters to get the content type
+    this.route.params.subscribe(params => {
+      this.contentType = params['type'];
+      
+      // Set page title based on content type
+      if (this.contentType === 'mangas') {
+        this.pageTitle = 'Todos os Mangás';
+      } else {
+        // Default to comics
+        this.contentType = 'comics';
+        this.pageTitle = 'Todos os Comics';
+      }
+
+      // Initialize searchParams for the selected type
+      this.searchParams.type = this.contentType;
+      this.searchParams.pageNumber = 1;
+      this.searchParams.pageSize = this.pageSize;
+      this.searchParams.sortBy = 'nomeInter';
+      this.searchParams.isDescending = false;
+      this.currentPage = 1;
+      
+      // Load content for the selected type
+      this.loadComicSeries();
+    });
   }
 
   calculateUpperBound(): number {
@@ -166,5 +187,12 @@ export class ComicsMangaPageComponent implements OnInit {
    */
   toggleViewMode(): void {
     this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
+  }
+
+  /**
+   * Navigate to different content type
+   */
+  navigateToType(type: string): void {
+    this.router.navigate(['/summary', type]);
   }
 }

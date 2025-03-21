@@ -59,7 +59,6 @@
     grid-template-columns: repeat(5, 1fr); // Exactly 5 columns
     column-gap: 0px; // Horizontal gap remains the same
     row-gap: 2rem; // Vertical gap is 2x larger
-    padding: 0 6px;
 }
 
 // Comic card
@@ -126,6 +125,27 @@
             text-transform: capitalize;
             margin-top: auto;
         }
+
+        // Manga-specific styles
+        .manga-info {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 4px;
+            
+            .manga-jp-title {
+                color: #a5b4fc; // Light indigo color for Japanese title
+                font-size: 11px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            
+            .manga-demographics {
+                color: #93c5fd; // Light blue color for demographics
+                font-size: 10px;
+                margin-bottom: 2px;
+            }
+        }
     }
 }
 
@@ -173,6 +193,23 @@
     &.active {
         background-color: #344887;
         color: white;
+    }
+}
+
+// Content Type Selector
+.content-type-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #C4C4C4;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    
+    &.active {
+        background-color: #1e3a8a;
+        color: white;
+    }
+    
+    &:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.2);
     }
 }
 
@@ -229,7 +266,6 @@
     &:hover {
         transition: 0.3s;
         background-color: #344887;
-        transform: scale(1.02);
         cursor: pointer;
     }
     

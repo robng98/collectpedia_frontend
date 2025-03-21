@@ -1,7 +1,7 @@
 <div class="layout-container flex h-full grow flex-col">
     <!-- Loading Indicator -->
     <div *ngIf="isLoading" class="centralized-spinner-container">
-        <mat-spinner diameter="60" color="accent"></mat-spinner>
+        <mat-spinner diameter="60" color="light"></mat-spinner>
     </div>
 
     <div class="content-wrapper flex-grow">
@@ -17,6 +17,19 @@
 
                 <!-- Controls Section with Sorting and View Toggle -->
                 <div class="flex items-center">
+                    <!-- View Toggle Button -->
+                    <div class="view-toggle mr-4">
+                        <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
+                            (click)="toggleViewMode()">
+                            <span *ngIf="viewMode === 'list'">
+                                Cards
+                            </span>
+                            <span *ngIf="viewMode === 'card'">
+                                Lista
+                            </span>
+                        </button>
+                    </div>
+
                     <!-- Sorting Controls -->
                     <div class="sorting-controls flex gap-4 items-center">
                         <div class="sort-label text-white">Ordenar por:</div>
@@ -40,18 +53,6 @@
                         </div>
                     </div>
 
-                    <!-- View Toggle Button -->
-                    <div class="view-toggle ml-4">
-                        <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
-                            (click)="toggleViewMode()">
-                            <span *ngIf="viewMode === 'list'">
-                                Cards
-                            </span>
-                            <span *ngIf="viewMode === 'card'">
-                                Lista
-                            </span>
-                        </button>
-                    </div>
                 </div>
             </div>
 

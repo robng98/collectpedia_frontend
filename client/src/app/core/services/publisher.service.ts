@@ -17,17 +17,20 @@ export class PublisherService {
     return this.http.get<Publisher>(this.baseUrl + 'editora/' + publisherId);
   }
   
-  getPublishers(): Observable<Pagination<Publisher>> {
-    return this.http.get<Pagination<Publisher>>(this.baseUrl + 'editora');
+  getPublishers(page: number = 1, pageSize: number = 20): Observable<Pagination<Publisher>> {
+    const params = new HttpParams()
+      .set('PageNumber', page.toString())
+      .set('PageSize', pageSize.toString());
+    
+    return this.http.get<Pagination<Publisher>>(this.baseUrl + 'editora', { params });
   }
 
-  getPublishersByName(name: string): Observable<Pagination<Publisher>> {
-    const params = new HttpParams().set('name', name);
-    return this.http.get<Pagination<Publisher>>(this.baseUrl + 'editora/search', { params });
-  }
-
-  getPublisherSeries(publisherId: number): Observable<Pagination<Serie>> {
-    const params = new HttpParams().set('editoraId', publisherId)
-    return this.http.get<Pagination<Serie>>(this.baseUrl + 'serie', {params});
+  getPublisherSeries(publisherId: number, page: number = 1, pageSize: number = 20): Observable<Pagination<Serie>> {
+    const params = new HttpParams()
+      .set('editoraId', publisherId.toString())
+      .set('PageNumber', page.toString())
+      .set('PageSize', pageSize.toString());
+    
+    return this.http.get<Pagination<Serie>>(this.baseUrl + 'serie', { params });
   }
 }

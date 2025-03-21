@@ -89,7 +89,18 @@
                             <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
                         </div>
                         }
-                        <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
+                        <div class="comic-details">
+                            <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
+                            <p class="comic-issues">
+                                {{serie.numEdicoes}} 
+                                @if (contentType === 'mangas' && serie.mangaStats) {
+                                    tankos
+                                }
+                                @else {
+                                    edições
+                                }
+                            </p>
+                        </div>
                     </div>
                 </div>
                 }
@@ -116,7 +127,15 @@
                                 @if (contentType === 'mangas' && serie.mangaStats) {
                                 {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} - 
                                 }
-                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span>
+                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> - 
+                                <span class="comic-list-issues">{{serie.numEdicoes}} 
+                                    @if (contentType === 'mangas' && serie.mangaStats) {
+                                        tankos
+                                    }
+                                    @else {
+                                        edições
+                                    }
+                                </span>
                             </div>
                         </div>
                     </div>

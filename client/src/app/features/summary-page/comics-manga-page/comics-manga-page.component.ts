@@ -34,7 +34,7 @@ export class ComicsMangaPageComponent implements OnInit {
 
   // Content type
   contentType: string = 'comics';
-  pageTitle: string = 'Todos os Comics';
+  pageTitle: string = 'Acervo de Comics';
 
   // Series data
   comicSeries: Serie[] = [];
@@ -65,11 +65,11 @@ export class ComicsMangaPageComponent implements OnInit {
       
       // Set page title based on content type
       if (this.contentType === 'mangas') {
-        this.pageTitle = 'Todos os Mangás';
+        this.pageTitle = 'Acervo de Mangás';
       } else {
         // Default to comics
         this.contentType = 'comics';
-        this.pageTitle = 'Todos os Comics';
+        this.pageTitle = 'Acervo de Comics';
       }
 
       // Initialize searchParams for the selected type

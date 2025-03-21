@@ -1,168 +1,106 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { Publisher } from '../../../shared/models/publisher';
-import { PublisherService } from '../../../core/services/publisher.service';
-import { FormsModule } from '@angular/forms';
-import { Serie } from '../../../shared/models/serie';
-import { Pagination } from '../../../shared/models/pagination';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { PublisherService } from '../../../core/services/publisher.service';
+import { Publisher } from '../../../shared/models/publisher';
+import { SearchParams } from '../../../shared/models/searchParams';
 
 @Component({
   selector: 'app-publisher-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, MatProgressSpinnerModule, MatPaginatorModule],
+  imports: [
+    CommonModule, 
+    MatPaginatorModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './publisher-page.component.html',
   styleUrl: './publisher-page.component.scss'
 })
 export class PublisherPageComponent implements OnInit {
-  // Add Math utility for templates
-  Math = Math;
+  private publisherService = inject(PublisherService);
+  private router = inject(Router);
   
+  // Add Math for pagination calculations
+  private Math = Math;
+  
+  // Publishers data
   publishers: Publisher[] = [];
-  selectedPublisher: Publisher | null = null;
-  series: Serie[] = [];
-  loading = false;
-  loadingSeries = false;
-  error = '';
   
-  // View mode state similar to comics-manga-page
-  viewMode: 'card' | 'list' = 'card';
+  // Search params (for sorting)
+  searchParams = new SearchParams();
   
-  // Publishers pagination
-  totalPublishers = 0;
-  totalPages = 0;
-  pageSize = 12; // Reasonable number for cards display
+  // Pagination properties
+  totalItems = 0;
   currentPage = 1;
-  pageSizeOptions = [12, 24, 48, 96];
-  
-  // Series pagination
-  seriesPageSize = 20;
-  seriesCurrentPage = 1;
-  seriesTotalItems = 0;
-  seriesPageSizeOptions = [20, 40, 60, 100];
+  pageSize = 10;
+  pageSizeOptions = [10, 25, 50];
+  isLoading = false;
 
-  constructor(
-    private publisherService: PublisherService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  // View mode state
+  viewMode: 'card' | 'list' = 'card';
 
   ngOnInit(): void {
-    // Read query params for pagination state
-    this.route.queryParams.subscribe(params => {
-      // Get pagination parameters from URL if available
-      this.currentPage = params['page'] ? Number(params['page']) : 1;
-      this.pageSize = params['pageSize'] ? Number(params['pageSize']) : 12;
-      
-      // Check if we have a publisher ID in the route params
-      this.route.paramMap.subscribe(params => {
-        const publisherId = params.get('id');
-        if (publisherId) {
-          // If we're on the detail route, load the publisher details
-          this.selectPublisher(Number(publisherId), false);
-        } else {
-          // Otherwise load the publishers list with pagination
-          this.loadPublishers(this.currentPage);
-        }
-      });
-    });
+    // Initialize search parameters
+    this.searchParams.pageNumber = this.currentPage;
+    this.searchParams.pageSize = this.pageSize;
+    this.searchParams.sortBy = 'nome'; // Default sort by publisher name
+    this.searchParams.isDescending = false;
+    
+    // Load all publishers
+    this.loadPublishers();
   }
-
-  loadPublishers(page: number = 1): void {
-    this.loading = true;
-    this.currentPage = page;
+  
+  loadPublishers() {
+    this.isLoading = true;
     
-    // Update URL with current pagination state
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        page: this.currentPage,
-        pageSize: this.pageSize
-      },
-      queryParamsHandling: 'merge'
-    });
-    
-    this.publisherService.getPublishers(page, this.pageSize).subscribe({
-      next: (response: Pagination<Publisher>) => {
+    this.publisherService.getPublishers(this.currentPage, this.pageSize).subscribe({
+      next: (response) => {
         this.publishers = response.data;
-        this.totalPublishers = response.totalCount;
-        this.totalPages = response.totalPages;
-        this.loading = false;
+        this.totalItems = response.totalCount;
+        this.isLoading = false;
       },
       error: (error) => {
-        this.error = 'Failed to load publishers';
-        this.loading = false;
         console.error('Error loading publishers:', error);
+        this.isLoading = false;
       }
     });
   }
 
-  onPageChange(event: PageEvent): void {
-    const page = event.pageIndex + 1;
+  /**
+   * Calculates the upper bound for pagination display
+   */
+  calculateUpperBound(): number {
+    return Math.min((this.currentPage - 1) * this.pageSize + this.publishers.length, this.totalItems);
+  }
+
+  /**
+   * Handles page change events from the paginator
+   */
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    this.loadPublishers(page);
+    
+    this.searchParams.pageNumber = this.currentPage;
+    this.searchParams.pageSize = this.pageSize;
+    
+    this.loadPublishers();
   }
 
-  onSeriesPageChange(event: PageEvent): void {
-    const page = event.pageIndex + 1;
-    this.seriesPageSize = event.pageSize;
-    if (this.selectedPublisher) {
-      this.loadPublisherSeries(this.selectedPublisher.id, page);
-    }
+  /**
+   * Handles sorting change
+   */
+  updateSorting(sortBy: string, isDescending: boolean) {
+    this.searchParams.sortBy = sortBy;
+    this.searchParams.isDescending = isDescending;
+    this.currentPage = 1;
+    this.searchParams.pageNumber = 1;
+    
+    this.loadPublishers();
   }
-
-  selectPublisher(id: number, navigate: boolean = true): void {
-    this.loading = true;
-    
-    // Update URL to reflect selected publisher if needed
-    if (navigate) {
-      this.router.navigate(['/publishers', id]);
-    }
-    
-    this.publisherService.getPublisherById(id).subscribe({
-      next: (publisher) => {
-        this.selectedPublisher = publisher;
-        this.loadPublisherSeries(id);
-        this.loading = false;
-      },
-      error: (error) => {
-        this.error = 'Failed to load publisher details';
-        this.loading = false;
-        console.error('Error loading publisher details:', error);
-      }
-    });
-  }
-
-  loadPublisherSeries(publisherId: number, page: number = 1): void {
-    this.loadingSeries = true;
-    this.seriesCurrentPage = page;
-    
-    // Update URL with current series pagination state
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        seriesPage: page,
-        seriesPageSize: this.seriesPageSize
-      },
-      queryParamsHandling: 'merge'
-    });
-    
-    this.publisherService.getPublisherSeries(publisherId, page, this.seriesPageSize).subscribe({
-      next: (response: Pagination<Serie>) => {
-        this.series = response.data;
-        this.seriesTotalItems = response.totalCount;
-        this.loadingSeries = false;
-      },
-      error: (error) => {
-        this.error = 'Failed to load publisher series';
-        this.loadingSeries = false;
-        console.error('Error loading publisher series:', error);
-      }
-    });
-  }
-
+  
   /**
    * Toggle between card and list view
    */
@@ -170,15 +108,10 @@ export class PublisherPageComponent implements OnInit {
     this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
   }
 
-  clearSelection(): void {
-    this.selectedPublisher = null;
-    this.series = [];
-    // Navigate back to the publishers list, preserving pagination
-    this.router.navigate(['/publishers'], {
-      queryParams: {
-        page: this.currentPage,
-        pageSize: this.pageSize
-      }
-    });
+  /**
+   * Navigate to publisher detail page to show their series
+   */
+  navigateToPublisher(id: number): void {
+    this.router.navigate(['/summary/publishers', id]);
   }
 }

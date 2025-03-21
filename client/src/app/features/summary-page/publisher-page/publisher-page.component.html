@@ -1,23 +1,23 @@
 <div class="layout-container flex h-full grow flex-col">
     <!-- Loading Indicator -->
-    <div *ngIf="loading && !selectedPublisher" class="centralized-spinner-container">
+    <div *ngIf="isLoading" class="centralized-spinner-container">
         <mat-spinner diameter="60" color="light"></mat-spinner>
     </div>
 
     <div class="content-wrapper flex-grow">
         <div class="layout-content-container">
-            <!-- Header Section -->
-            <div class="search-header">
-                <div class="search-info">
-                    <p class="search-title">Editoras</p>
-                    <p class="search-results-count" *ngIf="totalPublishers > 0">
-                        Mostrando {{(currentPage-1) * pageSize + 1}} - {{Math.min(currentPage * pageSize, totalPublishers)}}
-                        de {{totalPublishers}} editoras
+            <div class="publisher-header">
+                <div class="publisher-info">
+                    <h1 class="publisher-title">Editoras</h1>
+                    <p class="publisher-results-count">
+                        Mostrando {{(currentPage-1) * pageSize + 1}} -
+                        {{calculateUpperBound()}}
+                        de {{totalItems}} editoras
                     </p>
                 </div>
 
-                <!-- Controls Section with View Toggle -->
-                <div class="flex items-center" *ngIf="!selectedPublisher">
+                <!-- Controls Section with Sorting and View Toggle -->
+                <div class="flex items-center">
                     <!-- View Toggle Button -->
                     <div class="view-toggle mr-4">
                         <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
@@ -30,140 +30,91 @@
                             </span>
                         </button>
                     </div>
+
+                    <!-- Sorting Controls -->
+                    <div class="sorting-controls flex gap-4 items-center">
+                        <div class="sort-label text-white">Ordenar por:</div>
+                        <div class="sort-options flex gap-2">
+                            <button class="sort-button px-3 py-1 rounded"
+                                [class.active]="searchParams.sortBy === 'nome'"
+                                (click)="updateSorting('nome', !searchParams.isDescending)">
+                                Nome
+                                <span *ngIf="searchParams.sortBy === 'nome'">
+                                    {{ searchParams.isDescending ? '↓' : '↑' }}
+                                </span>
+                            </button>
+                            <button class="sort-button px-3 py-1 rounded"
+                                [class.active]="searchParams.sortBy === 'totalSeries'"
+                                (click)="updateSorting('totalSeries', !searchParams.isDescending)">
+                                Total de Séries
+                                <span *ngIf="searchParams.sortBy === 'totalSeries'">
+                                    {{ searchParams.isDescending ? '↓' : '↑' }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Card View -->
-            <div *ngIf="!selectedPublisher && viewMode === 'card'" class="comics-grid mx-20 mb-[20rem]">
-                <div *ngFor="let publisher of publishers" 
-                    class="comic-card"
-                    (click)="selectPublisher(publisher.id)">
-                    <div class="publisher-cover">
-                        <div class="publisher-logo-container">
-                            <img *ngIf="publisher.logo" [src]="publisher.logo" alt="{{ publisher.nome }} logo" class="publisher-logo">
-                            <div *ngIf="!publisher.logo" class="publisher-logo-placeholder">
-                                {{ publisher.nome.charAt(0) }}
-                            </div>
+            <div class="publishers-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
+                @for (publisher of publishers; track publisher.id) {
+                <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">
+                    <div class="publisher-logo">
+                        <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'" class="logo-image rounded-md">
+                        <div *ngIf="!publisher.logo" class="logo-placeholder">
+                            {{publisher.nome.charAt(0)}}
                         </div>
-                        <div class="comic-overlay"></div>
                     </div>
-                    <div class="comic-info">
-                        <h3 class="comic-title">{{ publisher.nome }}</h3>
-                        <div class="comic-details">
-                            <p class="comic-status">{{ publisher.anoCriacao || 'Sem data' }}</p>
-                            <p class="comic-issues">{{ publisher.totalSeries }} séries</p>
+                    <div class="publisher-info-card">
+                        <h3 class="publisher-name">{{publisher.nome}}</h3>
+                        <div class="publisher-details">
+                            <p class="publisher-year">Desde {{publisher.anoCriacao | slice:0:4}}</p>
+                            <p class="publisher-series-count">{{publisher.totalSeries}} séries</p>
                         </div>
                     </div>
                 </div>
+                }
 
                 <!-- Empty State -->
-                <div *ngIf="publishers.length === 0 && !loading" class="empty-state">
+                <div *ngIf="publishers.length === 0 && !isLoading" class="empty-state">
                     <p>Nenhuma editora encontrada.</p>
                 </div>
             </div>
 
             <!-- List View -->
-            <div *ngIf="!selectedPublisher && viewMode === 'list'" class="comics-list-container">
-                <div class="comics-list">
-                    <div *ngFor="let publisher of publishers" 
-                        class="comic-list-item"
-                        (click)="selectPublisher(publisher.id)">
+            <div class="publishers-list-container" *ngIf="viewMode === 'list'">
+                <div class="publishers-list">
+                    @for (publisher of publishers; track publisher.id) {
+                    <div class="publisher-list-item" (click)="navigateToPublisher(publisher.id)">
                         <div class="publisher-list-logo">
-                            <img *ngIf="publisher.logo" [src]="publisher.logo" alt="{{ publisher.nome }} logo" class="publisher-list-image">
-                            <div *ngIf="!publisher.logo" class="publisher-list-placeholder">
-                                {{ publisher.nome.charAt(0) }}
+                            <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'" class="logo-image-list">
+                            <div *ngIf="!publisher.logo" class="logo-placeholder-list">
+                                {{publisher.nome.charAt(0)}}
                             </div>
                         </div>
-                        <div class="comic-list-content">
-                            <p class="comic-list-title">{{ publisher.nome }}</p>
-                            <div class="comic-list-details">
-                                <span *ngIf="publisher.anoCriacao">Criada em {{ publisher.anoCriacao }}</span>
-                                <span *ngIf="!publisher.anoCriacao">Sem data de criação</span> - 
-                                <span class="comic-list-issues">{{ publisher.totalSeries }} séries</span>
+                        <div class="publisher-list-content">
+                            <p class="publisher-list-name">{{publisher.nome}}</p>
+                            <div class="publisher-list-details">
+                                <span>Fundação: {{publisher.anoCriacao | slice:0:4}}</span> - 
+                                <span class="publisher-list-series">{{publisher.totalSeries}} séries publicadas</span>
                             </div>
                         </div>
                     </div>
+                    }
 
                     <!-- Empty State -->
-                    <div *ngIf="publishers.length === 0 && !loading" class="empty-state">
+                    <div *ngIf="publishers.length === 0 && !isLoading" class="empty-state">
                         <p>Nenhuma editora encontrada.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Pagination Controls for Publishers -->
-            <mat-paginator *ngIf="!selectedPublisher && totalPublishers > pageSize" 
-                [length]="totalPublishers" 
-                [pageSize]="pageSize"
-                [pageSizeOptions]="pageSizeOptions"
-                [pageIndex]="currentPage - 1" 
-                (page)="onPageChange($event)"
+            <!-- Pagination Controls -->
+            <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
                 class="comics-paginator">
             </mat-paginator>
-
-            <!-- Selected Publisher Detail View -->
-            <div *ngIf="selectedPublisher" class="publisher-detail-view">
-                <div class="search-header">
-                    <div class="search-info">
-                        <p class="search-title">{{ selectedPublisher.nome }}</p>
-                        <p class="search-results-count">
-                            <span *ngIf="selectedPublisher.anoCriacao">Criada em {{ selectedPublisher.anoCriacao }}</span>
-                            <span *ngIf="!selectedPublisher.anoCriacao">Informações não disponíveis</span>
-                        </p>
-                    </div>
-                    <button class="view-toggle-button px-4 py-2 rounded" (click)="clearSelection()">
-                        Voltar para lista
-                    </button>
-                </div>
-
-                <!-- Series Section -->
-                <div class="series-section">
-                    <!-- Loading spinner for series -->
-                    <div *ngIf="loadingSeries" class="centralized-spinner-container">
-                        <mat-spinner diameter="40" color="light"></mat-spinner>
-                    </div>
-
-                    <div class="search-header mb-4">
-                        <div class="search-info">
-                            <p class="search-title text-xl">Séries desta editora</p>
-                            <p class="search-results-count">
-                                Mostrando {{(seriesCurrentPage-1) * seriesPageSize + 1}} - {{Math.min(seriesCurrentPage * seriesPageSize, seriesTotalItems)}}
-                                de {{seriesTotalItems}} séries
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div *ngIf="!loadingSeries && series && series.length > 0" class="comics-grid mx-20 mb-8">
-                        <div *ngFor="let serie of series" class="comic-card">
-                            <div class="comic-info">
-                                <a [routerLink]="['/serie', serie.id]" class="serie-link">
-                                    <h3 class="comic-title">{{ serie.nomeInter }}</h3>
-                                    <p class="comic-volume">Vol. {{ serie.cicloNum || 'N/A' }}</p>
-                                    <div class="comic-details">
-                                        <p class="comic-status">{{ serie.estadoPubAtual || 'N/A' }}</p>
-                                        <p class="comic-issues">{{ serie.numEdicoes }} edições</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Series pagination -->
-                    <mat-paginator 
-                        *ngIf="seriesTotalItems > seriesPageSize"
-                        [length]="seriesTotalItems" 
-                        [pageSize]="seriesPageSize" 
-                        [pageIndex]="seriesCurrentPage - 1"
-                        [pageSizeOptions]="seriesPageSizeOptions" 
-                        (page)="onSeriesPageChange($event)"
-                        class="comics-paginator">
-                    </mat-paginator>
-                    
-                    <p *ngIf="!loadingSeries && (!series || series.length === 0)" class="empty-state">
-                        Esta editora não possui séries cadastradas.
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 </div>

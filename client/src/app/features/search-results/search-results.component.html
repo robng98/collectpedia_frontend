@@ -56,7 +56,7 @@
             </div>
 
             <!-- Card View (Same as comics-manga-page) -->
-            <div class="comics-grid mx-10" *ngIf="viewMode === 'card'">
+            <div class="comics-grid mx-10 mb-[20rem]" *ngIf="viewMode === 'card'">
                 @for (result of searchResults; track $index) {
                 @if (firstCovers.length === searchResults.length) {
                 <div class="comic-card w-4/5" (click)="navigateToDetail(result.id, result.editoraId, result)">

@@ -17,7 +17,8 @@ export const routes: Routes = [
     {path: 'serie/:serieId', component: SerieComponent},
     {path: 'user', component: UserPageComponent},
     {path: "register-issues", component: RegisterIssuesComponent},
-    {path: "summary/:type", component: ComicsMangaPageComponent},
-    {path: "publishers", component: PublisherPageComponent},
+    {path: "summary/series/:type", component: ComicsMangaPageComponent},
+    {path: "summary/publishers", component: PublisherPageComponent},
+    {path: "summary/publishers/:id", component: PublisherPageComponent}, // Add route for publisher details
     {path: '**', redirectTo: '', pathMatch: 'full'},
 ];

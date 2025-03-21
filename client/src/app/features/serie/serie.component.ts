@@ -25,6 +25,8 @@ import { ContribuidorService } from '../../core/services/contribuidor.service';
 import { Contribuicao } from '../../shared/models/contribuicao';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-serie',
@@ -40,6 +42,7 @@ import { MatChipsModule } from '@angular/material/chips';
     FormsModule,
     MatFormFieldModule,
     CommonModule,
+    MatProgressSpinnerModule,
     MatChipsModule
   ],
   templateUrl: './serie.component.html',
@@ -53,6 +56,11 @@ export class SerieComponent implements OnInit {
   private tankobonService = inject(TankobonService);
   private contribuicoesService = inject(ContribuidorService);
   params = new HttpParams();
+  
+  // Add isLoading property
+  isLoading = false;
+  // Add separate loading state for issue details
+  isLoadingDetails = false;
 
   serieIdParam = 0;
   editoraIdParam = 0;
@@ -135,13 +143,17 @@ export class SerieComponent implements OnInit {
     this.pageNumber = 1;
     this.loadData();
 
+
+    this.isLoading = true;
     this.publisherService.getPublisherById(this.editoraIdParam).subscribe({
       next: (response) => {
         // console.log(response);
         this.currentEditora = response;
+        this.isLoading = false;
       },
       error: (error) => {
         console.log(error);
+        this.isLoading = false;
       }
     });
 
@@ -171,6 +183,7 @@ export class SerieComponent implements OnInit {
   }
 
   loadData() {
+    this.isLoading = true;
     this.params = this.params.set('PageSize', this.pageSize.toString());
     this.params = this.params.set('PageNumber', this.pageNumber.toString());
     this.params = this.params.set('SortBy', 'id');
@@ -189,11 +202,12 @@ export class SerieComponent implements OnInit {
         }
 
         this.initFormControls();
-
+        this.isLoading = false;
       },
-      error: (error) =>
-        console.log(error)
-      ,
+      error: (error) => {
+        console.log(error);
+        this.isLoading = false;
+      },
     });
 
   }
@@ -203,12 +217,20 @@ export class SerieComponent implements OnInit {
   }
 
   onEdicaoChange(edicaoId: number) {
+    // Use isLoadingDetails instead of isLoading for issue-specific data
+    this.isLoadingDetails = true;
+    
+    // Add delay to make spinner visible for at least 1500ms
+    const loadingTimer = timer(1500);
+    
     this.edicoesService.getEdicaoById(edicaoId).subscribe({
       next: (response) => {
         this.currentEdicao = response;
+        // Don't set isLoadingDetails to false yet, wait for timer
       },
       error: (error) => {
         console.log(error);
+        this.isLoadingDetails = false;
       }
     });
 
@@ -217,21 +239,29 @@ export class SerieComponent implements OnInit {
     if (this.currentSerie.mangaStats) {
       this.onTankobonChange(edicaoId);
     }
+    
+    // Make sure spinner shows for at least 1500ms
+    loadingTimer.subscribe(() => {
+      this.isLoadingDetails = false;
+    });
   }
 
   onTankobonChange(edicaoId: number) {
+    // Don't set loading state here since onEdicaoChange already did
     this.tankobonService.getTankobonByEdicaoId(edicaoId).subscribe({
       next: (response) => {
         this.currentTankobon = response;
-        // console.log(response);
+        // Don't affect isLoadingDetails here
       },
       error: (error) => {
         console.log(error);
+        // Don't affect isLoadingDetails here
       }
     });
   }
 
   setCurrentContribuicoes(edicaoId: number) {
+    // Don't set loading state here since onEdicaoChange already did
     this.contribuicoesService.getContribuicoesByEdicaoId(edicaoId, {
       pageNumber: this.contribuicoesPage,
       pageSize: this.contribuicoesPageSize,
@@ -241,11 +271,11 @@ export class SerieComponent implements OnInit {
       next: (response) => {
         this.currentContribuicoes = response.data;
         this.contribuicoesTotalItems = response.totalCount;
-        // We don't need to sort here anymore since the backend handles sorting
-        // this.currentContribuicoes = response.sort((a, b) => a.funcao.localeCompare(b.funcao));
+        // Don't affect isLoadingDetails here
       },
       error: (error) => {
         console.log(error);
+        // Don't affect isLoadingDetails here
       }
     });
   }

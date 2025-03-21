@@ -49,7 +49,7 @@
           <swiper-slide class="flex ml-6 justify-center" *ngFor="let issue of lastAddedIssues; let i = index"
             [attr.data-swiper-slide-index]="i">
             <div class="issue-card">
-              <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'>
+              <div class="issue-image hover:cursor-pointer" style='background-image: url("{{issue.fotoCapa}}");' (click)="goToSerieByIssue(issue.serieId)">
               </div>
               <!-- <div class="text-center">
                 <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>

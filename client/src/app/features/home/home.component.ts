@@ -49,7 +49,8 @@ import {
 })
 export class HomeComponent implements OnInit {
   private lastAddedIssuesService = inject(LastAddedIssuesService);
-  private router = inject(Router);
+    private serieService = inject(SerieService);
+    private router = inject(Router);
   title = 'home';
   lastAddedIssues: Edicao[] = [];
   searchParams = new SearchParams();
@@ -107,6 +108,24 @@ export class HomeComponent implements OnInit {
   // Add method to check if search string is valid (not empty or just spaces)
   isValidSearch(searchString: string | undefined): boolean {
     return !!searchString && searchString.trim().length > 0;
+  }
+
+  goToSerieByIssue(serieId: number, ) {
+    this.serieService.getSerieById(serieId).subscribe({
+      next: (response) => {
+        this.router.navigate(['/serie', serieId], {
+          state: {
+            id: serieId,
+            serie: response,
+            editoraId: response.editoraId
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error fetching serie:', error);
+      }
+    });
+    
   }
 
 }

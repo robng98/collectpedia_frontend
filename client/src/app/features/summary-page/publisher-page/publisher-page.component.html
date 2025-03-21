@@ -1,0 +1,71 @@
+<div class="publisher-container">
+  <h1 class="main-title">Editoras</h1>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Carregando...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button (click)="loadPublishers()">Tentar novamente</button>
+  </div>
+
+  <div class="content-container">
+    <!-- Publishers list -->
+    <div class="publishers-list" *ngIf="!loading && publishers.length > 0">
+      <h2>Todas as Editoras <small>({{ totalPublishers }} no total)</small></h2>
+      <div class="publishers-grid">
+        <div *ngFor="let publisher of publishers" 
+            class="publisher-card" 
+            [class.active]="selectedPublisher?.id === publisher.id"
+            (click)="selectPublisher(publisher.id)">
+          <div class="publisher-info">
+            <h3>{{ publisher.nome }}</h3>
+            <p>{{ publisher.totalSeries }} séries</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No publishers message -->
+    <div *ngIf="!loading && publishers.length === 0 && !error" class="no-results">
+      <p>Nenhuma editora encontrada.</p>
+    </div>
+
+    <!-- Selected publisher details -->
+    <div *ngIf="selectedPublisher" class="selected-publisher">
+      <div class="publisher-header">
+        <h2>{{ selectedPublisher.nome }}</h2>
+        <button class="back-button" (click)="clearSelection()">Voltar para lista</button>
+      </div>
+
+      <div class="publisher-details">
+        <p *ngIf="selectedPublisher.anoCriacao">Ano de criação: {{ selectedPublisher.anoCriacao }}</p>
+        <p *ngIf="!selectedPublisher.anoCriacao">Informações não disponíveis.</p>
+      </div>
+
+      <div class="series-list">
+        <h3>Séries desta editora ({{ series.length }})</h3>
+        
+        <div *ngIf="series && series.length > 0" class="series-grid">
+          <div *ngFor="let serie of series" class="serie-card">
+            <a [routerLink]="['/serie', serie.id]" class="serie-link">
+              <h4>{{ serie.nomeInter }}</h4>
+              <p *ngIf="serie.estadoPubAtual">Status: {{ serie.estadoPubAtual }}</p>
+              <p>Edições: {{ serie.numEdicoes }}</p>
+            </a>
+          </div>
+        </div>
+        
+        <p *ngIf="!series || series.length === 0" class="no-series">
+          Esta editora não possui séries cadastradas.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add pagination controls if needed in the future -->
+</div>

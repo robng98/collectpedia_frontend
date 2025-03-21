@@ -7,6 +7,7 @@ import { RegisterComponent } from './features/account/register/register.componen
 import { UserPageComponent } from './features/user-page/user-page.component';
 import { RegisterIssuesComponent } from './features/register-issues/register-issues.component';
 import { ComicsMangaPageComponent } from './features/summary-page/comics-manga-page/comics-manga-page.component';
+import { PublisherPageComponent } from './features/summary-page/publisher-page/publisher-page.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -17,5 +18,6 @@ export const routes: Routes = [
     {path: 'user', component: UserPageComponent},
     {path: "register-issues", component: RegisterIssuesComponent},
     {path: "summary/:type", component: ComicsMangaPageComponent},
+    {path: "publishers", component: PublisherPageComponent},
     {path: '**', redirectTo: '', pathMatch: 'full'},
 ];

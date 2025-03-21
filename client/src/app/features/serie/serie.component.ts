@@ -91,7 +91,7 @@ export class SerieComponent implements OnInit {
     nome: '',
     anoCriacao: '',
     logo: null,
-    series: []
+    totalSeries: 0
   };
   currentTankobon: Tankobon = {
     id: -1,

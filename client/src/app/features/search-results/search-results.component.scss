@@ -145,6 +145,26 @@
         margin-bottom: 2px;
       }
     }
+
+    .comic-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      
+      .comic-status {
+        color: #8E8E8E;
+        font-size: 11px;
+        text-transform: capitalize;
+        margin-top: 0;
+      }
+      
+      .comic-issues {
+        color: #8E8E8E;
+        font-size: 11px;
+        text-align: right;
+      }
+    }
   }
 }
 
@@ -248,6 +268,10 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
       margin-top: 1px; // Add small margin-top instead of using pt-2
+
+      .comic-list-issues {
+        color: #93c5fd; // Light blue to highlight
+      }
     }
   }
 }

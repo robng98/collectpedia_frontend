@@ -41,14 +41,17 @@ export class ComicsPageComponent implements OnInit {
   // Pagination properties
   totalItems = 0;
   currentPage = 1;
-  pageSize = 2;
-  pageSizeOptions = [2, 24, 48, 96];
+  pageSize = 10;
+  pageSizeOptions = [10, 24, 48, 96];
   isLoading = false;
 
   // Temporary storage for newly loaded results
   private tempSeries: Serie[] = [];
   private tempTotalItems = 0;
   private tempCovers: PrimeiraCapaSerie[] = [];
+
+  // View mode state
+  viewMode: 'card' | 'list' = 'card';
 
   ngOnInit(): void {
     // Initialize searchParams for comics type
@@ -156,5 +159,12 @@ export class ComicsPageComponent implements OnInit {
         serie: serie
       } 
     });
+  }
+
+  /**
+   * Toggle between card and list view
+   */
+  toggleViewMode(): void {
+    this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
   }
 }

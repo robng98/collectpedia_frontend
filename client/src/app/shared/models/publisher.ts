@@ -5,6 +5,5 @@ export type Publisher = {
     id: number,
     logo: string | null,
     nome: string,
-    series: Serie[]
-    
+    totalSeries: number
 }

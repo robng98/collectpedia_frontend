@@ -4,7 +4,7 @@
         <mat-spinner diameter="60" color="accent"></mat-spinner>
     </div>
     
-    <div class="layout-container flex flex-1 max-w-[1200px] px-4">
+    <div class="layout-container flex flex-1 max-w-[1200px] px-4" *ngIf="!isLoading">
         <!-- Left Column - Serie Info -->
         <div class="serie-info flex-1 max-w-[300px] mr-6">
             @if (currentSerie && currentEditora && currentEdicao) {

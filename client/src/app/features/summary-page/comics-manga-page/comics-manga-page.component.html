@@ -5,7 +5,7 @@
     </div>
 
     <div class="content-wrapper flex-grow">
-        <div class="layout-content-container">
+        <div class="layout-content-container" *ngIf="!isLoading">
             <div class="comics-header">
                 <div class="comics-info">
                     <h1 class="page-title">{{ pageTitle }}</h1>

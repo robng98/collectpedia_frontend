@@ -5,7 +5,7 @@
     </div>
 
     <div class="content-wrapper flex-grow">
-        <div class="layout-content-container">
+        <div class="layout-content-container" *ngIf="!isLoading">
             <div class="search-header">
                 <div class="search-info">
                     <p class="search-title">Resultados da busca '{{searchParams.search}}'</p>

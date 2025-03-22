@@ -23,6 +23,10 @@
       disabled-icon-color: #dccfcf,
     ));
 
+  @include mat.button-toggle-overrides((
+      selected-state-text-color: #fff,
+    ));
+
   .table-container {
     min-height: 20rem;
     max-height: 36rem;

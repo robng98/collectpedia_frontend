@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { LastAddedIssuesService } from '../../core/services/last-added-issues.service';
 import { Edicao } from '../../shared/models/edicao';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,19 +9,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SearchParams } from '../../shared/models/searchParams';
 import { SerieService } from '../../core/services/serie.service';
-import { Serie } from '../../shared/models/serie';
 import { Router, RouterModule } from '@angular/router';
-
-import { CommonModule, NgFor } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import {
-  CarouselComponent,
-  CarouselControlComponent,
-  CarouselIndicatorsComponent,
-  CarouselInnerComponent,
-  CarouselItemComponent,
-  ThemeDirective
-} from '@coreui/angular';
+import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-home',
@@ -34,7 +24,8 @@ import {
     MatSelectModule,
     MatFormFieldModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -42,25 +33,33 @@ import {
 })
 export class HomeComponent implements OnInit {
   private lastAddedIssuesService = inject(LastAddedIssuesService);
-    private serieService = inject(SerieService);
-    private router = inject(Router);
+  private serieService = inject(SerieService);
+  private router = inject(Router);
   title = 'home';
   lastAddedIssues: Edicao[] = [];
   searchParams = new SearchParams();
+  isLoading = false; // Add the isLoading property
 
   ngOnInit(): void {
+    this.isLoading = true; // Set loading to true before fetching data
+    
     this.lastAddedIssuesService.getLastAddedIssues().subscribe({
       next: (response) => {
         this.lastAddedIssues = response.data;
-        console.log(response.data)
+        // Add a 1500ms delay before hiding the loading indicator
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
+      },
+      error: (error) => {
+        console.log(error);
+        // Also add a 1500ms delay on error
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1500);
       }
-      ,
-      error: (error) => 
-        console.log(error)
     });
   }
-
-
 
   onSearchChange() {
     // Only search if the search string has actual content

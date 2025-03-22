@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const style = document.createElement('style');
         style.textContent = `
           :host {
-            --swiper-theme-color: #c4c4c4 !important;
+            --swiper-theme-color: rgb(224, 226, 236) !important;
             
             .swiper-pagination-vertical.swiper-pagination-bullets, .swiper-vertical > .swiper-pagination-bullets{
               right: var(--swiper-pagination-bullet-right, 25px);

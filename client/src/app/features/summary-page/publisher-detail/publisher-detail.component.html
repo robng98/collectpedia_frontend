@@ -1,0 +1,152 @@
+<div class="layout-container flex h-full grow flex-col">
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="centralized-spinner-container">
+        <mat-spinner diameter="60" color="light"></mat-spinner>
+    </div>
+
+    <div class="content-wrapper flex-grow">
+        <div class="layout-content-container">
+            <div class="publisher-header">
+                <div class="publisher-info">
+                    <h1 class="publisher-title">{{currentPublisher?.nome || 'Carregando...' }}</h1>
+                    <p class="publisher-results-count ml-5">
+                        Mostrando {{(currentPage-1) * pageSize + 1}} -
+                        {{calculateUpperBound()}}
+                        de {{totalItems}} séries
+                    </p>
+                </div>
+
+                <!-- Controls Section with Sorting and View Toggle -->
+                <div class="flex items-center">
+                    <!-- View Toggle Button -->
+                    <div class="view-toggle mr-4">
+                        <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
+                            (click)="toggleViewMode()">
+                            <span *ngIf="viewMode === 'list'">
+                                Cards
+                            </span>
+                            <span *ngIf="viewMode === 'card'">
+                                Lista
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Sorting Controls -->
+                    <div class="sorting-controls flex gap-4 items-center">
+                        <div class="sort-label text-white">Ordenar por:</div>
+                        <div class="sort-options flex gap-2">
+                            <button class="sort-button px-3 py-1 rounded"
+                                [class.active]="searchParams.sortBy === 'nomeInter'"
+                                (click)="updateSorting('nomeInter', !searchParams.isDescending)">
+                                Nome
+                                <span *ngIf="searchParams.sortBy === 'nomeInter'">
+                                    {{ searchParams.isDescending ? '↓' : '↑' }}
+                                </span>
+                            </button>
+                            <button class="sort-button px-3 py-1 rounded"
+                                [class.active]="searchParams.sortBy === 'cicloNum'"
+                                (click)="updateSorting('cicloNum', !searchParams.isDescending)">
+                                Volume
+                                <span *ngIf="searchParams.sortBy === 'cicloNum'">
+                                    {{ searchParams.isDescending ? '↓' : '↑' }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card View -->
+            <div class="comics-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
+                @for (serie of publisherSeries; track $index) {
+                @if (firstCovers.length === publisherSeries.length) {
+                <div class="comic-card w-4/5" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
+                    <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                        <div class="comic-overlay"></div>
+                    </div>
+                    <div class="comic-info">
+                        <h3 class="comic-title">{{serie.nomeInter}}</h3>
+                        <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
+                        
+                        <!-- Manga-specific information -->
+                        @if (serie.mangaStats) {
+                        <div class="manga-info">
+                            <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
+                            <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
+                        </div>
+                        }
+                        
+                        <div class="comic-details">
+                            <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
+                            <p class="comic-issues">{{serie.numEdicoes}} 
+                                @if (serie.mangaStats) {
+                                    tankos
+                                }
+                                @else {
+                                    edições
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                }
+                }
+
+                <!-- Empty State -->
+                <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
+                    <p>Nenhuma série encontrada para esta editora.</p>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div class="comics-list-container" *ngIf="viewMode === 'list'">
+                <div class="comics-list">
+                    @for (serie of publisherSeries; track $index) {
+                    @if (firstCovers.length === publisherSeries.length) {
+                    <div class="comic-list-item" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
+                        <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                        </div>
+                        <div class="comic-list-content">
+                            <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
+                            <div class="comic-list-details">
+                                @if (serie.mangaStats) {
+                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} -
+                                }
+                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> - 
+                                <span class="comic-list-issues">
+                                {{serie.numEdicoes}} 
+                                @if (serie.mangaStats) {
+                                    tankos
+                                }
+                                @else {
+                                    edições
+                                }
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+
+                    <!-- Empty State -->
+                    <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
+                        <p>Nenhuma série encontrada para esta editora.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination Controls -->
+            <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
+                class="comics-paginator">
+            </mat-paginator>
+
+            <!-- Back button placed at the bottom -->
+            <div class="back-button-container flex justify-center mt-6 mb-10">
+                <button class="back-button px-4 py-2 rounded text-base" (click)="goBack()">
+                    <span class="flex items-center">← Voltar para Editoras</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

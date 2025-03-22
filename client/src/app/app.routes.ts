@@ -8,6 +8,7 @@ import { UserPageComponent } from './features/user-page/user-page.component';
 import { RegisterIssuesComponent } from './features/register-issues/register-issues.component';
 import { ComicsMangaPageComponent } from './features/summary-page/comics-manga-page/comics-manga-page.component';
 import { PublisherPageComponent } from './features/summary-page/publisher-page/publisher-page.component';
+import { PublisherDetailComponent } from './features/summary-page/publisher-detail/publisher-detail.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -19,6 +20,6 @@ export const routes: Routes = [
     {path: "register-issues", component: RegisterIssuesComponent},
     {path: "summary/series/:type", component: ComicsMangaPageComponent},
     {path: "summary/publishers", component: PublisherPageComponent},
-    {path: "summary/publishers/:id", component: PublisherPageComponent}, // Add route for publisher details
+    {path: "summary/publishers/:id", component: PublisherDetailComponent}, // Update to use the new component
     {path: '**', redirectTo: '', pathMatch: 'full'},
 ];

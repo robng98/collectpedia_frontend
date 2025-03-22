@@ -137,12 +137,10 @@ export class PublisherDetailComponent implements OnInit {
                 console.log(this.tempSeries);
                 this.totalItems = this.tempTotalItems;
                 this.firstCovers = this.tempCovers;
+                this.isLoading = false;
             },
             error: (error) => {
                 console.error('Error loading publisher series:', error);
-                this.isLoading = false;
-            },
-            complete: () => {
                 this.isLoading = false;
             }
         });

@@ -1,7 +1,7 @@
 <div class="layout-container flex h-full grow flex-col">
     <!-- Loading Indicator -->
     <div *ngIf="isLoading" class="centralized-spinner-container">
-        <mat-spinner diameter="60" color="light"></mat-spinner>
+        <mat-spinner diameter="60" color="accent"></mat-spinner>
     </div>
 
     <div class="content-wrapper flex-grow">
@@ -47,6 +47,19 @@
                                 (click)="updateSorting('nomeInter', !searchParams.isDescending)">
                                 Nome
                                 <span *ngIf="searchParams.sortBy === 'nomeInter'">
+                                    {{ searchParams.isDescending ? '↓' : '↑' }}
+                                </span>
+                            </button>
+                            <button class="sort-button px-4 py-1 rounded-2xl"
+                                [class.active]="searchParams.sortBy === 'numEdicoes'"
+                                (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
+                                @if(publisherSeries[0].mangaStats === null){
+                                Edições
+                                }
+                                @else {
+                                Tankos
+                                }
+                                <span *ngIf="searchParams.sortBy === 'numEdicoes'">
                                     {{ searchParams.isDescending ? '↓' : '↑' }}
                                 </span>
                             </button>

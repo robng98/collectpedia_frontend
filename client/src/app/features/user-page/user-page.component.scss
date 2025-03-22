@@ -474,56 +474,12 @@
   }
 }
 
-// Spinner styles - updated for full-page overlay
-.centralized-spinner-container {
-  position: fixed; // Changed from absolute to fixed
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  z-index: 9999; // Increased z-index to ensure it's above everything
-  background-color: rgba(0, 0, 0, 0.7); // Darker semi-transparent background
-  backdrop-filter: blur(3px); // Add slight blur effect for better visibility
-}
-
 .content-hidden {
   opacity: 0.5;
   pointer-events: none;
-}
-
-::ng-deep .centralized-spinner-container .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
-::ng-deep .centralized-spinner-container .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
-  stroke: #ffffff;
 }
 
 .disabled-row {
   pointer-events: none;
   opacity: 0.7;
 }
-
-// Add these styles to the existing SCSS file
-
-// .sortable-header {
-//   cursor: pointer;
-//   user-select: none;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   transition: background-color 0.2s;
-  
-//   &:hover {
-//     background-color: #344887;
-//   }
-// }
-
-// .sort-icon {
-//   font-size: 16px;
-//   height: 16px;
-//   width: 16px;
-//   margin-left: 4px;
-// }

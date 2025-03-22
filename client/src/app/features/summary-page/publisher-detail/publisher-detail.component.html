@@ -73,8 +73,9 @@
                     </div>
                     <div class="comic-info">
                         <h3 class="comic-title">{{serie.nomeInter}}</h3>
+                        @if(serie.mangaStats === null) {
                         <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
-                        
+                        }
                         <!-- Manga-specific information -->
                         @if (serie.mangaStats) {
                         <div class="manga-info">
@@ -82,15 +83,15 @@
                             <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
                         </div>
                         }
-                        
+
                         <div class="comic-details">
                             <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
-                            <p class="comic-issues">{{serie.numEdicoes}} 
+                            <p class="comic-issues">{{serie.numEdicoes}}
                                 @if (serie.mangaStats) {
-                                    tankos
+                                tankos
                                 }
                                 @else {
-                                    edições
+                                edições
                                 }
                             </p>
                         </div>
@@ -111,23 +112,24 @@
                     @for (serie of publisherSeries; track $index) {
                     @if (firstCovers.length === publisherSeries.length) {
                     <div class="comic-list-item" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
-                        <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                        <div class="comic-list-image"
+                            [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
                         </div>
                         <div class="comic-list-content">
                             <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
                             <div class="comic-list-details">
                                 @if (serie.mangaStats) {
-                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} - 
+                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} -
                                 }
-                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> - 
+                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> -
                                 <span class="comic-list-issues">
-                                {{serie.numEdicoes}} 
-                                @if (serie.mangaStats) {
+                                    {{serie.numEdicoes}}
+                                    @if (serie.mangaStats) {
                                     tankos
-                                }
-                                @else {
+                                    }
+                                    @else {
                                     edições
-                                }
+                                    }
                                 </span>
                             </div>
                         </div>

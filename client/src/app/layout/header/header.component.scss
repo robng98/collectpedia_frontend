@@ -31,9 +31,27 @@ header {
         letter-spacing: 0.015em;
         font-family: 'Righteous', sans-serif;
       }
+      
     }
+
   }
+
+  // a{
+  //   text-decoration: none !important;
+  // }
+
+  // nav{
+  //   div:hover{
+  //     cursor: pointer;
+  //     transform: translateY(-2px);
+  //   }
+  // }
   
+  .logo-container:hover{
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+
   .search-wrapper {
     display: flex;
     flex-direction: column;
@@ -157,9 +175,14 @@ header {
       line-height: normal;
       letter-spacing: 0.015em;
       text-decoration: none;
+      padding: 10px 5px;
   
       &:hover {
-        text-decoration: underline;
+        text-decoration: none;
+        transform: translateY(-2px);
+      }
+      &:active {
+        text-decoration: none;
       }
     }
   }

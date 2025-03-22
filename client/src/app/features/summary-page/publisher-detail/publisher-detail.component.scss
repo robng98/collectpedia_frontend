@@ -72,12 +72,12 @@
 }
 
 .back-button {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #C4C4C4;
+  background-color: rgba(255, 255, 255, 0.551);
+  color: #3e3c3c;
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: #344887;
+    background-color: #8f9197;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -351,22 +351,23 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 4px;
   
-  .view-toggle-button {
+  // Style the Material Button Toggle component
+  ::ng-deep .mat-button-toggle-group {
     background-color: rgba(255, 255, 255, 0.1);
-    color: #C4C4C4;
-    transition: all 0.2s ease;
-    min-width: 100px;
-    display: flex;
-    justify-content: center;
+    overflow: hidden;
     
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    
-    &.active {
-      background-color: #344887;
-      color: white;
+    .mat-button-toggle {
+      color: #C4C4C4;
+      background-color: transparent;
+      transition: all 0.2s ease;
+      
+      &.mat-button-toggle-checked {
+        background-color: #344887;
+        color: white;
+      }
+      
     }
   }
 }
@@ -494,6 +495,18 @@
     
     .view-toggle-button {
       width: 100%;
+    }
+    
+    ::ng-deep .mat-button-toggle-group {
+      width: auto;
+      
+      .toggle-label {
+        display: none; // Hide text labels on very small screens
+      }
+      
+      mat-icon {
+        margin-right: 0;
+      }
     }
   }
   

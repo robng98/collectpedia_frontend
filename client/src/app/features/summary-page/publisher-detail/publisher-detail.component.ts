@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
 
 import { PublisherService } from '../../../core/services/publisher.service';
 import { EdicaoService } from '../../../core/services/edicao.service';
@@ -20,7 +22,9 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
   imports: [
     CommonModule, 
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonToggleModule,
+    MatIconModule
   ],
   templateUrl: './publisher-detail.component.html',
   styleUrl: './publisher-detail.component.scss'
@@ -164,6 +168,10 @@ export class PublisherDetailComponent implements OnInit {
     this.searchParams.pageNumber = 1;
     
     this.loadPublisherSeries();
+  }
+  
+  onViewModeChange(event: MatButtonToggleChange): void {
+    this.viewMode = event.value;
   }
   
   toggleViewMode(): void {

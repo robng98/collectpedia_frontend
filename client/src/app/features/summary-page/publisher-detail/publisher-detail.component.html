@@ -21,25 +21,28 @@
                 <div class="controls-section">
                     <!-- Back button moved to header section -->
                     <div class="back-button-container">
-                        <button class="back-button px-3 py-1 rounded" (click)="goBack()">
-                            <span class="flex items-center">← Voltar</span>
+                        <button class="back-button px-4 py-1 rounded-2xl" (click)="goBack()">
+                            <span class="flex items-center">Voltar</span>
                         </button>
                     </div>
 
-                    <!-- View Toggle Button -->
+                    <!-- View Toggle Button - replaced with Material Button Toggle -->
                     <div class="view-toggle">
-                        <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
-                            (click)="toggleViewMode()">
-                            <span *ngIf="viewMode === 'list'">Cards</span>
-                            <span *ngIf="viewMode === 'card'">Lista</span>
-                        </button>
+                        <mat-button-toggle-group [value]="viewMode" (change)="onViewModeChange($event)">
+                            <mat-button-toggle value="card">
+                                <span class="toggle-label">Cards</span>
+                            </mat-button-toggle>
+                            <mat-button-toggle value="list">
+                                <span class="toggle-label">Lista</span>
+                            </mat-button-toggle>
+                        </mat-button-toggle-group>
                     </div>
 
                     <!-- Sorting Controls -->
                     <div class="sorting-controls">
                         <div class="sort-label text-white">Ordenar por:</div>
                         <div class="sort-options">
-                            <button class="sort-button px-3 py-1 rounded"
+                            <button class="sort-button px-4 py-1 rounded-2xl"
                                 [class.active]="searchParams.sortBy === 'nomeInter'"
                                 (click)="updateSorting('nomeInter', !searchParams.isDescending)">
                                 Nome
@@ -47,7 +50,7 @@
                                     {{ searchParams.isDescending ? '↓' : '↑' }}
                                 </span>
                             </button>
-                            <button class="sort-button px-3 py-1 rounded"
+                            <button class="sort-button px-4 py-1 rounded-2xl"
                                 [class.active]="searchParams.sortBy === 'cicloNum'"
                                 (click)="updateSorting('cicloNum', !searchParams.isDescending)">
                                 Volume

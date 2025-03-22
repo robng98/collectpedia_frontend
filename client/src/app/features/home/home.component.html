@@ -19,7 +19,7 @@
               <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
             </div>
             <input class="search-input" placeholder="Digite sua busca aqui" name="search"
-              [(ngModel)]="searchParams.search" required #searchInput="ngModel" />
+              [(ngModel)]="searchParams.search" required #searchInput="ngModel" autocomplete="off" />
             <div class="search-button-container">
               <button mat-raised-button class="search-button"
                 [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">

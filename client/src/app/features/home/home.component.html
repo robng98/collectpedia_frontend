@@ -7,6 +7,11 @@
         <h2>Seu site de consultas e catalogação de comics e mangás.</h2>
       </div>
 
+      <!-- Loading Indicator (Centralized) -->
+      <!-- <div *ngIf="isLoading" class="centralized-spinner-container">
+        <mat-spinner diameter="60" color="accent"></mat-spinner>
+      </div> -->
+
       <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
         <div class="search-container">
           <div class="search-input-group">
@@ -49,7 +54,8 @@
           <swiper-slide class="flex ml-6 justify-center" *ngFor="let issue of lastAddedIssues; let i = index"
             [attr.data-swiper-slide-index]="i">
             <div class="issue-card">
-              <div class="issue-image hover:cursor-pointer" style='background-image: url("{{issue.fotoCapa}}");' (click)="goToSerieByIssue(issue.serieId)">
+              <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'
+                (click)="goToSerieByIssue(issue.serieId)">
               </div>
               <!-- <div class="text-center">
                 <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>
@@ -61,38 +67,45 @@
       <div class="flex-1 flex flex-col max-w-[60%]">
         <h2 class="section-title mb-12">Principais editoras</h2>
         <div class="flex flex-row gap-12">
-          <div class="flex flex-col align-top items-center ml-20">
+          <div class="publisher-div ml-20" routerLink="/summary/publishers/1">
 
-            <div class=" aspect-square max-h-[120px] mb-4">
-              <img class="h-full rounded-md"
+            <div class="logo-text">
+              <img class="publisher-logo"
                 src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-dc-comics.png"
                 alt="DC Comics" />
-            </div>
-            <div class="text-center">
-              <p class="issue-title">DC Comics</p>
+
+              <div class="text-center">
+                <p class="issue-title">DC Comics</p>
+              </div>
+
             </div>
           </div>
 
-          <div class="flex flex-col align-top items-center">
-            <div class=" aspect-square max-h-[120px] mb-4">
-              <img class="h-full rounded-md"
+          <div class="publisher-div " routerLink="/summary/publishers/2">
+            <div class="logo-text">
+              <img class="publisher-logo"
                 src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-marvel-comics.png"
                 alt="Marvel Comics" />
-            </div>
-            <div class="text-center">
-              <p class="issue-title">Marvel Comics</p>
+
+              <div class="text-center">
+                <p class="issue-title">Marvel Comics</p>
+              </div>
+
             </div>
           </div>
 
-          <div class="flex flex-col align-top items-center">
-            <div class=" aspect-square max-h-[120px] mb-4">
-              <img class="h-full rounded-md"
+          <div class="publisher-div" routerLink="/summary/publishers/3">
+            <div class="logo-text">
+              <img class="publisher-logo"
                 src="https://robng-tcc-arquivos.s3.us-east-1.amazonaws.com/Editoras_Logos/logo-shueisha.png"
                 alt="Shueisha" />
+
+              <div class="text-center">
+                <p class="issue-title">Shueisha</p>
+              </div>
+
             </div>
-            <div class="text-center">
-              <p class="issue-title">Shueisha</p>
-            </div>
+
           </div>
 
         </div>

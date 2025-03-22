@@ -146,23 +146,6 @@
   }
 }
 
-.issues-container {
-  display: flex;
-  align-items: stretch;
-  padding: 16px;
-  gap: 32px;
-}
-
-.issue-card {
-  display: flex;
-  height: 100%;
-  flex: 1;
-  flex-direction: column;
-  gap: 4px; // Reduced from 16px
-  border-radius: 8px;
-  min-width: 100px;
-  max-width: 120px;
-}
 
 .issue-image {
   width: 100%;
@@ -206,7 +189,7 @@
 }
 
 swiper-container{
-  height: 12rem; // Reduced height
+  height: 13rem; // Reduced height
   width: 100%; // Increased from 20% to use full width
 }
 
@@ -214,4 +197,43 @@ swiper-slide {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.issue-card {
+  display: flex;
+  height: 100%;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px; // Reduced from 16px
+  border-radius: 8px;
+  min-width: 100px;
+  max-width: 120px;
+
+  :hover{
+    // transform: translateY(-5px);    
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+  }
+}
+
+.publisher-div{
+  // flex flex-col align-top items-center
+  display: flex;
+  flex-direction: column;
+
+  .logo-text:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+  }
+
+}
+
+.publisher-logo{
+  // h-full rounded-md aspect-square max-h-[120px] mb-4
+  height: 100%;
+  border-radius: 0.375rem;
+  aspect-ratio: 1;
+  max-height: 120px;
+  margin-bottom: 1rem;
 }

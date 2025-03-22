@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { SearchParams } from '../../shared/models/searchParams';
 import { SerieService } from '../../core/services/serie.service';
 import { Serie } from '../../shared/models/serie';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { CommonModule, NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -34,14 +34,7 @@ import {
     MatSelectModule,
     MatFormFieldModule,
     CommonModule,
-    // ThemeDirective,
-    // CarouselComponent,
-    // CarouselIndicatorsComponent,
-    // CarouselInnerComponent,
-    // NgFor,
-    // CarouselItemComponent,
-    // CarouselControlComponent,
-    // RouterLink
+    RouterModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -55,8 +48,6 @@ export class HomeComponent implements OnInit {
   lastAddedIssues: Edicao[] = [];
   searchParams = new SearchParams();
 
-  // slides: any[] = new Array(3).fill({ id: -1, src: '', title: '', subtitle: '' });
-
   ngOnInit(): void {
     this.lastAddedIssuesService.getLastAddedIssues().subscribe({
       next: (response) => {
@@ -67,28 +58,6 @@ export class HomeComponent implements OnInit {
       error: (error) => 
         console.log(error)
     });
-
-    // this.slides[0] = {
-    //   src: `/Immortal_Thor_Vol_1/Immortal_Thor_Vol_1_14/Immortal_Thor_Vol_1_14.jpg`
-    // };
-    // this.slides[1] = {
-    //         src: `/Immortal_Thor_Vol_1/Immortal_Thor_Vol_1_13/Immortal_Thor_Vol_1_13.jpg`
-
-    // };
-    // this.slides[2] = {
-    //         src: `/Immortal_Thor_Vol_1/Immortal_Thor_Vol_1_12/Immortal_Thor_Vol_1_12.jpg`
-
-    // };
-    // this.slides[3] = {
-    //         src: `/Immortal_Thor_Vol_1/Immortal_Thor_Vol_1_11/Immortal_Thor_Vol_1_11.jpg`
-
-    // };
-    // this.slides[4] = {
-    //         src: `/Immortal_Thor_Vol_1/Immortal_Thor_Vol_1_10/Immortal_Thor_Vol_1_10.jpg`
-
-    // };
-
-    // console.log(this.slides);
   }
 
 

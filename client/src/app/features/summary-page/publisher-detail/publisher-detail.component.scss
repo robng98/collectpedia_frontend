@@ -21,20 +21,20 @@
   flex: 1;
 }
 
-// Publisher header
+// Publisher header with completely reworked layout for better alignment
 .publisher-header {
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 12px;
   padding: 16px;
   margin-bottom: 20px;
+  position: relative; // For absolute positioning of controls if needed
 
   .publisher-info {
     display: flex;
-    min-width: 288px;
     flex-direction: column;
     gap: 8px;
+    max-width: 65%; // Give space to right-side controls
+    flex-shrink: 1;
 
     .publisher-title {
       color: #FFFFFF;
@@ -51,19 +51,30 @@
       line-height: normal;
     }
   }
+  
+  // New controls section that encapsulates all controls
+  .controls-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    min-width: 200px;
+    padding-left: 16px;
+    flex: 0 0 auto;
+  }
 }
 
-// Back button - updated for bottom placement
+// Back button moved to top-right
 .back-button-container {
-  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .back-button {
   background-color: rgba(255, 255, 255, 0.1);
   color: #C4C4C4;
   transition: all 0.2s ease;
-  font-size: 16px;
-  min-width: 200px;
   
   &:hover {
     background-color: #344887;
@@ -298,16 +309,31 @@
   font-size: 18px;
 }
 
-// Sorting Controls
+// Sorting Controls fully right-aligned
 .sorting-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+  
   .sort-label {
     font-size: 14px;
+    text-align: right;
+  }
+
+  .sort-options {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    width: 100%;
   }
 
   .sort-button {
     background-color: rgba(255, 255, 255, 0.1);
     color: #C4C4C4;
     transition: all 0.2s ease;
+    white-space: nowrap;
     
     &.active {
       background-color: #344887;
@@ -320,19 +346,28 @@
   }
 }
 
-// View toggle button
-.view-toggle-button {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #C4C4C4;
-  transition: all 0.2s ease;
+// View toggle button more prominently to the right
+.view-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
   
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  &.active {
-    background-color: #344887;
-    color: white;
+  .view-toggle-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #C4C4C4;
+    transition: all 0.2s ease;
+    min-width: 100px;
+    display: flex;
+    justify-content: center;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    &.active {
+      background-color: #344887;
+      color: white;
+    }
   }
 }
 
@@ -386,13 +421,45 @@
   }
 }
 
+// Enhanced responsive adjustments
 @media (max-width: 768px) {
   .comics-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  // Keep controls right-aligned but adjust for mobile
   .publisher-header {
     flex-direction: column;
+    
+    .publisher-info {
+      max-width: 100%;
+      margin-bottom: 16px;
+    }
+    
+    .controls-section {
+      width: 100%;
+      padding-left: 0;
+    }
+  }
+  
+  // Align controls to the right even on mobile
+  .controls-section {
+    .back-button-container,
+    .view-toggle,
+    .sorting-controls,
+    .sort-options {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .view-toggle {
+    width: 100%;
+  }
+  
+  .back-button-container {
+    justify-content: center;
   }
 
   .content-wrapper {
@@ -409,9 +476,54 @@
     grid-template-columns: 1fr;
   }
   
+  .publisher-header .controls-container {
+    align-items: stretch;
+  }
+  
+  .sorting-controls {
+    align-items: center;
+    
+    .sort-options {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+  
+  .view-toggle {
+    width: 100%;
+    
+    .view-toggle-button {
+      width: 100%;
+    }
+  }
+  
   .comics-list-container {
     height: calc(100vh - 280px);
     margin: 0 8px;
+  }
+
+  // Stack controls vertically on very small screens
+  .controls-section {
+    align-items: stretch;
+    
+    .back-button-container {
+      justify-content: flex-end;
+    }
+    
+    .view-toggle {
+      justify-content: flex-end;
+      
+      .view-toggle-button {
+        width: auto;
+      }
+    }
+    
+    .sorting-controls {
+      .sort-options {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+    }
   }
 }
 

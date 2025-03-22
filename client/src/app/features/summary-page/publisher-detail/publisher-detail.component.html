@@ -6,35 +6,39 @@
 
     <div class="content-wrapper flex-grow">
         <div class="layout-content-container">
+            <!-- Header section with title and controls -->
             <div class="publisher-header">
                 <div class="publisher-info">
                     <h1 class="publisher-title">{{currentPublisher?.nome || 'Carregando...' }}</h1>
-                    <p class="publisher-results-count ml-5">
+                    <p class="publisher-results-count">
                         Mostrando {{(currentPage-1) * pageSize + 1}} -
                         {{calculateUpperBound()}}
                         de {{totalItems}} séries
                     </p>
                 </div>
 
-                <!-- Controls Section with Sorting and View Toggle -->
-                <div class="flex items-center">
+                <!-- All controls moved to right side -->
+                <div class="controls-section">
+                    <!-- Back button moved to header section -->
+                    <div class="back-button-container">
+                        <button class="back-button px-3 py-1 rounded" (click)="goBack()">
+                            <span class="flex items-center">← Voltar</span>
+                        </button>
+                    </div>
+
                     <!-- View Toggle Button -->
-                    <div class="view-toggle mr-4">
+                    <div class="view-toggle">
                         <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
                             (click)="toggleViewMode()">
-                            <span *ngIf="viewMode === 'list'">
-                                Cards
-                            </span>
-                            <span *ngIf="viewMode === 'card'">
-                                Lista
-                            </span>
+                            <span *ngIf="viewMode === 'list'">Cards</span>
+                            <span *ngIf="viewMode === 'card'">Lista</span>
                         </button>
                     </div>
 
                     <!-- Sorting Controls -->
-                    <div class="sorting-controls flex gap-4 items-center">
+                    <div class="sorting-controls">
                         <div class="sort-label text-white">Ordenar por:</div>
-                        <div class="sort-options flex gap-2">
+                        <div class="sort-options">
                             <button class="sort-button px-3 py-1 rounded"
                                 [class.active]="searchParams.sortBy === 'nomeInter'"
                                 (click)="updateSorting('nomeInter', !searchParams.isDescending)">
@@ -110,7 +114,7 @@
                             <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
                             <div class="comic-list-details">
                                 @if (serie.mangaStats) {
-                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} -
+                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} - 
                                 }
                                 <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> - 
                                 <span class="comic-list-issues">
@@ -140,13 +144,6 @@
                 [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
                 class="comics-paginator">
             </mat-paginator>
-
-            <!-- Back button placed at the bottom -->
-            <div class="back-button-container flex justify-center mt-6 mb-10">
-                <button class="back-button px-4 py-2 rounded text-base" (click)="goBack()">
-                    <span class="flex items-center">← Voltar para Editoras</span>
-                </button>
-            </div>
         </div>
     </div>
 </div>

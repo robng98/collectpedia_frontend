@@ -64,6 +64,9 @@ export class PublisherDetailComponent implements OnInit {
     private tempCovers: PrimeiraCapaSerie[] = [];
 
     ngOnInit(): void {
+        // Set loading to true at the start
+        this.isLoading = true;
+        
         this.route.params.subscribe(params => {
             this.publisherId = +params['id']; // Convert to number
 
@@ -77,6 +80,9 @@ export class PublisherDetailComponent implements OnInit {
                 // Load publisher details and its series
                 this.loadPublisherDetails();
                 this.loadPublisherSeries();
+            } else {
+                // If no ID, end loading state
+                this.isLoading = false;
             }
         });
     }
@@ -85,15 +91,16 @@ export class PublisherDetailComponent implements OnInit {
         this.publisherService.getPublisherById(this.publisherId).subscribe({
             next: (publisher) => {
                 this.currentPublisher = publisher;
+                // Don't set isLoading = false here to wait for series to load
             },
             error: (error) => {
                 console.error('Error loading publisher details:', error);
+                // Don't set isLoading = false here to wait for series to load
             }
         });
     }
 
     loadPublisherSeries() {
-        this.isLoading = true;
 
         // First, fetch the series from the publisher
         this.publisherService.getPublisherSeries(this.publisherId, this.currentPage, this.pageSize, this.searchParams.sortBy, this.searchParams.isDescending).pipe(

@@ -1,11 +1,9 @@
 <div class="layout-container flex h-full grow flex-col">
-    <!-- Loading Indicator -->
-    <div *ngIf="isLoading" class="centralized-spinner-container">
-        <mat-spinner diameter="60" color="accent"></mat-spinner>
-    </div>
-
     <div class="content-wrapper flex-grow">
-        <div class="layout-content-container">
+        <div *ngIf="isLoading" class="centralized-spinner-container">
+            <mat-spinner diameter="60"></mat-spinner>
+        </div>
+        <div class="layout-content-container" *ngIf="!isLoading">
             <!-- Header section with title and controls -->
             <div class="publisher-header">
                 <div class="publisher-info">
@@ -50,10 +48,11 @@
                                     {{ searchParams.isDescending ? '↓' : '↑' }}
                                 </span>
                             </button>
+
                             <button class="sort-button px-4 py-1 rounded-2xl"
                                 [class.active]="searchParams.sortBy === 'numEdicoes'"
                                 (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
-                                @if(publisherSeries[0].mangaStats === null){
+                                @if(!publisherSeries[0].mangaStats){
                                 Edições
                                 }
                                 @else {
@@ -63,6 +62,7 @@
                                     {{ searchParams.isDescending ? '↓' : '↑' }}
                                 </span>
                             </button>
+                            
                             <button class="sort-button px-4 py-1 rounded-2xl"
                                 [class.active]="searchParams.sortBy === 'cicloNum'"
                                 (click)="updateSorting('cicloNum', !searchParams.isDescending)">

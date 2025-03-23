@@ -51,13 +51,13 @@
       line-height: normal;
     }
   }
-  
+
   // New controls section that encapsulates all controls
   .controls-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
-    gap: 12px;
+    gap: 2rem;
     min-width: 200px;
     padding-left: 16px;
     flex: 0 0 auto;
@@ -72,14 +72,13 @@
 }
 
 .back-button {
-  background-color: rgba(255, 255, 255, 0.551);
+  background-color: rgba(255, 255, 255, 0.862);
   color: #3e3c3c;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background-color: #8f9197;
     color: white;
-    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 }
@@ -154,7 +153,7 @@
       display: flex;
       flex-direction: column;
       margin-bottom: 4px;
-      
+
       .manga-jp-title {
         color: #a5b4fc; // Light indigo color for Japanese title
         font-size: 11px;
@@ -162,7 +161,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      
+
       .manga-demographics {
         color: #93c5fd; // Light blue color for demographics
         font-size: 10px;
@@ -175,14 +174,14 @@
       justify-content: space-between;
       align-items: center;
       margin-top: auto;
-      
+
       .comic-status {
         color: #8E8E8E;
         font-size: 11px;
         text-transform: capitalize;
         margin-top: 0;
       }
-      
+
       .comic-issues {
         color: #8E8E8E;
         font-size: 11px;
@@ -211,22 +210,22 @@
   overflow-y: auto;
   padding-right: 8px;
   max-height: 100%;
-  
+
   // Scrollbar styling
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }
@@ -242,20 +241,20 @@
   background-color: #1a2a4d;
   border-radius: 8px;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transition: 0.3s;
     background-color: #344887;
     cursor: pointer;
   }
-  
+
   &:active {
     transition: 0.1s;
     background-color: rgb(39, 52, 94);
     transform: scale(1);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
   }
-  
+
   .comic-list-image {
     background-position: center;
     background-repeat: no-repeat;
@@ -265,12 +264,12 @@
     width: 50px; // Reduced from 64px
     height: 75px; // Reduced from 96px
   }
-  
+
   .comic-list-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+
     .comic-list-title {
       color: #FFFFFF;
       font-size: 15px; // Slightly reduced from 16px
@@ -281,7 +280,7 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    
+
     .comic-list-details {
       color: #C4C4C4;
       font-size: 13px; // Slightly reduced from 14px
@@ -316,7 +315,7 @@
   align-items: flex-end;
   gap: 8px;
   width: 100%;
-  
+
   .sort-label {
     font-size: 14px;
     text-align: right;
@@ -334,12 +333,12 @@
     color: #C4C4C4;
     transition: all 0.2s ease;
     white-space: nowrap;
-    
+
     &.active {
       background-color: #344887;
       color: white;
     }
-    
+
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
@@ -349,26 +348,33 @@
 // View toggle button more prominently to the right
 .view-toggle {
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 4px;
-  
+  // display: flex;
+  // justify-content: flex-end;
+  // margin-bottom: 4px;
+  // transform: scaleY(0.9);
+
   // Style the Material Button Toggle component
-  ::ng-deep .mat-button-toggle-group {
-    background-color: rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    
-    .mat-button-toggle {
-      color: #C4C4C4;
-      background-color: transparent;
-      transition: all 0.2s ease;
-      
-      &.mat-button-toggle-checked {
-        background-color: #344887;
-        color: white;
-      }
+  
+}
+
+::ng-deep .mat-button-toggle-group {
+  background-color: rgba(255, 255, 255, 0.1);
+  // overflow: hidden;
+
+  .mat-button-toggle {
+    color: #C4C4C4;
+    background-color: transparent;
+    transition: all 0.2s ease;
+
+
+    .mat-button-toggle-label-content {
+      display: flex; // Hide text labels
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
       
     }
+
   }
 }
 
@@ -414,20 +420,21 @@
   // Keep controls right-aligned but adjust for mobile
   .publisher-header {
     flex-direction: column;
-    
+
     .publisher-info {
       max-width: 100%;
       margin-bottom: 16px;
     }
-    
+
     .controls-section {
       width: 100%;
       padding-left: 0;
     }
   }
-  
+
   // Align controls to the right even on mobile
   .controls-section {
+
     .back-button-container,
     .view-toggle,
     .sorting-controls,
@@ -441,7 +448,7 @@
   .view-toggle {
     width: 100%;
   }
-  
+
   .back-button-container {
     justify-content: center;
   }
@@ -459,40 +466,40 @@
   .comics-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .publisher-header .controls-container {
     align-items: stretch;
   }
-  
+
   .sorting-controls {
     align-items: center;
-    
+
     .sort-options {
       width: 100%;
       justify-content: space-between;
     }
   }
-  
+
   .view-toggle {
     width: 100%;
-    
+
     .view-toggle-button {
       width: 100%;
     }
-    
+
     ::ng-deep .mat-button-toggle-group {
       width: auto;
-      
+
       .toggle-label {
         display: none; // Hide text labels on very small screens
       }
-      
+
       mat-icon {
         margin-right: 0;
       }
     }
   }
-  
+
   .comics-list-container {
     height: calc(100vh - 280px);
     margin: 0 8px;
@@ -501,19 +508,19 @@
   // Stack controls vertically on very small screens
   .controls-section {
     align-items: stretch;
-    
+
     .back-button-container {
       justify-content: flex-end;
     }
-    
+
     .view-toggle {
       justify-content: flex-end;
-      
+
       .view-toggle-button {
         width: auto;
       }
     }
-    
+
     .sorting-controls {
       .sort-options {
         justify-content: flex-end;

@@ -14,64 +14,69 @@
                         de {{totalItems}} séries
                     </p>
                 </div>
-
-                <!-- All controls moved to right side -->
-                <div class="controls-section">
+                <div class="flex flex-col">
                     <!-- Back button moved to header section -->
-                    <div class="back-button-container">
+                    <div class="back-button-container mb-6 flex-1 flex justify-end">
                         <button class="back-button px-4 py-1 rounded-2xl" (click)="goBack()">
                             <span class="flex items-center">Voltar</span>
                         </button>
                     </div>
 
-                    <!-- View Toggle Button - replaced with Material Button Toggle -->
-                    <div class="view-toggle">
-                        <mat-button-toggle-group [value]="viewMode" (change)="onViewModeChange($event)">
-                            <mat-button-toggle value="card">
-                                <span class="toggle-label">Cards</span>
-                            </mat-button-toggle>
-                            <mat-button-toggle value="list">
-                                <span class="toggle-label">Lista</span>
-                            </mat-button-toggle>
-                        </mat-button-toggle-group>
-                    </div>
+                    <!-- All controls moved to right side -->
+                    <div class="controls-section flex-1 justify-end mr-4">
 
-                    <!-- Sorting Controls -->
-                    <div class="sorting-controls">
-                        <div class="sort-label text-white">Ordenar por:</div>
-                        <div class="sort-options">
-                            <button class="sort-button px-4 py-1 rounded-2xl"
-                                [class.active]="searchParams.sortBy === 'nomeInter'"
-                                (click)="updateSorting('nomeInter', !searchParams.isDescending)">
-                                Nome
-                                <span *ngIf="searchParams.sortBy === 'nomeInter'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
+                        <!-- Sorting Controls -->
+                        <div class="sorting-controls align-middle ">
+                            <!-- <div class="sort-label text-white">Ordenar por:</div> -->
+                            <div class="sort-options">
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'nomeInter'"
+                                    (click)="updateSorting('nomeInter', !searchParams.isDescending)">
+                                    Título
+                                    <span *ngIf="searchParams.sortBy === 'nomeInter'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
 
-                            <button class="sort-button px-4 py-1 rounded-2xl"
-                                [class.active]="searchParams.sortBy === 'numEdicoes'"
-                                (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
-                                @if(!publisherSeries[0].mangaStats){
-                                Edições
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'numEdicoes'"
+                                    (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
+                                    @if(!publisherSeries[0].mangaStats){
+                                    Edições
+                                    }
+                                    @else {
+                                    Tankos
+                                    }
+                                    <span *ngIf="searchParams.sortBy === 'numEdicoes'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+
+                                @if (!publisherSeries[0].mangaStats) {
+                                    <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'cicloNum'"
+                                    (click)="updateSorting('cicloNum', !searchParams.isDescending)">
+                                    Volume
+                                    <span *ngIf="searchParams.sortBy === 'cicloNum'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
                                 }
-                                @else {
-                                Tankos
-                                }
-                                <span *ngIf="searchParams.sortBy === 'numEdicoes'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
-                            
-                            <button class="sort-button px-4 py-1 rounded-2xl"
-                                [class.active]="searchParams.sortBy === 'cicloNum'"
-                                (click)="updateSorting('cicloNum', !searchParams.isDescending)">
-                                Volume
-                                <span *ngIf="searchParams.sortBy === 'cicloNum'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
+                            </div>
                         </div>
+
+                        <!-- View Toggle Button - replaced with Material Button Toggle -->
+                        <div class="align-middle">
+                            <mat-button-toggle-group [value]="viewMode" (change)="onViewModeChange($event)">
+                                <mat-button-toggle value="card">
+                                    <span class="toggle-label">Cards</span>
+                                </mat-button-toggle>
+                                <mat-button-toggle value="list">
+                                    <span class="toggle-label">Lista</span>
+                                </mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
+
                     </div>
                 </div>
             </div>

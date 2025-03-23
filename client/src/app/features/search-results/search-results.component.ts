@@ -7,6 +7,11 @@ import { EdicaoService } from '../../core/services/edicao.service';
 import { PrimeiraCapaSerie } from '../../shared/models/primeiraCapaSerie';
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 import { forkJoin, of, timer } from 'rxjs';
 import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
@@ -18,7 +23,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule, 
     MatPaginatorModule,
-    MatProgressSpinnerModule],
+    MatProgressSpinnerModule,
+    MatButtonToggleModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
+  ],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss'
 })
@@ -56,7 +67,7 @@ export class SearchResultsComponent implements OnInit {
         this.searchParams.type = params['type'];
         this.searchParams.pageNumber = params['pageNumber'] ? Number(params['pageNumber']) : 1;
         this.searchParams.pageSize = params['pageSize'] ? Number(params['pageSize']) : 10;
-        this.searchParams.sortBy = params['sortBy'] ? params['sortBy'] : 'NomeInter';
+        this.searchParams.sortBy = params['sortBy'] ? params['sortBy'] : 'nomeInter';
         this.searchParams.isDescending = params['isDescending'] ? params['isDescending'] === true : false;
         this.currentPage = this.searchParams.pageNumber;
         this.pageSize = this.searchParams.pageSize;
@@ -162,16 +173,6 @@ export class SearchResultsComponent implements OnInit {
     this.currentPage = 1;
     this.searchParams.pageNumber = 1;
     
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        sortBy: sortBy,
-        isDescending: isDescending,
-        pageNumber: 1
-      },
-      queryParamsHandling: 'merge'
-    });
-    
     this.loadResults();
   }
   
@@ -190,5 +191,59 @@ export class SearchResultsComponent implements OnInit {
         serie: serie
       } 
     });
+  }
+
+  /**
+   * Handle the Material Button Toggle change event for view mode
+   */
+  onViewModeChange(event: MatButtonToggleChange): void {
+    this.viewMode = event.value;
+  }
+
+  /**
+   * Clear search and reload results
+   */
+  clearSearch(): void {
+    if (this.searchParams.search) {
+      this.searchParams.search = '';
+      this.searchParams.pageNumber = 1;
+      this.currentPage = 1;
+      
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          search: '',
+          pageNumber: 1
+        },
+        queryParamsHandling: 'merge'
+      });
+      
+      this.loadResults();
+    }
+  }
+
+  /**
+   * Handle search form submission
+   */
+  onSearchChange(): void {
+    if (this.isValidSearch(this.searchParams.search)) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          search: this.searchParams.search,
+          pageNumber: 1
+        },
+        queryParamsHandling: 'merge'
+      });
+      
+      this.loadResults();
+    }
+  }
+
+  /**
+   * Check if search string is valid
+   */
+  isValidSearch(searchString: string | undefined): boolean {
+    return !!searchString && searchString.trim().length > 0;
   }
 }

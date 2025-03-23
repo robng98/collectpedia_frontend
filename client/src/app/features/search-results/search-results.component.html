@@ -10,46 +10,70 @@
                 <div class="search-info">
                     <p class="search-title">Resultados da busca '{{searchParams.search}}'</p>
                     <p class="search-results-count ml-4">
-                        Mostrando {{(currentPage-1) * pageSize + 1}} - {{calculateUpperBound()}} 
+                        Mostrando {{(currentPage-1) * pageSize + 1}} - {{calculateUpperBound()}}
                         de {{totalItems}} resultados
                     </p>
                 </div>
 
-                <!-- Controls Section with Sorting and View Toggle -->
-                <div class="flex items-center">
-                    <!-- View Toggle Button -->
-                    <div class="view-toggle mr-4">
-                        <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
-                            (click)="toggleViewMode()">
-                            <span *ngIf="viewMode === 'list'">
-                                Cards
-                            </span>
-                            <span *ngIf="viewMode === 'card'">
-                                Lista
-                            </span>
-                        </button>
-                    </div>
+                <!-- Controls Section - Updated to match comics-manga-page -->
+                <div class="flex flex-col gap-2">
+                    <!-- All controls moved to right side -->
+                    <div class="controls-section flex-1 justify-end mr-4 mt-4">
 
-                    <!-- Sorting Controls -->
-                    <div class="sorting-controls flex gap-4 items-center">
-                        <div class="sort-label text-white">Ordenar por:</div>
-                        <div class="sort-options flex gap-2">
-                            <button class="sort-button px-3 py-1 rounded"
-                                [class.active]="searchParams.sortBy === 'nomeInter'"
-                                (click)="updateSorting('nomeInter', !searchParams.isDescending)">
-                                Nome
-                                <span *ngIf="searchParams.sortBy === 'nomeInter'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
-                            <button class="sort-button px-3 py-1 rounded"
-                                [class.active]="searchParams.sortBy === 'cicloNum'"
-                                (click)="updateSorting('cicloNum', !searchParams.isDescending)">
-                                Volume
-                                <span *ngIf="searchParams.sortBy === 'cicloNum'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
+                        <!-- Sorting Controls -->
+                        <div class="sorting-controls align-middle">
+                            <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
+                            <div class="sort-options scale-[0.85]">
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'nomeInter'"
+                                    (click)="updateSorting('nomeInter', !searchParams.isDescending)">
+                                    Título
+                                    <span *ngIf="searchParams.sortBy === 'nomeInter'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+
+                                @if (searchParams.type === 'comics') {
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'cicloNum'"
+                                    (click)="updateSorting('cicloNum', !searchParams.isDescending)">
+                                    Volume
+                                    <span *ngIf="searchParams.sortBy === 'cicloNum'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+                                }
+
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'numEdicoes'"
+                                    (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
+                                    @if(searchParams.type === 'comics') {
+                                    Edições
+                                    }
+                                    @else {
+                                    Tankos
+                                    }
+                                    <span *ngIf="searchParams.sortBy === 'numEdicoes'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- View Toggle - Using Material Button Toggle -->
+                        <div class="align-middle">
+                            <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
+                            <div class="scale-[0.85]">
+                                <mat-button-toggle-group class="ml-2" [value]="viewMode"
+                                    (change)="onViewModeChange($event)">
+                                    <mat-button-toggle value="card">
+                                        <span class="toggle-label">Cards</span>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="list">
+                                        <span class="toggle-label">Lista</span>
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
                         </div>
                     </div>
 
@@ -67,7 +91,7 @@
                     <div class="comic-info">
                         <h3 class="comic-title">{{result.nomeInter}}</h3>
                         <p class="comic-volume">Vol. {{result.cicloNum}}</p>
-                        
+
                         <!-- Manga-specific information -->
                         @if (result.mangaStats) {
                         <div class="manga-info">
@@ -75,15 +99,15 @@
                             <p class="manga-demographics">{{result.mangaStats.demografia}}</p>
                         </div>
                         }
-                        
+
                         <div class="comic-details">
                             <p class="comic-status">{{result.estadoPubAtual | lowercase}}</p>
-                            <p class="comic-issues">{{result.numEdicoes}} 
+                            <p class="comic-issues">{{result.numEdicoes}}
                                 @if (result.mangaStats) {
-                                    tankos
+                                tankos
                                 }
                                 @else {
-                                    edições
+                                edições
                                 }
                             </p>
                         </div>
@@ -104,23 +128,29 @@
                     @for (result of searchResults; track $index) {
                     @if (firstCovers.length === searchResults.length) {
                     <div class="comic-list-item" (click)="navigateToDetail(result.id, result.editoraId, result)">
-                        <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                        <div class="comic-list-image"
+                            [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
                         </div>
                         <div class="comic-list-content">
-                            <p class="comic-list-title"><b>{{result.nomeInter}}</b> Vol. {{result.cicloNum}}</p>
+                            <p class="comic-list-title">
+                                <b>{{result.nomeInter}}</b>
+                                @if (searchParams.type === 'comics') {
+                                Vol. {{result.cicloNum}}
+                                }
+                            </p>
                             <div class="comic-list-details">
                                 @if (result.mangaStats) {
                                 {{result.mangaStats.nomeJap}} - {{result.mangaStats.demografia}} -
                                 }
-                                <span class="capitalize">{{result.estadoPubAtual.toLowerCase()}}</span> - 
+                                <span class="capitalize">{{result.estadoPubAtual.toLowerCase()}}</span> -
                                 <span class="comic-list-issues">
-                                {{result.numEdicoes}} 
-                                @if (result.mangaStats) {
+                                    {{result.numEdicoes}}
+                                    @if (result.mangaStats) {
                                     tankos
-                                }
-                                @else {
+                                    }
+                                    @else {
                                     edições
-                                }
+                                    }
                                 </span>
                             </div>
                         </div>

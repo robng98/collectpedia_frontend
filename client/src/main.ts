@@ -45,27 +45,34 @@ document.head.appendChild(style);
 
 registerSwiperElements();
 
-// Add global style mutation observer to handle Shadow DOM
+// Update the existing mutation observer code:
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Swiper elements after DOM is loaded
   const observer = new MutationObserver((mutations) => {
     document.querySelectorAll('swiper-container').forEach(swiperElement => {
       if (swiperElement.shadowRoot) {
-        // Apply style to shadow DOM
-        const style = document.createElement('style');
-        style.textContent = `
-          :host {
-            --swiper-theme-color: rgb(224, 226, 236) !important;
-            
-            .swiper-pagination-vertical.swiper-pagination-bullets, .swiper-vertical > .swiper-pagination-bullets{
-              right: var(--swiper-pagination-bullet-right, 25px);
+        // Check if we already applied styles to prevent duplicates
+        if (!swiperElement.shadowRoot.querySelector('#custom-swiper-styles')) {
+          const style = document.createElement('style');
+          style.id = 'custom-swiper-styles';
+          style.textContent = `
+            :host {
+              --swiper-theme-color: #4263c3 !important;
+            }
+            .swiper-pagination-bullet-active {
+              background-color: rgb(224, 226, 236) !important;
+            }
+            .swiper-pagination-vertical.swiper-pagination-bullets,
+            .swiper-vertical > .swiper-pagination-bullets {
+              right: var(--swiper-pagination-right, 25px);
               background-color: #1340af;
               padding: 5px;
               border-radius: 15px;
             }
-          }
-            
-        `;
-        swiperElement.shadowRoot.appendChild(style);
+          `;
+          swiperElement.shadowRoot.appendChild(style);
+        }
       }
     });
   });

@@ -6,7 +6,7 @@
   </div>
 
   <div class="layout-content-container flex flex-col max-w-[960px] flex-1" *ngIf="!isLoading">
-    <div class="hero-section"
+    <div class="hero-section" 
       style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, hsla(0, 0%, 0%, 0.55) 100%), url("/comicsmanga.jpg");'>
       <div class="hero-content">
         <h1>Bem-vindo ao Collectpedia!</h1>
@@ -46,14 +46,23 @@
       </form>
     </div>
 
-    <div class="flex flex-row mt-5 justify-between">
+    <div class="flex flex-row mt-5 justify-between" >
       <div class="flex-1 max-w-[30%] min-h-full">
         <h2 class="section-title mb-5">Novas adições</h2>
 
-        <swiper-container pagination="true" pagination-clickable="true" keyboard="true" loop="true" direction="vertical"
-          mousewheel="true" autoplay-delay="5000" autoplay-disable-on-interaction="false">
+        <!-- In the swiper-container element (around line 49) -->
+          <swiper-container #swiperContainer
+          pagination="true" 
+          pagination-clickable="true" 
+          keyboard="true" 
+          [attr.loop]="lastAddedIssues.length >= 5 ? 'true' : 'false'" 
+          direction="vertical"
+          mousewheel="true" 
+          autoplay-delay="5000" 
+          autoplay-disable-on-interaction="false"
+          slides-per-view="1">  <!-- Explicitly set slidesPerView -->
           <swiper-slide class="flex ml-6 justify-center" *ngFor="let issue of lastAddedIssues; let i = index"
-            [attr.data-swiper-slide-index]="i">
+            [attr.data-swiper-slide-index]="i" >
             <div class="issue-card">
               <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'
                 (click)="goToSerieByIssue(issue.serieId)">
@@ -64,6 +73,19 @@
             </div>
           </swiper-slide>
         </swiper-container>
+        <script>
+          const swiperEl = document.querySelector('swiper-container');
+        
+          swiperEl.addEventListener('beforeInit', (event) => {
+            const [swiper, progress] = event.detail;
+            console.log(swiper)
+          });
+        
+          swiperEl.addEventListener('swiperslidechange', (event) => {
+            console.log('slide changed');
+          });
+        </script>
+
       </div>
       <div class="flex-1 flex flex-col max-w-[60%]">
         <h2 class="section-title mb-8">Principais editoras</h2>

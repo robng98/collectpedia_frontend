@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ElementRef,  ViewChild, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
 import { LastAddedIssuesService } from '../../core/services/last-added-issues.service';
 import { Edicao } from '../../shared/models/edicao';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,7 +31,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './home.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+  @ViewChild('swiperContainer') swiperContainer: ElementRef | undefined;
+
   private lastAddedIssuesService = inject(LastAddedIssuesService);
   private serieService = inject(SerieService);
   private router = inject(Router);
@@ -41,24 +43,60 @@ export class HomeComponent implements OnInit {
   isLoading = false; // Add the isLoading property
 
   ngOnInit(): void {
-    this.isLoading = true; // Set loading to true before fetching data
+    this.isLoading = true;
     
     this.lastAddedIssuesService.getLastAddedIssues().subscribe({
       next: (response) => {
         this.lastAddedIssues = response.data;
-        // Add a 1500ms delay before hiding the loading indicator
         setTimeout(() => {
           this.isLoading = false;
+          // Initialize swiper after data is loaded and DOM is rendered
+          setTimeout(() => this.initSwiper(), 100);
         }, 1500);
       },
       error: (error) => {
         console.log(error);
-        // Also add a 1500ms delay on error
         setTimeout(() => {
           this.isLoading = false;
         }, 1500);
       }
     });
+  }
+
+  
+  // Separate method to initialize swiper
+  initSwiper(): void {
+    if (this.swiperContainer?.nativeElement) {
+      // Apply custom styles to shadow DOM
+      if (this.swiperContainer.nativeElement.shadowRoot) {
+        const style = document.createElement('style');
+        style.textContent = `
+          :host {
+            --swiper-theme-color: #4263c3 !important;
+          }
+          .swiper-pagination-bullet-active {
+            background-color: rgb(224, 226, 236) !important;
+          }
+          .swiper-pagination-vertical.swiper-pagination-bullets,
+          .swiper-vertical > .swiper-pagination-bullets {
+            right: var(--swiper-pagination-right, 25px);
+            background-color: #1340af;
+            padding: 5px;
+            border-radius: 15px;
+          }
+        `;
+        this.swiperContainer.nativeElement.shadowRoot.appendChild(style);
+      }
+
+      this.swiperContainer.nativeElement.swiper?.update();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Only initialize if data is already loaded
+    if (!this.isLoading && this.lastAddedIssues.length > 0) {
+      this.initSwiper();
+    }
   }
 
   onSearchChange() {

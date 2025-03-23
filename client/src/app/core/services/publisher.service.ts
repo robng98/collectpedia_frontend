@@ -27,9 +27,10 @@ export class PublisherService {
     return this.http.get<Pagination<Publisher>>(this.baseUrl + 'editora', { params });
   }
 
-  getPublisherSeries(publisherId: number, page: number = 1, pageSize: number = 20, sortBy: string = 'nomeInter', isDescending: boolean = false): Observable<Pagination<Serie>> {
+  getPublisherSeries(publisherId: number, search: string, page: number = 1, pageSize: number = 20, sortBy: string = 'nomeInter', isDescending: boolean = false): Observable<Pagination<Serie>> {
     const params = new HttpParams()
       .set('editoraId', publisherId.toString())
+      .set('nomeInter', search.toString())
       .set('PageNumber', page.toString())
       .set('PageSize', pageSize.toString())
       .set('SortBy', sortBy.toString())

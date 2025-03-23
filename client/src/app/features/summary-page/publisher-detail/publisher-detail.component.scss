@@ -526,6 +526,116 @@
   color: white;
 }
 
+// New custom paginator container with search bar
+.custom-paginator-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+  background-color: #1a2a4d;
+  border-radius: 4px;
+  padding: 0 16px;
+  min-height: 56px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  // Search wrapper specifically within paginator
+  .search-wrapper-paginator {
+    min-width: 200px;
+    max-width: 300px;
+    margin-right: 8px;
+    
+    form {
+      width: 100%;
+      display: flex;
+    }
+    
+    .search-container {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      border-radius: 2rem;
+      background-color: #1e3a8a;
+      height: 40px;
+    }
+
+    // Reuse existing search styles
+    .search-icon-container {
+      color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 1rem;
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 0;
+      resize: none;
+      overflow: hidden;
+      color: #f5f5f5;
+      background-color: transparent;
+      height: 100%;
+      padding: 0 1rem;
+      border: none;
+      font-size: 1rem;
+      font-weight: normal;
+      line-height: normal;
+
+      &::placeholder {
+        color: #f5f5f5;
+      }
+
+      &:focus {
+        outline: none;
+        ring: none;
+        border: none;
+      }
+    }
+
+    .clear-search-button {
+      color: #f5f5f5;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 8px;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  // Make the paginator take up remaining space
+  .comics-paginator {
+    flex: 1;
+    margin-top: 0;
+    background-color: transparent;
+  }
+}
+
+// Responsive adjustments for the paginator container
+@media (max-width: 768px) {
+  .custom-paginator-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    
+    .search-wrapper-paginator {
+      max-width: 100%;
+      margin-bottom: 16px;
+      margin-right: 0;
+    }
+  }
+}
+
 // Responsive adjustments
 @media (max-width: 1200px) {
   .comics-grid {

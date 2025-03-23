@@ -26,22 +26,7 @@
 
                     <!-- All controls moved to right side -->
                     <div class="controls-section flex-1 justify-end mr-2">
-                        <div class="search-wrapper mr-12 scale-[0.85]">
-                            <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
-                                <div class="search-container">
-                                    <div class="search-icon-container">
-                                        <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
-                                    </div>
-                                    <input class="search-input" placeholder="Buscar" name="search"
-                                        [(ngModel)]="searchParams.search" required autocomplete="off" />
-                                    <!-- Add clear button that only shows when there's text -->
-                                    <button mat-icon-button type="button" *ngIf="searchParams.search" 
-                                        (click)="clearSearch()" class="clear-search-button">
-                                        <mat-icon>close</mat-icon>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                        <!-- Removed the search-wrapper from here -->
 
                         <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle ">
@@ -184,11 +169,33 @@
                 </div>
             </div>
 
-            <!-- Pagination Controls -->
-            <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
-                [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
-                showFirstLastButtons class="comics-paginator">
-            </mat-paginator>
+            <!-- Custom Paginator with Search Bar -->
+            <div *ngIf="totalItems > 0" class="custom-paginator-container">
+                <!-- Search bar moved here -->
+                <div class="search-wrapper-paginator scale-[0.85]">
+                    <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
+                        <div class="search-container">
+                            <div class="search-icon-container">
+                                <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
+                            </div>
+                            <input class="search-input" placeholder="Buscar" name="search"
+                                [(ngModel)]="searchParams.search" required autocomplete="off" />
+                            <!-- Clear button that only shows when there's text -->
+                            <button mat-icon-button type="button" *ngIf="searchParams.search" 
+                                (click)="clearSearch()" class="clear-search-button">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Pagination Controls -->
+                <mat-paginator [length]="totalItems" [pageSize]="pageSize"
+                    [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" 
+                    (page)="onPageChange($event)"
+                    showFirstLastButtons class="comics-paginator">
+                </mat-paginator>
+            </div>
         </div>
     </div>
 </div>

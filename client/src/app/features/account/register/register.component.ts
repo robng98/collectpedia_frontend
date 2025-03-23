@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ContaService } from '../../../core/services/conta.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,8 @@ import { ContaService } from '../../../core/services/conta.service';
     RouterLink,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
@@ -25,12 +27,15 @@ export class RegisterComponent {
   registerForm: FormGroup;
   isSubmitting = false;
   errorMessage: string | null = null;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private contaService: ContaService,
     private router: Router
   ) {
+    this.isLoading = true;
+
     this.registerForm = this.formBuilder.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -39,6 +44,10 @@ export class RegisterComponent {
     }, {
       validators: this.passwordMatchValidator
     });
+
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 1000);
   }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -63,7 +72,7 @@ export class RegisterComponent {
 
     this.contaService.register(this.registerForm.value).subscribe({
       next: () => {
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/user');
       },
       error: (error) => {
         console.log(error);

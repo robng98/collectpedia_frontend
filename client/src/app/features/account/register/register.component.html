@@ -1,17 +1,21 @@
 <div class="flex justify-center items-center min-h-[80vh] px-4 flex-grow">
+    <!-- Loading Indicator (Centralized) -->
+    <div *ngIf="isLoading" class="centralized-spinner-container">
+      <mat-spinner diameter="60" color="light"></mat-spinner>
+    </div>
   <div class="w-full max-w-md">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
       <div class="bg-[#1e3a8a] text-white py-4 px-6">
-        <h2 class="text-xl font-bold">Register</h2>
+        <h2 class="text-xl font-bold">Cadastrar</h2>
       </div>
       
       <div class="p-6">
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
           <mat-form-field appearance="fill" class="w-full mb-4">
-            <mat-label>Full Name</mat-label>
+            <mat-label>Nome completo</mat-label>
             <input matInput formControlName="fullName" placeholder="Full Name">
             <mat-error *ngIf="registerForm.get('fullName')?.errors?.['required']">
-              Full name is required
+              Campo obrigatório
             </mat-error>
           </mat-form-field>
           
@@ -19,32 +23,32 @@
             <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="email" placeholder="Email">
             <mat-error *ngIf="registerForm.get('email')?.errors?.['required']">
-              Email is required
+              Campo obrigatório
             </mat-error>
             <mat-error *ngIf="registerForm.get('email')?.errors?.['email']">
-              Invalid email format
+              Formato de email inválido
             </mat-error>
           </mat-form-field>
           
           <mat-form-field appearance="fill" class="w-full mb-4">
-            <mat-label>Password</mat-label>
+            <mat-label>Senha</mat-label>
             <input matInput type="password" formControlName="password" placeholder="Password">
             <mat-error *ngIf="registerForm.get('password')?.errors?.['required']">
-              Password is required
+              Campo obrigatório
             </mat-error>
             <mat-error *ngIf="registerForm.get('password')?.errors?.['minlength']">
-              Password must be at least 6 characters
+              Senha precisa de no mínimo 6 caracteres
             </mat-error>
           </mat-form-field>
           
           <mat-form-field appearance="fill" class="w-full mb-4">
-            <mat-label>Confirm Password</mat-label>
+            <mat-label>Confirmar senha</mat-label>
             <input matInput type="password" formControlName="confirmPassword" placeholder="Confirm Password">
             <mat-error *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">
-              Please confirm your password
+              Por favor, confirme sua senha
             </mat-error>
             <mat-error *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">
-              Passwords do not match
+              Senhas não conferem
             </mat-error>
           </mat-form-field>
           
@@ -52,21 +56,21 @@
             {{ errorMessage }}
           </div>
           
-          <div class="flex justify-center">
+          <div class="flex justify-center mx-10">
             <button 
               type="submit" 
-              mat-raised-button 
+              mat-flat-button 
               [disabled]="registerForm.invalid || isSubmitting" 
               class="search-button bg-[#1e3a8a] text-white w-full">
-              {{ isSubmitting ? 'Loading...' : 'Register' }}
+              {{ isSubmitting ? 'Carregando...' : 'Registrar' }}
             </button>
           </div>
         </form>
         
         <div class="mt-6 text-center">
           <p class="text-gray-600">
-            Already have an account
-            <a routerLink="/account/login" class="text-[#1e3a8a] font-medium hover:underline">Login</a>
+            Já possui conta? Faça seu
+            <a routerLink="/account/login" class="text-[#1e3a8a] font-medium hover:underline">Login</a>.
           </p>
         </div>
       </div>

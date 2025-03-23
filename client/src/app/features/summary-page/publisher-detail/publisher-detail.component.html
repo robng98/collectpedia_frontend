@@ -34,12 +34,12 @@
                     </div>
 
                     <!-- All controls moved to right side -->
-                    <div class="controls-section flex-1 justify-end mr-4">
+                    <div class="controls-section flex-1 justify-end mr-2">
 
                         <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle ">
                             <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
-                            <div class="sort-options ml-2">
+                            <div class="sort-options ml-2 scale-[0.85]">
                                 <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'nomeInter'"
                                     (click)="updateSorting('nomeInter', !searchParams.isDescending)">
@@ -79,14 +79,16 @@
                         <!-- View Toggle Button - replaced with Material Button Toggle -->
                         <div class="align-middle">
                             <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
-                            <mat-button-toggle-group class="ml-2" [value]="viewMode" (change)="onViewModeChange($event)">
-                                <mat-button-toggle value="card">
-                                    <span class="toggle-label">Cards</span>
-                                </mat-button-toggle>
-                                <mat-button-toggle value="list">
-                                    <span class="toggle-label">Lista</span>
-                                </mat-button-toggle>
-                            </mat-button-toggle-group>
+                            <div class="scale-[0.85]">
+                                <mat-button-toggle-group class="ml-2" [value]="viewMode" (change)="onViewModeChange($event)">
+                                    <mat-button-toggle value="card">
+                                        <span class="toggle-label">Cards</span>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="list">
+                                        <span class="toggle-label">Lista</span>
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
                         </div>
 
                     </div>

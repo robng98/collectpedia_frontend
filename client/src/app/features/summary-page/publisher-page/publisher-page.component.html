@@ -19,11 +19,11 @@
                 <!-- Controls Section with Sorting and View Toggle - Updated to match publisher-detail style -->
                 <div class="flex flex-col">
                     <!-- All controls moved to right side -->
-                    <div class="controls-section flex-1 justify-end mr-4">
+                    <div class="controls-section flex-1 justify-end mr-4 mt-4">
                         <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle">
                             <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
-                            <div class="sort-options ml-2">
+                            <div class="sort-options ml-2 scale-[0.85]">
                                 <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'nome'"
                                     (click)="updateSorting('nome', !searchParams.isDescending)">
@@ -46,14 +46,17 @@
                         <!-- View Toggle Button - replaced with Material Button Toggle -->
                         <div class="align-middle">
                             <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
-                            <mat-button-toggle-group class="ml-2" [value]="viewMode" (change)="onViewModeChange($event)">
-                                <mat-button-toggle value="card">
-                                    <span class="toggle-label">Cards</span>
-                                </mat-button-toggle>
-                                <mat-button-toggle value="list">
-                                    <span class="toggle-label">Lista</span>
-                                </mat-button-toggle>
-                            </mat-button-toggle-group>
+                            <div class="scale-[0.85]">
+                                <mat-button-toggle-group class="ml-2" [value]="viewMode"
+                                    (change)="onViewModeChange($event)">
+                                    <mat-button-toggle value="card">
+                                        <span class="toggle-label">Cards</span>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="list">
+                                        <span class="toggle-label">Lista</span>
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,7 +67,8 @@
                 @for (publisher of publishers; track publisher.id) {
                 <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">
                     <div class="publisher-logo">
-                        <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'" class="logo-image rounded-md">
+                        <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'"
+                            class="logo-image rounded-md">
                         <div *ngIf="!publisher.logo" class="logo-placeholder">
                             {{publisher.nome.charAt(0)}}
                         </div>
@@ -91,7 +95,8 @@
                     @for (publisher of publishers; track publisher.id) {
                     <div class="publisher-list-item" (click)="navigateToPublisher(publisher.id)">
                         <div class="publisher-list-logo">
-                            <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'" class="logo-image-list">
+                            <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'"
+                                class="logo-image-list">
                             <div *ngIf="!publisher.logo" class="logo-placeholder-list">
                                 {{publisher.nome.charAt(0)}}
                             </div>
@@ -99,7 +104,7 @@
                         <div class="publisher-list-content">
                             <p class="publisher-list-name">{{publisher.nome}}</p>
                             <div class="publisher-list-details">
-                                <span>Fundação: {{publisher.anoCriacao | slice:0:4}}</span> - 
+                                <span>Fundação: {{publisher.anoCriacao | slice:0:4}}</span> -
                                 <span class="publisher-list-series">{{publisher.totalSeries}} séries publicadas</span>
                             </div>
                         </div>

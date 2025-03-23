@@ -3,7 +3,7 @@
     <div *ngIf="isLoading" class="centralized-spinner-container">
         <mat-spinner diameter="60" color="accent"></mat-spinner>
     </div>
-    
+
     <div class="layout-container flex flex-1 max-w-[1200px] px-4" *ngIf="!isLoading">
         <!-- Left Column - Serie Info -->
         <div class="serie-info flex-1 max-w-[300px] mr-6">
@@ -21,19 +21,23 @@
                 @if (currentSerie.mangaStats) {
                 <div class="serie-detail mt-4 mb-4 flex flew-col justify-between">
                     <div class="flex flex-col">
-                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 pr-4 mb-2">Nome Original</p>
+                        <p
+                            class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 pr-4 mb-2">
+                            Nome Original</p>
                         <div class=" p-3 text-left">
                             <p class="text-[#FFFFFF] text-sm font-medium">
-                            {{currentSerie.mangaStats.nomeJap}}
-                        </p>
+                                {{currentSerie.mangaStats.nomeJap}}
+                            </p>
                         </div>
                     </div>
                     <div class="flex flex-col">
-                        <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 pr-4 mb-2">Demografia</p>
+                        <p
+                            class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 pr-4 mb-2">
+                            Demografia</p>
                         <div class=" p-3 text-left">
                             <p class="text-[#FFFFFF] text-sm font-medium">
-                            {{currentSerie.mangaStats.demografia}}
-                        </p>
+                                {{currentSerie.mangaStats.demografia}}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -72,7 +76,14 @@
 
                     <div class="flex flex-col mb-4">
                         <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">
-                            Número de Edições</p>
+                            Número de
+                            @if(currentSerie.mangaStats) {
+                            Tankos
+                            }
+                            @else {
+                            Edições
+                            }
+                        </p>
                         <div class=" p-3 text-left">
                             <p class="text-[#FFFFFF] text-lg font-bold">
                                 {{currentSerie.numEdicoes}}
@@ -141,7 +152,8 @@
                 </mat-paginator>
 
                 <div class="flex justify-end mt-4">
-                    <button mat-flat-button class="submit-button rounde-md mr-4" [disabled]="!isSomeSelected() && !isAllSelected()">
+                    <button mat-flat-button class="submit-button rounde-md mr-4"
+                        [disabled]="!isSomeSelected() && !isAllSelected()">
                         <span>Adicionar à coleção</span>
                     </button>
                 </div>
@@ -159,7 +171,8 @@
             <!-- Remove opacity class as we're using bg-opacity on the overlay instead -->
             <div>
                 <div class="section-header">
-                    <h2 class="section-title text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-3">
+                    <h2
+                        class="section-title text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-3">
                         Detalhes da Edição
                     </h2>
                 </div>
@@ -217,13 +230,9 @@
 
                     <!-- Only add if there are a lot of contributors to display -->
                     <div *ngIf="contribuicoesTotalItems > contribuicoesPageSize" class="mt-4">
-                        <mat-paginator 
-                            [length]="contribuicoesTotalItems"
-                            [pageSize]="contribuicoesPageSize"
-                            [pageIndex]="contribuicoesPage - 1"
-                            [pageSizeOptions]="[10, 25, 50, 100]"
-                            (page)="onContribuicoesPageChange($event)"
-                            class="paginator"
+                        <mat-paginator [length]="contribuicoesTotalItems" [pageSize]="contribuicoesPageSize"
+                            [pageIndex]="contribuicoesPage - 1" [pageSizeOptions]="[10, 25, 50, 100]"
+                            (page)="onContribuicoesPageChange($event)" class="paginator"
                             aria-label="Select contributors page">
                         </mat-paginator>
                     </div>

@@ -174,7 +174,13 @@
                             [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
                         </div>
                         <div class="comic-list-content">
-                            <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
+                            <p class="comic-list-title">
+                                <b>{{serie.nomeInter}}</b>
+                                @if (searchParams.type === 'comics') {
+                                Vol. {{serie.cicloNum}}
+                                }
+                            </p>
+                            
                             <div class="comic-list-details">
                                 <!-- Manga-specific information -->
                                 @if (contentType === 'mangas' && serie.mangaStats) {

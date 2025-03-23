@@ -120,6 +120,17 @@ export class PublisherDetailComponent implements OnInit {
         }
     }
 
+    // Add method to clear search and reset series display
+    clearSearch(): void {
+        if (this.searchParams.search) {
+            this.searchParams.search = '';
+            this.searchParams.pageNumber = 1;
+            this.currentPage = 1;
+            this.isLoading = true;
+            this.loadPublisherSeries();
+        }
+    }
+
     loadPublisherSeries() {
 
 

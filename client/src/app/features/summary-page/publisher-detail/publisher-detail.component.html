@@ -26,7 +26,7 @@
 
                     <!-- All controls moved to right side -->
                     <div class="controls-section flex-1 justify-end mr-2">
-                        <div class="search-wrapper mr-12">
+                        <div class="search-wrapper mr-12 scale-[0.85]">
                             <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
                                 <div class="search-container">
                                     <div class="search-icon-container">
@@ -34,6 +34,11 @@
                                     </div>
                                     <input class="search-input" placeholder="Buscar" name="search"
                                         [(ngModel)]="searchParams.search" required autocomplete="off" />
+                                    <!-- Add clear button that only shows when there's text -->
+                                    <button mat-icon-button type="button" *ngIf="searchParams.search" 
+                                        (click)="clearSearch()" class="clear-search-button">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
                                 </div>
                             </form>
                         </div>

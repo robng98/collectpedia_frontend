@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
 
 import { SerieService } from '../../../core/services/serie.service';
 import { EdicaoService } from '../../../core/services/edicao.service';
@@ -19,7 +20,8 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
   imports: [
     CommonModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonToggleModule
   ],
   templateUrl: './comics-manga-page.component.html',
   styleUrl: './comics-manga-page.component.scss'
@@ -187,6 +189,13 @@ export class ComicsMangaPageComponent implements OnInit {
    */
   toggleViewMode(): void {
     this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
+  }
+
+  /**
+   * Handle the Material Button Toggle change event
+   */
+  onViewModeChange(event: MatButtonToggleChange): void {
+    this.viewMode = event.value;
   }
 
   /**

@@ -360,6 +360,87 @@
     color: white;
 }
 
+// Controls section style to match publisher-detail
+.controls-section {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 2rem;
+    min-width: 200px;
+    padding-left: 16px;
+    flex: 0 0 auto;
+}
+
+// Content type selector updated to match publisher-detail styling
+.content-type-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+
+    .sort-options {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        width: 100%;
+    }
+}
+
+// Sorting Controls updated to match publisher-detail
+.sorting-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+
+    .sort-label {
+        font-size: 14px;
+    }
+
+    .sort-options {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .sort-button {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #C4C4C4;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        
+        &.active {
+            background-color: #344887;
+            color: white;
+        }
+        
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    }
+}
+
+// Material Button Toggle styling
+::ng-deep .mat-button-toggle-group {
+    background-color: rgba(255, 255, 255, 0.1);
+
+    .mat-button-toggle {
+        color: #C4C4C4;
+        background-color: transparent;
+        transition: all 0.2s ease;
+
+        .mat-button-toggle-label-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+
 // Responsive adjustments for smaller screens
 @media (max-width: 1200px) {
     .comics-grid {
@@ -389,6 +470,34 @@
     .comics-list-container {
         height: calc(100vh - 250px); // Adjust for smaller screens
     }
+
+    // Keep controls right-aligned but adjust for mobile
+    .comics-header {
+        flex-direction: column;
+
+        .comics-info {
+            max-width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .controls-section {
+            width: 100%;
+            padding-left: 0;
+        }
+    }
+
+    // Align controls to the right even on mobile
+    .controls-section {
+        align-items: stretch;
+
+        .content-type-controls,
+        .sorting-controls,
+        .sort-options {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
 }
 
 @media (max-width: 480px) {
@@ -399,6 +508,21 @@
     .comics-list-container {
         height: calc(100vh - 280px);
         margin: 0 8px;
+    }
+
+    // Stack controls vertically on very small screens
+    .controls-section {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 1rem;
+
+        .content-type-controls,
+        .sorting-controls {
+            .sort-options {
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+        }
     }
 }
 

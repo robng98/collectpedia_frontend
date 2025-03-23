@@ -16,55 +16,62 @@
                     </p>
                 </div>
 
-                <!-- Content Type and Sorting Controls -->
-                <div class="flex items-center">
-                    <!-- Content Type Selector -->
-                    <div class="content-type-selector flex gap-4 mr-6">
-                        <button class="content-type-button px-3 py-1 rounded"
-                            [class.active]="contentType === 'comics'"
-                            (click)="navigateToType('comics')">
-                            Comics
-                        </button>
-                        <button class="content-type-button px-3 py-1 rounded"
-                            [class.active]="contentType === 'mangas'"
-                            (click)="navigateToType('mangas')">
-                            Mangá
-                        </button>
-                    </div>
-
-                    <!-- Sorting Controls -->
-                    <div class="sorting-controls flex gap-4 items-center">
-                        <div class="sort-options flex gap-2">
-                            <button class="sort-button px-3 py-1 rounded"
-                                [class.active]="searchParams.sortBy === 'nomeInter'"
-                                (click)="updateSorting('nomeInter', !searchParams.isDescending)">
-                                Nome
-                                <span *ngIf="searchParams.sortBy === 'nomeInter'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
-                            <button class="sort-button px-3 py-1 rounded"
-                                [class.active]="searchParams.sortBy === 'cicloNum'"
-                                (click)="updateSorting('cicloNum', !searchParams.isDescending)">
-                                Volume
-                                <span *ngIf="searchParams.sortBy === 'cicloNum'">
-                                    {{ searchParams.isDescending ? '↓' : '↑' }}
-                                </span>
-                            </button>
+                <!-- Controls Section with Content Type, Sorting and View Toggle - Updated to match publisher-detail style -->
+                <div class="flex flex-col">
+                    <!-- All controls moved to right side -->
+                    <div class="controls-section flex-1 justify-end mr-4">
+                        <!-- Content Type Selector - Restyled to match other controls -->
+                        <div class="sorting-controls align-middle">
+                            <div class="sort-label text-white font-semibold mt-0">Estilo de publicação</div>
+                            <div class="sort-options ml-2">
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="contentType === 'comics'"
+                                    (click)="navigateToType('comics')">
+                                    Comics
+                                </button>
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="contentType === 'mangas'"
+                                    (click)="navigateToType('mangas')">
+                                    Mangá
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- View Toggle Button -->
-                    <div class="view-toggle ml-4">
-                        <button class="view-toggle-button px-3 py-1 rounded flex items-center gap-2"
-                            (click)="toggleViewMode()">
-                            <span *ngIf="viewMode === 'card'">
-                                Lista
-                            </span>
-                            <span *ngIf="viewMode === 'list'">
-                                Cards
-                            </span>
-                        </button>
+                        <!-- Sorting Controls -->
+                        <div class="sorting-controls align-middle">
+                            <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
+                            <div class="sort-options ml-2">
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'nomeInter'"
+                                    (click)="updateSorting('nomeInter', !searchParams.isDescending)">
+                                    Título
+                                    <span *ngIf="searchParams.sortBy === 'nomeInter'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'cicloNum'"
+                                    (click)="updateSorting('cicloNum', !searchParams.isDescending)">
+                                    Volume
+                                    <span *ngIf="searchParams.sortBy === 'cicloNum'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- View Toggle Button - replaced with Material Button Toggle -->
+                        <div class="align-middle">
+                            <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
+                            <mat-button-toggle-group class="ml-2" [value]="viewMode" (change)="onViewModeChange($event)">
+                                <mat-button-toggle value="card">
+                                    <span class="toggle-label">Cards</span>
+                                </mat-button-toggle>
+                                <mat-button-toggle value="list">
+                                    <span class="toggle-label">Lista</span>
+                                </mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
                     </div>
                 </div>
             </div>

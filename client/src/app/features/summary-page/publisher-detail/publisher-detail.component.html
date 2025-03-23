@@ -179,7 +179,7 @@
             <!-- Pagination Controls -->
             <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
                 [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
-                class="comics-paginator">
+                showFirstLastButtons class="comics-paginator">
             </mat-paginator>
         </div>
     </div>

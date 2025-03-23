@@ -16,18 +16,18 @@
             <mat-label>Email</mat-label>
             <input matInput type="email" formControlName="email" placeholder="Email">
             <mat-error *ngIf="loginForm.get('email')?.errors?.['required']">
-              Email is required
+              Campo obrigatório
             </mat-error>
             <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
-              Invalid email format
+              Formato de email inválido
             </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="w-full mb-4">
-            <mat-label>Password</mat-label>
+            <mat-label>Senha</mat-label>
             <input matInput type="password" formControlName="password" placeholder="Password">
             <mat-error *ngIf="loginForm.get('password')?.errors?.['required']">
-              Password is required
+              Campo obrigatório
             </mat-error>
           </mat-form-field>
 

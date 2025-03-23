@@ -83,7 +83,7 @@
             </div>
 
             <!-- Card View -->
-            <div class="publishers-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
+            <div class="publishers-grid mx-20 mb-[2rem]" *ngIf="viewMode === 'card'">
                 @for (publisher of publishers; track publisher.id) {
                 <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">
                     <div class="publisher-logo">

@@ -17,10 +17,12 @@ export class PublisherService {
     return this.http.get<Publisher>(this.baseUrl + 'editora/' + publisherId);
   }
   
-  getPublishers(page: number = 1, pageSize: number = 20): Observable<Pagination<Publisher>> {
+  getPublishers(page: number = 1, pageSize: number = 20, sortBy: string = 'nomeInter', isDescending: boolean = false): Observable<Pagination<Publisher>> {
     const params = new HttpParams()
       .set('PageNumber', page.toString())
-      .set('PageSize', pageSize.toString());
+      .set('PageSize', pageSize.toString())
+      .set('SortBy', sortBy.toString())
+      .set('IsDescending', isDescending);
     
     return this.http.get<Pagination<Publisher>>(this.baseUrl + 'editora', { params });
   }

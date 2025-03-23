@@ -56,7 +56,7 @@ export class PublisherPageComponent implements OnInit {
   loadPublishers() {
     this.isLoading = true;
     
-    this.publisherService.getPublishers(this.currentPage, this.pageSize).subscribe({
+    this.publisherService.getPublishers(this.currentPage, this.pageSize, this.searchParams.sortBy, this.searchParams.isDescending).subscribe({
       next: (response) => {
         this.publishers = response.data;
         this.totalItems = response.totalCount;

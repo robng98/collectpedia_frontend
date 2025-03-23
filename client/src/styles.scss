@@ -25,6 +25,12 @@
 
   @include mat.button-toggle-overrides((
       selected-state-text-color: #fff,
+      height: 32px,
+      label-text-font: var(--body-font),
+      selected-state-background-color: rgb(52, 72, 135),
+      label-text-size: 16px,
+      label-text-weight: 400,
+      divider-color: transparent
     ));
 
   .table-container {

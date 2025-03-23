@@ -6,6 +6,7 @@ import { ContaService } from '../../../core/services/conta.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
     RouterModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -25,6 +27,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
   isSubmitting = false;
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +36,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.initializeForm();
   }
 
@@ -41,6 +45,7 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+    setTimeout(() => this.isLoading = false, 1000);
   }
 
   onSubmit() {

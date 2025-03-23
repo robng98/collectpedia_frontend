@@ -216,23 +216,6 @@
     }
 }
 
-// Content Type Selector
-.content-type-button {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #C4C4C4;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    
-    &.active {
-        background-color: #1e3a8a;
-        color: white;
-    }
-    
-    &:hover:not(.active) {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
-}
-
 // List view container with flexible height
 .comics-list-container {
     position: relative;
@@ -365,26 +348,10 @@
     display: flex;
     flex-direction: row;
     align-items: flex-end;
-    gap: 2rem;
+    gap: 1rem;
     min-width: 200px;
     padding-left: 16px;
     flex: 0 0 auto;
-}
-
-// Content type selector updated to match publisher-detail styling
-.content-type-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    width: 100%;
-
-    .sort-options {
-        display: flex;
-        gap: 8px;
-        justify-content: flex-end;
-        width: 100%;
-    }
 }
 
 // Sorting Controls updated to match publisher-detail

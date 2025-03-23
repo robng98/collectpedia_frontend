@@ -199,6 +199,15 @@ export class ComicsMangaPageComponent implements OnInit {
   }
 
   /**
+   * Handle content type toggle change
+   */
+  onContentTypeChange(event: MatButtonToggleChange): void {
+    if (this.contentType !== event.value) {
+      this.navigateToType(event.value);
+    }
+  }
+
+  /**
    * Navigate to different content type
    */
   navigateToType(type: string): void {

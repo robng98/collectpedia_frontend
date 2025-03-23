@@ -19,28 +19,12 @@
                 <!-- Controls Section with Content Type, Sorting and View Toggle - Updated to match publisher-detail style -->
                 <div class="flex flex-col">
                     <!-- All controls moved to right side -->
-                    <div class="controls-section flex-1 justify-end mr-4">
-                        <!-- Content Type Selector - Restyled to match other controls -->
-                        <div class="sorting-controls align-middle">
-                            <div class="sort-label text-white font-semibold mt-0">Estilo de publicação</div>
-                            <div class="sort-options ml-2">
-                                <button class="sort-button px-4 py-1 rounded-2xl"
-                                    [class.active]="contentType === 'comics'"
-                                    (click)="navigateToType('comics')">
-                                    Comics
-                                </button>
-                                <button class="sort-button px-4 py-1 rounded-2xl"
-                                    [class.active]="contentType === 'mangas'"
-                                    (click)="navigateToType('mangas')">
-                                    Mangá
-                                </button>
-                            </div>
-                        </div>
+                    <div class="controls-section flex-1 justify-end mr-4 mt-4">
 
                         <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle">
                             <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
-                            <div class="sort-options ml-2">
+                            <div class="sort-options scale-[0.85]">
                                 <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'nomeInter'"
                                     (click)="updateSorting('nomeInter', !searchParams.isDescending)">
@@ -49,6 +33,8 @@
                                         {{ searchParams.isDescending ? '↓' : '↑' }}
                                     </span>
                                 </button>
+
+                                @if(contentType === 'comics') {
                                 <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'cicloNum'"
                                     (click)="updateSorting('cicloNum', !searchParams.isDescending)">
@@ -57,20 +43,59 @@
                                         {{ searchParams.isDescending ? '↓' : '↑' }}
                                     </span>
                                 </button>
+
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'numEdicoes'"
+                                    (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
+                                    Edições
+                                    <span *ngIf="searchParams.sortBy === 'numEdicoes'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+                                }
+                                @else {
+                                <button class="sort-button px-4 py-1 rounded-2xl"
+                                    [class.active]="searchParams.sortBy === 'numEdicoes'"
+                                    (click)="updateSorting('numEdicoes', !searchParams.isDescending)">
+                                    Tankos
+                                    <span *ngIf="searchParams.sortBy === 'numEdicoes'">
+                                        {{ searchParams.isDescending ? '↓' : '↑' }}
+                                    </span>
+                                </button>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Content Type Selector - Using Material Button Toggle -->
+                        <div class="align-middle">
+                            <div class="sort-label text-white text-sm font-semibold mb-[7px]">Estilo de publicação</div>
+                            <div class=" scale-[0.85]">
+                                <mat-button-toggle-group class="ml-2" [value]="contentType"
+                                    (change)="onContentTypeChange($event)">
+                                    <mat-button-toggle value="comics">
+                                        <span class="toggle-label">Comics</span>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="mangas">
+                                        <span class="toggle-label">Mangá</span>
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
                             </div>
                         </div>
 
                         <!-- View Toggle Button - replaced with Material Button Toggle -->
                         <div class="align-middle">
                             <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
-                            <mat-button-toggle-group class="ml-2" [value]="viewMode" (change)="onViewModeChange($event)">
-                                <mat-button-toggle value="card">
-                                    <span class="toggle-label">Cards</span>
-                                </mat-button-toggle>
-                                <mat-button-toggle value="list">
-                                    <span class="toggle-label">Lista</span>
-                                </mat-button-toggle>
-                            </mat-button-toggle-group>
+                            <div class=" scale-[0.85]">
+                                <mat-button-toggle-group class="ml-2" [value]="viewMode"
+                                    (change)="onViewModeChange($event)">
+                                    <mat-button-toggle value="card">
+                                        <span class="toggle-label">Cards</span>
+                                    </mat-button-toggle>
+                                    <mat-button-toggle value="list">
+                                        <span class="toggle-label">Lista</span>
+                                    </mat-button-toggle>
+                                </mat-button-toggle-group>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,7 +112,7 @@
                     <div class="comic-info">
                         <h3 class="comic-title">{{serie.nomeInter}}</h3>
                         @if (contentType === 'comics') {
-                            <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
+                        <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
                         }
                         <!-- Manga-specific information -->
                         @if (contentType === 'mangas' && serie.mangaStats) {
@@ -99,12 +124,12 @@
                         <div class="comic-details">
                             <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
                             <p class="comic-issues">
-                                {{serie.numEdicoes}} 
+                                {{serie.numEdicoes}}
                                 @if (contentType === 'mangas' && serie.mangaStats) {
-                                    tankos
+                                tankos
                                 }
                                 @else {
-                                    edições
+                                edições
                                 }
                             </p>
                         </div>
@@ -125,22 +150,23 @@
                     @for (serie of comicSeries; track $index) {
                     @if (firstCovers.length === comicSeries.length) {
                     <div class="comic-list-item" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
-                        <div class="comic-list-image" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                        <div class="comic-list-image"
+                            [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
                         </div>
                         <div class="comic-list-content">
                             <p class="comic-list-title"><b>{{serie.nomeInter}}</b> Vol. {{serie.cicloNum}}</p>
                             <div class="comic-list-details">
                                 <!-- Manga-specific information -->
                                 @if (contentType === 'mangas' && serie.mangaStats) {
-                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} - 
+                                {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} -
                                 }
-                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> - 
-                                <span class="comic-list-issues">{{serie.numEdicoes}} 
+                                <span class="capitalize">{{serie.estadoPubAtual.toLowerCase()}}</span> -
+                                <span class="comic-list-issues">{{serie.numEdicoes}}
                                     @if (contentType === 'mangas' && serie.mangaStats) {
-                                        tankos
+                                    tankos
                                     }
                                     @else {
-                                        edições
+                                    edições
                                     }
                                 </span>
                             </div>
@@ -158,8 +184,7 @@
 
             <!-- Pagination Controls -->
             <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
-                 [pageIndex]="currentPage - 1" (page)="onPageChange($event)"
-                class="comics-paginator">
+                [pageIndex]="currentPage - 1" (page)="onPageChange($event)" class="comics-paginator">
             </mat-paginator>
         </div>
     </div>

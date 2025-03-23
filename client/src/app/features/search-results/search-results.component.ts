@@ -223,24 +223,6 @@ export class SearchResultsComponent implements OnInit {
   }
 
   /**
-   * Handle search form submission
-   */
-  onSearchChange(): void {
-    if (this.isValidSearch(this.searchParams.search)) {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          search: this.searchParams.search,
-          pageNumber: 1
-        },
-        queryParamsHandling: 'merge'
-      });
-      
-      this.loadResults();
-    }
-  }
-
-  /**
    * Check if search string is valid
    */
   isValidSearch(searchString: string | undefined): boolean {

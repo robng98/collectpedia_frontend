@@ -9,17 +9,22 @@ import { RegisterIssuesComponent } from './features/register-issues/register-iss
 import { ComicsMangaPageComponent } from './features/summary-page/comics-manga-page/comics-manga-page.component';
 import { PublisherPageComponent } from './features/summary-page/publisher-page/publisher-page.component';
 import { PublisherDetailComponent } from './features/summary-page/publisher-detail/publisher-detail.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'search', component: SearchResultsComponent},
-    {path: 'account/login', component: LoginComponent},
-    {path: 'account/register', component: RegisterComponent},
-    {path: 'serie/:serieId', component: SerieComponent},
-    {path: 'user', component: UserPageComponent},
-    {path: "register-issues", component: RegisterIssuesComponent},
-    {path: "summary/series/:type", component: ComicsMangaPageComponent},
-    {path: "summary/publishers", component: PublisherPageComponent},
-    {path: "summary/publishers/:id", component: PublisherDetailComponent}, // Update to use the new component
-    {path: '**', redirectTo: '', pathMatch: 'full'},
+    { path: '', component: HomeComponent },
+    { path: 'search', component: SearchResultsComponent },
+    { path: 'account/login', component: LoginComponent },
+    { path: 'account/register', component: RegisterComponent },
+    { path: 'serie/:serieId', component: SerieComponent },
+    { path: 'user', component: UserPageComponent },
+    {
+        path: 'register-issues',
+        component: RegisterIssuesComponent,
+        canActivate: [authGuard]
+    },
+    { path: "summary/series/:type", component: ComicsMangaPageComponent },
+    { path: "summary/publishers", component: PublisherPageComponent },
+    { path: "summary/publishers/:id", component: PublisherDetailComponent }, // Update to use the new component
+    { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

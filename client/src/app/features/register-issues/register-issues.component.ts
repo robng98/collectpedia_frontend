@@ -5,6 +5,7 @@ import { CollectionService } from "../../core/services/collection.service";
 import { ComicService } from "../../core/services/comic.service";
 import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ContaService } from "../../core/services/conta.service";
 
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
@@ -90,6 +91,7 @@ export class RegisterIssuesComponent implements OnInit {
     private router: Router,
     private collectionService: CollectionService,
     private comicService: ComicService,
+    private contaService: ContaService // Add conta service
   ) 
   {
     // Initialize batch form
@@ -111,6 +113,17 @@ export class RegisterIssuesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Check if user is logged in first, before doing anything else
+    if (!this.contaService.currentUser()) {
+      // Redirect to login page with return URL
+      this.router.navigate(['/account/login'], {
+        queryParams: {
+          returnUrl: this.router.url
+        }
+      });
+      return;
+    }
+
     // Keep existing code for loading issues and collections
     this.route.queryParams.subscribe((params) => {
       const issueIdsParam = params["issueIds"];

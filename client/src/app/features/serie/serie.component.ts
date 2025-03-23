@@ -27,6 +27,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin, timer } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { ContaService } from '../../core/services/conta.service';
 
 @Component({
   selector: 'app-serie',
@@ -55,6 +56,7 @@ export class SerieComponent implements OnInit {
   private publisherService = inject(PublisherService);
   private tankobonService = inject(TankobonService);
   private contribuicoesService = inject(ContribuidorService);
+  private contaService = inject(ContaService);
   params = new HttpParams();
   
   // Add isLoading property
@@ -136,7 +138,7 @@ export class SerieComponent implements OnInit {
       this.editoraIdParam = state.editoraId;
       this.currentSerie = state.serie;
     }
-    // console.log(navigation?.extras?.state);
+    console.log(navigation?.extras?.state);
 
   }
 
@@ -388,6 +390,17 @@ export class SerieComponent implements OnInit {
   }
 
   onSubmit(): void {
+    // Check if user is authenticated
+    if (!this.contaService.currentUser()) {
+      // Redirect to login with returnUrl
+      this.router.navigate(['/account/login'], {
+        queryParams: {
+          returnUrl: this.router.url
+        }
+      });
+      return;
+    }
+
     const selectedEdicoes = this.edicoesResults
       .filter(edicao => this.selectionForm.get(`edicao_${edicao.id}`)?.value)
       .map(edicao => edicao.id);

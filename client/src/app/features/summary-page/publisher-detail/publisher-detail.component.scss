@@ -213,6 +213,82 @@
   }
 }
 
+// Search wrapper moved to header
+.search-wrapper-header {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: 8px;
+  
+  form {
+    width: 100%;
+    display: flex;
+  }
+  
+  .search-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    border-radius: 2rem;
+    background-color: #1e3a8a;
+    height: 40px;
+  }
+
+  .search-icon-container {
+    color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1rem;
+    border-radius: 0.25rem 0 0 0.25rem;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 0;
+    resize: none;
+    overflow: hidden;
+    color: #f5f5f5;
+    background-color: transparent;
+    height: 100%;
+    padding: 0 1rem;
+    border: none;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: normal;
+
+    &::placeholder {
+      color: #f5f5f5;
+    }
+
+    &:focus {
+      outline: none;
+      ring: none;
+      border: none;
+    }
+  }
+
+  .clear-search-button {
+    color: #f5f5f5;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
 // Card View (Grid)
 .comics-grid {
   display: grid;
@@ -539,85 +615,27 @@
   flex-wrap: wrap;
   gap: 16px;
 
-  // Search wrapper specifically within paginator
-  .search-wrapper-paginator {
-    min-width: 200px;
-    max-width: 300px;
-    margin-right: 8px;
-    
-    form {
-      width: 100%;
-      display: flex;
-    }
-    
-    .search-container {
-      display: flex;
-      width: 100%;
-      align-items: center;
-      border-radius: 2rem;
-      background-color: #1e3a8a;
-      height: 40px;
-    }
-
-    // Reuse existing search styles
-    .search-icon-container {
-      color: #f5f5f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-left: 1rem;
-      border-radius: 0.25rem 0 0 0.25rem;
-    }
-
-    .search-input {
-      flex: 1;
-      min-width: 0;
-      resize: none;
-      overflow: hidden;
-      color: #f5f5f5;
-      background-color: transparent;
-      height: 100%;
-      padding: 0 1rem;
-      border: none;
-      font-size: 1rem;
-      font-weight: normal;
-      line-height: normal;
-
-      &::placeholder {
-        color: #f5f5f5;
-      }
-
-      &:focus {
-        outline: none;
-        ring: none;
-        border: none;
-      }
-    }
-
-    .clear-search-button {
-      color: #f5f5f5;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 8px;
-      opacity: 0.7;
-      transition: opacity 0.2s ease;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
-
   // Make the paginator take up remaining space
   .comics-paginator {
     flex: 1;
     margin-top: 0;
     background-color: transparent;
+  }
+}
+
+// Back button in paginator
+.back-button-paginator {
+  background-color: rgba(255, 255, 255, 0.862);
+  color: #3e3c3c;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 100px;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #8f9197;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -628,11 +646,15 @@
     align-items: stretch;
     padding: 16px;
     
-    .search-wrapper-paginator {
-      max-width: 100%;
+    .back-button-paginator {
       margin-bottom: 16px;
-      margin-right: 0;
+      align-self: flex-start;
     }
+  }
+  
+  .search-wrapper-header {
+    max-width: 100%;
+    margin: 0 0 16px 0;
   }
 }
 

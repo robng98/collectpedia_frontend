@@ -14,16 +14,7 @@
                         de {{totalItems}} séries
                     </p>
                 </div>
-                <div class="flex flex-col">
-                    <div class="flex flex-row">
-                        <!-- Back button moved to header section -->
-                        <div class="back-button-container mb-6 flex-1 flex justify-end">
-                            <button class="back-button px-4 py-1 rounded-2xl" (click)="goBack()">
-                                <span class="flex items-center">Voltar</span>
-                            </button>
-                        </div>
-                    </div>
-
+                <div class="flex flex-col gap-4">
                     <!-- All controls moved to right side -->
                     <div class="controls-section flex-1 justify-end mr-2">
                         <!-- Removed the search-wrapper from here -->
@@ -31,7 +22,7 @@
                         <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle ">
                             <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
-                            <div class="sort-options ml-2 scale-[0.85]">
+                            <div class="sort-options scale-[0.85]">
                                 <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'nomeInter'"
                                     (click)="updateSorting('nomeInter', !searchParams.isDescending)">
@@ -84,6 +75,26 @@
                             </div>
                         </div>
 
+                    </div>
+
+                    <div class="flex flex-row">
+                        <!-- Search bar moved here from paginator -->
+                        <div class="search-wrapper-header scale-[0.85]">
+                            <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
+                                <div class="search-container">
+                                    <div class="search-icon-container">
+                                        <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
+                                    </div>
+                                    <input class="search-input" placeholder="Buscar" name="search"
+                                        [(ngModel)]="searchParams.search" required autocomplete="off" />
+                                    <!-- Clear button that only shows when there's text -->
+                                    <button mat-icon-button type="button" *ngIf="searchParams.search"
+                                        (click)="clearSearch()" class="clear-search-button">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,31 +180,17 @@
                 </div>
             </div>
 
-            <!-- Custom Paginator with Search Bar -->
+            <!-- Custom Paginator with Voltar Button -->
             <div *ngIf="totalItems > 0" class="custom-paginator-container">
-                <!-- Search bar moved here -->
-                <div class="search-wrapper-paginator scale-[0.85]">
-                    <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
-                        <div class="search-container">
-                            <div class="search-icon-container">
-                                <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
-                            </div>
-                            <input class="search-input" placeholder="Buscar" name="search"
-                                [(ngModel)]="searchParams.search" required autocomplete="off" />
-                            <!-- Clear button that only shows when there's text -->
-                            <button mat-icon-button type="button" *ngIf="searchParams.search" 
-                                (click)="clearSearch()" class="clear-search-button">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                
+                <!-- Back button moved here from header -->
+                <button class="back-button-paginator px-4 py-1 rounded-2xl" (click)="goBack()">
+                    <span class="items-center">Voltar</span>
+                </button>
+
                 <!-- Pagination Controls -->
-                <mat-paginator [length]="totalItems" [pageSize]="pageSize"
-                    [pageSizeOptions]="pageSizeOptions" [pageIndex]="currentPage - 1" 
-                    (page)="onPageChange($event)"
-                    showFirstLastButtons class="comics-paginator">
+                <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                    [pageIndex]="currentPage - 1" (page)="onPageChange($event)" showFirstLastButtons
+                    class="comics-paginator">
                 </mat-paginator>
             </div>
         </div>

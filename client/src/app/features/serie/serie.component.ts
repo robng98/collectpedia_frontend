@@ -8,7 +8,6 @@ import { PublisherService } from '../../core/services/publisher.service';
 import { Publisher } from '../../shared/models/publisher';
 import { Serie } from '../../shared/models/serie';
 import { MangaStats } from '../../shared/models/mangaStats';
-// import { SearchParams } from '../../shared/models/searchParams';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { TankobonService } from '../../core/services/tankobon.service';
 import { Tankobon } from '../../shared/models/tankobon';
@@ -99,6 +98,8 @@ export class SerieComponent implements OnInit {
     edicaoId: 0
   };
   currentContribuicoes: Contribuicao[] = [];
+  dataInicioSerie: string = '';
+  private initialPageLoading = true;
   //   contribuidorId: 0,
   //   edicaoId: 0,
   //   funcao: '',
@@ -161,6 +162,7 @@ export class SerieComponent implements OnInit {
         // Wait for both the API call and timer before hiding spinner
         loadingTimer.subscribe(() => {
           this.isLoading = false;
+          this.initialPageLoading = false;
         });
       }
     });
@@ -209,6 +211,11 @@ export class SerieComponent implements OnInit {
 
         if (this.currentSerie.mangaStats) {
           this.onTankobonChange(this.currentEdicao.id);
+        }
+
+        if(this.initialPageLoading === true) {
+          this.dataInicioSerie = response.data[0].dataLancamento;
+          console.log(this.dataInicioSerie);
         }
 
         this.initFormControls();

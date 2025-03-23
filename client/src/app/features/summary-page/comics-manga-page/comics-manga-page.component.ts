@@ -13,6 +13,10 @@ import { SearchParams } from '../../../shared/models/searchParams';
 
 import { forkJoin, of, timer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-comics-page',
@@ -21,7 +25,11 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
     CommonModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
+    MatIconModule
   ],
   templateUrl: './comics-manga-page.component.html',
   styleUrl: './comics-manga-page.component.scss'
@@ -31,7 +39,7 @@ export class ComicsMangaPageComponent implements OnInit {
   private edicaoService = inject(EdicaoService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  
+
   private Math = Math;
 
   // Content type
@@ -41,10 +49,10 @@ export class ComicsMangaPageComponent implements OnInit {
   // Series data
   comicSeries: Serie[] = [];
   firstCovers: PrimeiraCapaSerie[] = [];
-  
+
   // Search parameters
   searchParams = new SearchParams();
-  
+
   // Pagination properties
   totalItems = 0;
   currentPage = 1;
@@ -64,7 +72,7 @@ export class ComicsMangaPageComponent implements OnInit {
     // Subscribe to route parameters to get the content type
     this.route.params.subscribe(params => {
       this.contentType = params['type'];
-      
+
       // Set page title based on content type
       if (this.contentType === 'mangas') {
         this.pageTitle = 'Acervo de Mangás';
@@ -81,7 +89,7 @@ export class ComicsMangaPageComponent implements OnInit {
       this.searchParams.sortBy = 'nomeInter';
       this.searchParams.isDescending = false;
       this.currentPage = 1;
-      
+
       // Load content for the selected type
       this.loadComicSeries();
     });
@@ -90,10 +98,10 @@ export class ComicsMangaPageComponent implements OnInit {
   calculateUpperBound(): number {
     return Math.min((this.currentPage - 1) * this.pageSize + this.comicSeries.length, this.totalItems);
   }
-  
+
   loadComicSeries() {
     this.isLoading = true;
-    
+
     // Fetch all comic series from the API
     this.serieService.searchByType(this.searchParams).pipe(
       // Store results in temporary variables
@@ -105,7 +113,7 @@ export class ComicsMangaPageComponent implements OnInit {
       switchMap(response => {
         if (response.data.length > 0) {
           // Process cover requests
-          const coverRequests = response.data.map(serie => 
+          const coverRequests = response.data.map(serie =>
             this.edicaoService.getFirstCoverBySerieId(serie.id).pipe(
               map(response => ({
                 serieId: serie.id,
@@ -146,16 +154,39 @@ export class ComicsMangaPageComponent implements OnInit {
     });
   }
 
+  // Add method to check if search string is valid (not empty or just spaces)
+  isValidSearch(searchString: string | undefined): boolean {
+    return !!searchString && searchString.trim().length > 0;
+  }
+
+  onSearchChange() {
+    if (this.isValidSearch(this.searchParams.search)) {
+      this.isLoading = true;
+      this.loadComicSeries();
+    }
+  }
+
+  // Add method to clear search and reset series display
+  clearSearch(): void {
+    if (this.searchParams.search) {
+      this.searchParams.search = '';
+      this.searchParams.pageNumber = 1;
+      this.currentPage = 1;
+      this.isLoading = true;
+      this.loadComicSeries();
+    }
+  }
+
   /**
    * Handles page change events from the paginator
    */
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    
+
     this.searchParams.pageNumber = this.currentPage;
     this.searchParams.pageSize = this.pageSize;
-    
+
     this.loadComicSeries();
   }
 
@@ -167,7 +198,7 @@ export class ComicsMangaPageComponent implements OnInit {
     this.searchParams.isDescending = isDescending;
     this.currentPage = 1;
     this.searchParams.pageNumber = 1;
-    
+
     this.loadComicSeries();
   }
 
@@ -175,12 +206,12 @@ export class ComicsMangaPageComponent implements OnInit {
    * Navigate to serie detail page
    */
   navigateToDetail(id: number, editoraId: number, serie: Serie): void {
-    this.router.navigate(['/serie', id], { 
-      state: { 
+    this.router.navigate(['/serie', id], {
+      state: {
         id: id,
         editoraId: editoraId,
         serie: serie
-      } 
+      }
     });
   }
 

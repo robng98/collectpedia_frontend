@@ -8,15 +8,23 @@ import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/
 import { PublisherService } from '../../../core/services/publisher.service';
 import { Publisher } from '../../../shared/models/publisher';
 import { SearchParams } from '../../../shared/models/searchParams';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-publisher-page',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
+    MatIconModule
   ],
   templateUrl: './publisher-page.component.html',
   styleUrl: './publisher-page.component.scss'
@@ -24,16 +32,16 @@ import { SearchParams } from '../../../shared/models/searchParams';
 export class PublisherPageComponent implements OnInit {
   private publisherService = inject(PublisherService);
   private router = inject(Router);
-  
+
   // Add Math for pagination calculations
   private Math = Math;
-  
+
   // Publishers data
   publishers: Publisher[] = [];
-  
+
   // Search params (for sorting)
   searchParams = new SearchParams();
-  
+
   // Pagination properties
   totalItems = 0;
   currentPage = 1;
@@ -50,14 +58,14 @@ export class PublisherPageComponent implements OnInit {
     this.searchParams.pageSize = this.pageSize;
     this.searchParams.sortBy = 'nome'; // Default sort by publisher name
     this.searchParams.isDescending = false;
-    
+
     // Load all publishers
     this.loadPublishers();
   }
-  
+
   loadPublishers() {
     this.isLoading = true;
-    
+
     this.publisherService.getPublishers(this.currentPage, this.pageSize, this.searchParams.sortBy, this.searchParams.isDescending).subscribe({
       next: (response) => {
         this.publishers = response.data;
@@ -78,16 +86,39 @@ export class PublisherPageComponent implements OnInit {
     return Math.min((this.currentPage - 1) * this.pageSize + this.publishers.length, this.totalItems);
   }
 
+  // Add method to clear search and reset series display
+  clearSearch(): void {
+    if (this.searchParams.search) {
+      this.searchParams.search = '';
+      this.searchParams.pageNumber = 1;
+      this.currentPage = 1;
+      this.isLoading = true;
+      this.loadPublishers();
+    }
+  }
+
+  // Add method to check if search string is valid (not empty or just spaces)
+  isValidSearch(searchString: string | undefined): boolean {
+    return !!searchString && searchString.trim().length > 0;
+  }
+
+  onSearchChange() {
+    if (this.isValidSearch(this.searchParams.search)) {
+      this.isLoading = true;
+      this.loadPublishers();
+    }
+  }
+
   /**
    * Handles page change events from the paginator
    */
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
-    
+
     this.searchParams.pageNumber = this.currentPage;
     this.searchParams.pageSize = this.pageSize;
-    
+
     this.loadPublishers();
   }
 
@@ -99,10 +130,10 @@ export class PublisherPageComponent implements OnInit {
     this.searchParams.isDescending = isDescending;
     this.currentPage = 1;
     this.searchParams.pageNumber = 1;
-    
+
     this.loadPublishers();
   }
-  
+
   /**
    * Handle the Material Button Toggle change event
    */

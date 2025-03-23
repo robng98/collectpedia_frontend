@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
 
 import { PublisherService } from '../../../core/services/publisher.service';
 import { Publisher } from '../../../shared/models/publisher';
@@ -14,7 +15,8 @@ import { SearchParams } from '../../../shared/models/searchParams';
   imports: [
     CommonModule, 
     MatPaginatorModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonToggleModule
   ],
   templateUrl: './publisher-page.component.html',
   styleUrl: './publisher-page.component.scss'
@@ -102,7 +104,14 @@ export class PublisherPageComponent implements OnInit {
   }
   
   /**
-   * Toggle between card and list view
+   * Handle the Material Button Toggle change event
+   */
+  onViewModeChange(event: MatButtonToggleChange): void {
+    this.viewMode = event.value;
+  }
+
+  /**
+   * Toggle between card and list view (kept for backward compatibility)
    */
   toggleViewMode(): void {
     this.viewMode = this.viewMode === 'card' ? 'list' : 'card';

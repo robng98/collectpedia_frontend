@@ -312,13 +312,12 @@
 .sorting-controls {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 8px;
   width: 100%;
 
   .sort-label {
     font-size: 14px;
-    text-align: right;
   }
 
   .sort-options {

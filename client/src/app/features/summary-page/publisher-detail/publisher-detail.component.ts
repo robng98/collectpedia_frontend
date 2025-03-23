@@ -15,6 +15,9 @@ import { SearchParams } from '../../../shared/models/searchParams';
 
 import { forkJoin, of, timer } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
     selector: 'app-publisher-detail',
@@ -24,6 +27,10 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
         MatPaginatorModule,
         MatProgressSpinnerModule,
         MatButtonToggleModule,
+        MatIconModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatInputModule,
         MatIconModule
     ],
     templateUrl: './publisher-detail.component.html',
@@ -66,7 +73,7 @@ export class PublisherDetailComponent implements OnInit {
     ngOnInit(): void {
         // Set loading to true at the start
         this.isLoading = true;
-        
+
         this.route.params.subscribe(params => {
             this.publisherId = +params['id']; // Convert to number
 
@@ -76,6 +83,7 @@ export class PublisherDetailComponent implements OnInit {
                 this.searchParams.pageSize = this.pageSize;
                 this.searchParams.sortBy = 'nomeInter'; // Default sort by series name
                 this.searchParams.isDescending = false;
+                this.searchParams.search = '';
 
                 // Load publisher details and its series
                 this.loadPublisherDetails();
@@ -100,57 +108,78 @@ export class PublisherDetailComponent implements OnInit {
         });
     }
 
+    // Add method to check if search string is valid (not empty or just spaces)
+    isValidSearch(searchString: string | undefined): boolean {
+        return !!searchString && searchString.trim().length > 0;
+    }
+
+    onSearchChange() {
+        if (this.isValidSearch(this.searchParams.search)) {
+            this.isLoading = true;
+            this.loadPublisherSeries();
+        }
+    }
+
     loadPublisherSeries() {
 
+
         // First, fetch the series from the publisher
-        this.publisherService.getPublisherSeries(this.publisherId, this.currentPage, this.pageSize, this.searchParams.sortBy, this.searchParams.isDescending).pipe(
-            // Store results in temporary variables
-            tap(response => {
-                this.tempSeries = response.data;
-                this.tempTotalItems = response.totalCount;
-            }),
-            // Only proceed if we have results to process
-            switchMap(response => {
-                if (response.data.length > 0) {
-                    // Process cover requests
-                    const coverRequests = response.data.map(serie =>
-                        this.edicaoService.getFirstCoverBySerieId(serie.id).pipe(
-                            map(response => ({
-                                serieId: serie.id,
-                                edicaoId: response.data[0]?.id,
-                                fotoCapa: response.data[0]?.fotoCapa
-                            })),
-                            catchError(error => {
-                                console.error('Error fetching cover:', error);
-                                return of({ serieId: serie.id, edicaoId: 0, fotoCapa: '' });
-                            })
-                        )
-                    );
-                    return forkJoin(coverRequests);
-                } else {
-                    return of([]);
+        this.publisherService.getPublisherSeries
+            (
+                this.publisherId,
+                this.searchParams.search,
+                this.currentPage,
+                this.pageSize,
+                this.searchParams.sortBy,
+                this.searchParams.isDescending
+            ).pipe(
+                // Store results in temporary variables
+                tap(response => {
+                    this.tempSeries = response.data;
+                    this.tempTotalItems = response.totalCount;
+                }),
+                // Only proceed if we have results to process
+                switchMap(response => {
+                    if (response.data.length > 0) {
+                        // Process cover requests
+                        const coverRequests = response.data.map(serie =>
+                            this.edicaoService.getFirstCoverBySerieId(serie.id).pipe(
+                                map(response => ({
+                                    serieId: serie.id,
+                                    edicaoId: response.data[0]?.id,
+                                    fotoCapa: response.data[0]?.fotoCapa
+                                })),
+                                catchError(error => {
+                                    console.error('Error fetching cover:', error);
+                                    return of({ serieId: serie.id, edicaoId: 0, fotoCapa: '' });
+                                })
+                            )
+                        );
+                        return forkJoin(coverRequests);
+                    } else {
+                        return of([]);
+                    }
+                }),
+                // Store the covers in a temporary variable
+                tap(covers => {
+                    this.tempCovers = covers;
+                }),
+                // Add a small delay before displaying results for better UX
+                switchMap(() => timer(300)),
+            ).subscribe({
+                next: () => {
+                    // After the delay, update the actual displayed data
+                    this.publisherSeries = this.tempSeries;
+                    console.log(this.tempSeries);
+                    this.totalItems = this.tempTotalItems;
+                    this.firstCovers = this.tempCovers;
+                    this.isLoading = false;
+                },
+                error: (error) => {
+                    console.error('Error loading publisher series:', error);
+                    this.isLoading = false;
                 }
-            }),
-            // Store the covers in a temporary variable
-            tap(covers => {
-                this.tempCovers = covers;
-            }),
-            // Add a small delay before displaying results for better UX
-            switchMap(() => timer(300)),
-        ).subscribe({
-            next: () => {
-                // After the delay, update the actual displayed data
-                this.publisherSeries = this.tempSeries;
-                console.log(this.tempSeries);
-                this.totalItems = this.tempTotalItems;
-                this.firstCovers = this.tempCovers;
-                this.isLoading = false;
-            },
-            error: (error) => {
-                console.error('Error loading publisher series:', error);
-                this.isLoading = false;
-            }
-        });
+            });
     }
 
     calculateUpperBound(): number {
@@ -172,6 +201,8 @@ export class PublisherDetailComponent implements OnInit {
         this.searchParams.isDescending = isDescending;
         this.currentPage = 1;
         this.searchParams.pageNumber = 1;
+
+        this.isLoading = true;
 
         this.loadPublisherSeries();
     }

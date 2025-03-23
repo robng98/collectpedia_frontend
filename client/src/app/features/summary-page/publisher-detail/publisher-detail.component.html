@@ -8,18 +8,29 @@
             <div class="publisher-header">
                 <div class="publisher-info">
                     <h1 class="publisher-title">{{currentPublisher?.nome || 'Carregando...' }}</h1>
-                    <p class="publisher-results-count">
+                    <p class="publisher-results-count ml-4">
                         Mostrando {{(currentPage-1) * pageSize + 1}} -
                         {{calculateUpperBound()}}
                         de {{totalItems}} séries
                     </p>
                 </div>
                 <div class="flex flex-col">
-                    <!-- Back button moved to header section -->
-                    <div class="back-button-container mb-6 flex-1 flex justify-end">
-                        <button class="back-button px-4 py-1 rounded-2xl" (click)="goBack()">
-                            <span class="flex items-center">Voltar</span>
-                        </button>
+                    <div class="flex flex-row">
+                        <!-- <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
+                            <div class="search-container">
+                                <div class="search-icon-container">
+                                    <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
+                                </div>
+                                <input class="search-input" placeholder="Buscar" name="search"
+                                    [(ngModel)]="searchParams.search" required autocomplete="off" />
+                            </div>
+                        </form> -->
+                        <!-- Back button moved to header section -->
+                        <div class="back-button-container mb-6 flex-1 flex justify-end">
+                            <button class="back-button px-4 py-1 rounded-2xl" (click)="goBack()">
+                                <span class="flex items-center">Voltar</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- All controls moved to right side -->
@@ -27,8 +38,8 @@
 
                         <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle ">
-                            <!-- <div class="sort-label text-white">Ordenar por:</div> -->
-                            <div class="sort-options">
+                            <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
+                            <div class="sort-options ml-2">
                                 <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'nomeInter'"
                                     (click)="updateSorting('nomeInter', !searchParams.isDescending)">
@@ -53,7 +64,7 @@
                                 </button>
 
                                 @if (!publisherSeries[0].mangaStats) {
-                                    <button class="sort-button px-4 py-1 rounded-2xl"
+                                <button class="sort-button px-4 py-1 rounded-2xl"
                                     [class.active]="searchParams.sortBy === 'cicloNum'"
                                     (click)="updateSorting('cicloNum', !searchParams.isDescending)">
                                     Volume
@@ -67,7 +78,8 @@
 
                         <!-- View Toggle Button - replaced with Material Button Toggle -->
                         <div class="align-middle">
-                            <mat-button-toggle-group [value]="viewMode" (change)="onViewModeChange($event)">
+                            <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
+                            <mat-button-toggle-group class="ml-2" [value]="viewMode" (change)="onViewModeChange($event)">
                                 <mat-button-toggle value="card">
                                     <span class="toggle-label">Cards</span>
                                 </mat-button-toggle>

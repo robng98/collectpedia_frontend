@@ -24,6 +24,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { Collection } from "../../shared/models/colecao";
 import { Pagination } from "../../shared/models/pagination";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: "app-register-issues",
@@ -43,7 +44,8 @@ import { Pagination } from "../../shared/models/pagination";
     MatOptionModule,
     RouterLink,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ]
 })
 export class RegisterIssuesComponent implements OnInit {
@@ -85,6 +87,8 @@ export class RegisterIssuesComponent implements OnInit {
   useBatchMode = true; // Default to batch mode
   batchValuesApplied = false;
 
+  isLoading = false;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -113,6 +117,7 @@ export class RegisterIssuesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     // Check if user is logged in first, before doing anything else
     if (!this.contaService.currentUser()) {
       // Redirect to login page with return URL
@@ -145,6 +150,8 @@ export class RegisterIssuesComponent implements OnInit {
     this.batchForm.valueChanges.subscribe(() => {
       this.batchValuesApplied = false;
     });
+
+    setTimeout(() => this.isLoading = false, 1500);
   }
 
   loadSelectedIssues(issueIds: number[]): void {

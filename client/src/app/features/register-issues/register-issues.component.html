@@ -1,5 +1,10 @@
 <div class="gap-1 px-6 py-5 pb-28 flex flex-1 justify-center">
-    <div class="layout-content-container flex flex-col max-w-[920px] flex-1">
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="centralized-spinner-container">
+        <mat-spinner diameter="60" color="light"></mat-spinner>
+    </div>
+
+    <div class="layout-content-container flex flex-col max-w-[920px] flex-1" *ngIf="!isLoading">
         <div class="flex flex-wrap justify-between gap-3 p-4">
             <div class="flex min-w-72 flex-col gap-3">
                 <p class="text-[#FFFFFF] tracking-light text-[32px] font-bold leading-tight">

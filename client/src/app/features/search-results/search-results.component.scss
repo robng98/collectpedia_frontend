@@ -1,4 +1,3 @@
-// Layout containers
 .layout-container {
   display: flex;
   height: 100%;
@@ -21,7 +20,6 @@
   flex: 1;
 }
 
-// Search header
 .search-header {
   display: flex;
   flex-wrap: wrap;
@@ -53,12 +51,11 @@
   }
 }
 
-// Card View (Grid)
 .comics-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); // Exactly 5 columns
-  column-gap: 0px; // Minimal horizontal gap
-  row-gap: 2rem; // Vertical gap
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 0px;
+  row-gap: 2rem;
 }
 
 .comic-card {
@@ -125,14 +122,13 @@
       margin-top: auto;
     }
 
-    // Manga-specific styles
     .manga-info {
       display: flex;
       flex-direction: column;
       margin-bottom: 4px;
       
       .manga-jp-title {
-        color: #a5b4fc; // Light indigo color for Japanese title
+        color: #a5b4fc;
         font-size: 11px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -140,7 +136,7 @@
       }
       
       .manga-demographics {
-        color: #93c5fd; // Light blue color for demographics
+        color: #93c5fd;
         font-size: 10px;
         margin-bottom: 2px;
       }
@@ -168,7 +164,6 @@
   }
 }
 
-// List View Container
 .comics-list-container {
   position: relative;
   margin: 0 10px;
@@ -178,17 +173,15 @@
   flex-direction: column;
 }
 
-// List view with scrolling
 .comics-list {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px; // Reduced from 8px for more compact view
+  gap: 4px;
   overflow-y: auto;
   padding-right: 8px;
   max-height: 100%;
   
-  // Scrollbar styling
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -208,13 +201,12 @@
   }
 }
 
-// List Item Styling
 .comic-list-item {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px 16px; // Reduced top/bottom padding from 12px
-  min-height: 54px; // Reduced from 72px for more compact rows
+  padding: 8px 16px;
+  min-height: 54px;
   background-color: #1a2a4d;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -238,8 +230,8 @@
     aspect-ratio: auto;
     background-size: cover;
     border-radius: 4px;
-    width: 50px; // Reduced from 64px
-    height: 75px; // Reduced from 96px
+    width: 50px;
+    height: 75px;
   }
   
   .comic-list-content {
@@ -249,7 +241,7 @@
     
     .comic-list-title {
       color: #FFFFFF;
-      font-size: 15px; // Slightly reduced from 16px
+      font-size: 15px;
       font-weight: 500;
       line-height: normal;
       display: -webkit-box;
@@ -260,23 +252,22 @@
     
     .comic-list-details {
       color: #C4C4C4;
-      font-size: 13px; // Slightly reduced from 14px
+      font-size: 13px;
       font-weight: normal;
       line-height: normal;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      margin-top: 1px; // Add small margin-top instead of using pt-2
+      margin-top: 1px;
 
       .comic-list-issues {
-        color: #93c5fd; // Light blue to highlight
+        color: #93c5fd;
       }
     }
   }
 }
 
-// Empty state
 .empty-state {
   grid-column: 1 / -1;
   text-align: center;
@@ -285,7 +276,6 @@
   font-size: 18px;
 }
 
-// Sorting Controls
 .sorting-controls {
   display: flex;
   flex-direction: column;
@@ -295,7 +285,7 @@
 
   .sort-label {
     font-size: 14px;
-    color: #FFFFFF; // Ensure white text color
+    color: #FFFFFF;
   }
 
   .sort-options {
@@ -322,7 +312,6 @@
   }
 }
 
-// View toggle button
 .view-toggle-button {
   background-color: rgba(255, 255, 255, 0.1);
   color: #C4C4C4;
@@ -338,7 +327,6 @@
   }
 }
 
-// Pagination styling
 .comics-paginator {
   margin-top: 32px;
   background-color: #1a2a4d;
@@ -358,7 +346,6 @@
   color: white;
 }
 
-// Responsive adjustments for smaller screens
 @media (max-width: 1200px) {
   .comics-grid {
     grid-template-columns: repeat(4, 1fr);
@@ -461,12 +448,11 @@
 
 .result-card:active {
   transition: 0.1s;
-  background-color: rgb(39, 52, 94); /* Darker shade when clicked */
-  transform: scale(1.02); /* Slightly less scale to give "pressed" feeling */
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3); /* Inner shadow for "pressed" effect */
+  background-color: rgb(39, 52, 94);
+  transform: scale(1.02);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Sorting Controls */
 .sorting-controls {
   display: flex;
   flex-direction: column;
@@ -502,7 +488,6 @@
   }
 }
 
-/* Loading Spinner */
 .loading-spinner {
   .spinner-border {
     display: inline-block;
@@ -520,7 +505,6 @@
   }
 }
 
-/* Loading Overlay */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -534,7 +518,6 @@
   align-items: center;
 }
 
-/* Pagination Styling */
 ::ng-deep .mat-mdc-paginator {
   background-color: #1a2a4d;
   
@@ -572,7 +555,6 @@
   opacity: 0.7;
 }
 
-// Controls section style to match comics-manga-page
 .controls-section {
   display: flex;
   flex-direction: row;
@@ -583,7 +565,6 @@
   flex: 0 0 auto;
 }
 
-// Material Button Toggle styling
 ::ng-deep .mat-button-toggle-group {
   background-color: rgba(255, 255, 255, 0.1);
 
@@ -610,7 +591,6 @@
   }
 }
 
-// Search container styles
 .search-wrapper-header {
   width: 100%;
   margin-left: auto;
@@ -657,11 +637,7 @@
   }
 }
 
-// Adding responsive adjustments like in comics-manga-page
 @media (max-width: 768px) {
-  // ...existing code...
-
-  // Keep controls right-aligned but adjust for mobile
   .search-header {
     flex-direction: column;
 
@@ -676,7 +652,6 @@
     }
   }
 
-  // Align controls to the right even on mobile
   .controls-section {
     align-items: stretch;
 
@@ -690,9 +665,6 @@
 }
 
 @media (max-width: 480px) {
-  // ...existing code...
-
-  // Stack controls vertically on very small screens
   .controls-section {
     align-items: stretch;
     flex-direction: column;

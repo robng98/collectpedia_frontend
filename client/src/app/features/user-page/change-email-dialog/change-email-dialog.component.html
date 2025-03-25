@@ -4,22 +4,19 @@
   <div mat-dialog-content>
     <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmit()">
       <div class="form-content">
-         Error message -->
+
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
         </div>
 
-         Success message -->
         <div *ngIf="successMessage" class="success-message">
           {{ successMessage }}
         </div>
 
-         Current Email Display -->
         <div class="current-email">
           <p>Email atual: <strong>{{ currentEmail }}</strong></p>
         </div>
 
-         New Email -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Novo Email</mat-label>
           <input 
@@ -37,7 +34,6 @@
           </mat-error>
         </mat-form-field>
 
-         Confirm Email field -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Confirmar Novo Email</mat-label>
           <input 

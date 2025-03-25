@@ -59,9 +59,7 @@ export class SerieComponent implements OnInit {
   private contaService = inject(ContaService);
   params = new HttpParams();
   
-  // Add isLoading property
   isLoading = false;
-  // Add separate loading state for issue details
   isLoadingDetails = false;
 
   serieIdParam = 0;
@@ -102,11 +100,6 @@ export class SerieComponent implements OnInit {
   currentContribuicoes: Contribuicao[] = [];
   dataInicioSerie: string = '';
   private initialPageLoading = true;
-  //   contribuidorId: 0,
-  //   edicaoId: 0,
-  //   funcao: '',
-  //   contribuidorNome: ''
-  // }
 
   totalItems = -1;
   pageSize = 10;
@@ -118,7 +111,6 @@ export class SerieComponent implements OnInit {
   private fb = inject(FormBuilder);
   selectionForm!: FormGroup;
 
-  // Add these properties to handle contributor pagination
   contribuicoesPage = 1;
   contribuicoesPageSize = 50;
   contribuicoesTotalItems = 0;
@@ -148,20 +140,16 @@ export class SerieComponent implements OnInit {
     this.loadData();
 
     this.isLoading = true;
-    // Create a 1500ms timer for consistent spinner display
     const loadingTimer = timer(1500);
     
     this.publisherService.getPublisherById(this.editoraIdParam).subscribe({
       next: (response) => {
         this.currentEditora = response;
-        // Don't set isLoading=false yet, wait for timer
       },
       error: (error) => {
         console.log(error);
-        // Don't set isLoading=false yet, wait for timer
       },
       complete: () => {
-        // Wait for both the API call and timer before hiding spinner
         loadingTimer.subscribe(() => {
           this.isLoading = false;
           this.initialPageLoading = false;
@@ -175,10 +163,8 @@ export class SerieComponent implements OnInit {
   }
 
   initFormControls(): void {
-    // Clear existing form controls
     this.selectionForm = this.fb.group({});
 
-    // Create a form control for each edicao
     this.edicoesResults.forEach(edicao => {
       this.selectionForm.addControl(
         `edicao_${edicao.id}`,
@@ -195,7 +181,6 @@ export class SerieComponent implements OnInit {
 
   loadData() {
     this.isLoading = true;
-    // Create a 1500ms timer for consistent spinner display
     const loadingTimer = timer(1500);
     
     this.params = this.params.set('PageSize', this.pageSize.toString());
@@ -221,14 +206,11 @@ export class SerieComponent implements OnInit {
         }
 
         this.initFormControls();
-        // Don't set isLoading=false yet, wait for timer
       },
       error: (error) => {
         console.log(error);
-        // Don't set isLoading=false yet, wait for timer
       },
       complete: () => {
-        // Wait for both the API call and timer before hiding spinner
         loadingTimer.subscribe(() => {
           this.isLoading = false;
         });
@@ -242,16 +224,13 @@ export class SerieComponent implements OnInit {
   }
 
   onEdicaoChange(edicaoId: number) {
-    // Use isLoadingDetails instead of isLoading for issue-specific data
     this.isLoadingDetails = true;
     
-    // Add delay to make spinner visible for at least 1500ms
     const loadingTimer = timer(1250);
     
     this.edicoesService.getEdicaoById(edicaoId).subscribe({
       next: (response) => {
         this.currentEdicao = response;
-        // Don't set isLoadingDetails to false yet, wait for timer
       },
       error: (error) => {
         console.log(error);
@@ -265,28 +244,23 @@ export class SerieComponent implements OnInit {
       this.onTankobonChange(edicaoId);
     }
     
-    // Make sure spinner shows for at least 1500ms
     loadingTimer.subscribe(() => {
       this.isLoadingDetails = false;
     });
   }
 
   onTankobonChange(edicaoId: number) {
-    // Don't set loading state here since onEdicaoChange already did
     this.tankobonService.getTankobonByEdicaoId(edicaoId).subscribe({
       next: (response) => {
         this.currentTankobon = response;
-        // Don't affect isLoadingDetails here
       },
       error: (error) => {
         console.log(error);
-        // Don't affect isLoadingDetails here
       }
     });
   }
 
   setCurrentContribuicoes(edicaoId: number) {
-    // Don't set loading state here since onEdicaoChange already did
     this.contribuicoesService.getContribuicoesByEdicaoId(edicaoId, {
       pageNumber: this.contribuicoesPage,
       pageSize: this.contribuicoesPageSize,
@@ -296,18 +270,14 @@ export class SerieComponent implements OnInit {
       next: (response) => {
         this.currentContribuicoes = response.data;
         this.contribuicoesTotalItems = response.totalCount;
-        // Don't affect isLoadingDetails here
       },
       error: (error) => {
         console.log(error);
-        // Don't affect isLoadingDetails here
       }
     });
   }
 
-  // Optional: Add this method if you need to change contributor sorting
   updateContribuicoesSorting(sortBy: string) {
-    // Toggle descending if clicking the same field again
     if (this.contribuicoesSorting === sortBy) {
       this.contribuicoesIsDescending = !this.contribuicoesIsDescending;
     } else {
@@ -315,16 +285,13 @@ export class SerieComponent implements OnInit {
       this.contribuicoesIsDescending = false;
     }
 
-    // Reset to page 1 when changing sort
     this.contribuicoesPage = 1;
     
-    // Reload contributors with new sorting
     if (this.currentEdicao) {
       this.setCurrentContribuicoes(this.currentEdicao.id);
     }
   }
 
-  // Optional: Add this method if you implement pagination UI for contributors
   onContribuicoesPageChange(event: any) {
     this.contribuicoesPage = event.pageIndex + 1;
     this.contribuicoesPageSize = event.pageSize;
@@ -338,7 +305,6 @@ export class SerieComponent implements OnInit {
     return this.currentContribuicoes.find(contribuicao => contribuicao.funcao === funcao)?.contribuidorNome;
   }
 
-  /** Whether the master checkbox is checked */
   isAllSelected(): boolean {
     if (!this.edicoesResults?.length) return false;
 
@@ -349,7 +315,6 @@ export class SerieComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  /** Whether some checkboxes are selected but not all */
   isSomeSelected(): boolean {
     if (!this.edicoesResults?.length) return false;
 
@@ -359,15 +324,12 @@ export class SerieComponent implements OnInit {
     return numSelected > 0 && numSelected < this.edicoesResults.length;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     if (this.isAllSelected()) {
-      // Deselect all
       Object.keys(this.selectionForm.controls).forEach(key => {
         this.selectionForm.get(key)?.setValue(false);
       });
     } else {
-      // Select all
       this.edicoesResults.forEach(edicao => {
         const control = this.selectionForm.get(`edicao_${edicao.id}`);
         if (control) {
@@ -377,7 +339,6 @@ export class SerieComponent implements OnInit {
     }
   }
 
-  /** The label for the checkbox on the header */
   checkboxLabel(): string {
     if (!this.edicoesResults?.length) {
       return 'Select all';
@@ -390,9 +351,7 @@ export class SerieComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // Check if user is authenticated
     if (!this.contaService.currentUser()) {
-      // Redirect to login with returnUrl
       this.router.navigate(['/account/login'], {
         queryParams: {
           returnUrl: this.router.url

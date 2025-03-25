@@ -52,7 +52,7 @@ export class DeleteCollectionDialogComponent implements OnInit {
     this.isLoadingCollections = true;
     
     this.collectionService.getUserCollections({
-      pageSize: 100 // Get a large number of collections to ensure we get them all
+      pageSize: 100
     }).subscribe({
       next: (response) => {
         this.collections = response.data;

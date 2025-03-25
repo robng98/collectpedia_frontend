@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   title = 'home';
   lastAddedIssues: Edicao[] = [];
   searchParams = new SearchParams();
-  isLoading = false; // Add the isLoading property
+  isLoading = false;
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.lastAddedIssues = response.data;
         setTimeout(() => {
           this.isLoading = false;
-          // Initialize swiper after data is loaded and DOM is rendered
           setTimeout(() => this.initSwiper(), 100);
         }, 1500);
       },
@@ -63,11 +62,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  
-  // Separate method to initialize swiper
   initSwiper(): void {
     if (this.swiperContainer?.nativeElement) {
-      // Apply custom styles to shadow DOM
       if (this.swiperContainer.nativeElement.shadowRoot) {
         const style = document.createElement('style');
         style.textContent = `
@@ -93,14 +89,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Only initialize if data is already loaded
     if (!this.isLoading && this.lastAddedIssues.length > 0) {
       this.initSwiper();
     }
   }
 
   onSearchChange() {
-    // Only search if the search string has actual content
     if (this.isValidSearch(this.searchParams.search)) {
       this.router.navigate(['/search'], { 
         queryParams: { 
@@ -111,7 +105,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Add method to check if search string is valid (not empty or just spaces)
   isValidSearch(searchString: string | undefined): boolean {
     return !!searchString && searchString.trim().length > 0;
   }
@@ -133,5 +126,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
     
   }
-
 }

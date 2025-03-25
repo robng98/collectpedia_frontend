@@ -25,6 +25,6 @@ export const routes: Routes = [
     },
     { path: "summary/series/:type", component: ComicsMangaPageComponent },
     { path: "summary/publishers", component: PublisherPageComponent },
-    { path: "summary/publishers/:id", component: PublisherDetailComponent }, // Update to use the new component
+    { path: "summary/publishers/:id", component: PublisherDetailComponent },
     { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

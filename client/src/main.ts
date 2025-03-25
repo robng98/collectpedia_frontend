@@ -5,7 +5,6 @@ import { AppComponent } from './app/app.component';
 
 import { register as registerSwiperElements } from 'swiper/element/bundle';
 
-// Add global styles
 const style = document.createElement('style');
 style.innerHTML = `
   html, body {
@@ -21,7 +20,6 @@ style.innerHTML = `
     min-height: 100vh;
   }
   
-  /* Webkit scrollbar styles (Chrome, Safari, newer Edge) */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -36,7 +34,6 @@ style.innerHTML = `
     border-radius: 4px;
   }
   
-  /* Only display scrollbar when content overflows */
   ::-webkit-scrollbar {
     display: auto;
   }
@@ -45,14 +42,10 @@ document.head.appendChild(style);
 
 registerSwiperElements();
 
-// Update the existing mutation observer code:
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Swiper elements after DOM is loaded
   const observer = new MutationObserver((mutations) => {
     document.querySelectorAll('swiper-container').forEach(swiperElement => {
       if (swiperElement.shadowRoot) {
-        // Check if we already applied styles to prevent duplicates
         if (!swiperElement.shadowRoot.querySelector('#custom-swiper-styles')) {
           const style = document.createElement('style');
           style.id = 'custom-swiper-styles';

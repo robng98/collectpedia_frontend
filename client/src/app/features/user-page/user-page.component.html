@@ -1,14 +1,11 @@
 <div class="flex flex-1 justify-center py-5 bg-blue-950">
   
-    <!-- Loading Indicator (Centralized) -->
     <div *ngIf="isLoading" class="centralized-spinner-container">
       <mat-spinner diameter="60" color="accent"></mat-spinner>
     </div>
 
   <div class="layout-container flex flex-1 max-w-[1200px] px-4" *ngIf="!isLoading">
-    <!-- Left Column - User Info (1/3) -->
     <div class="user-sidebar flex-1 max-w-[300px] mr-6">
-      <!-- User Profile Section -->
       <div class="profile-header">
         <img src="/no-profile-picture.svg" alt="Profile Picture">
         <div class="profile-info" *ngIf="contaService.currentUser()">
@@ -21,7 +18,6 @@
         </div>
       </div>
 
-      <!-- Quick Links -->
       <div class="quick-links bg-[#213471] rounded-lg p-4 mb-4">
         <h3 class="text-xl font-semibold text-white mb-3">Ações Rápidas</h3>
         <div class="flex flex-col space-y-2">
@@ -44,7 +40,6 @@
         </div>
       </div>
 
-      <!-- Currently Selected Collection Info (shown only when a collection is selected) -->
       <div *ngIf="selectedCollectionId" class="selected-collection bg-[#213471] rounded-lg p-4 mb-4">
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-xl font-semibold text-white">Coleção Selecionada</h3>
@@ -54,10 +49,8 @@
         </div>
         <div class="flex flex-col text-gray-200">
           <p class="text-lg">
-            <!-- {{ collections.find(c => c.id === selectedCollectionId)?.nomeColecao }} -->
           </p>
           <p class="text-sm text-gray-400">
-            <!-- {{ collections.find(c => c.id === selectedCollectionId)?.exemplares?.length || 0 }} edições -->
           </p>
           <button mat-flat-button (click)="openCollectionIssuesDialog(selectedCollectionId)" 
                   [disabled]="isLoading || !selectedCollectionId" >
@@ -67,17 +60,14 @@
       </div>
     </div>
 
-    <!-- Middle Column - Collections and Chart (1/3) -->
     <div class="content-main flex-[2] flex flex-col mr-6" [class.content-hidden]="isLoading">
       <div>
-        <!-- Collections Table -->
         <div class="mt-0">
           <div class="section-header">
             <h3 class="section-title">Suas Coleções</h3>
           </div>
           <div class="table-container border-none rounded-t-md flex flex-col w-[100%] bg-[#213471]">
             <table mat-table [dataSource]="dataSource" class="collections-table">
-              <!-- Name Column -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>
                   Nome da Coleção
@@ -85,7 +75,6 @@
                 <td mat-cell *matCellDef="let collection" class="text-neutral-100">{{ collection.nomeColecao }}</td>
               </ng-container>
 
-              <!-- Issue Count Column -->
               <ng-container matColumnDef="issueCount">
                 <th mat-header-cell *matHeaderCellDef>
                   Edições
@@ -108,7 +97,6 @@
           </mat-paginator>
         </div>
 
-        <!-- Chart Section -->
         <div class="issues-over-time">
           <div *ngIf="userStats.issues > 0" class="mt-6">
             <div class="section-header">
@@ -138,16 +126,13 @@
       </div>
     </div>
 
-    <!-- Right Column - Statistics Cards (1/3) -->
     <div class="stats-column flex-1 flex flex-col" [class.content-hidden]="isLoading">
       <div>
-        <!-- Statistics Cards -->
         <div class="section-header">
           <h2 *ngIf="selectedCollectionId" class="section-title">Estatísticas da coleção selecionada</h2>
           <h2 *ngIf="!selectedCollectionId" class="section-title">Estatísticas gerais</h2>
         </div>
 
-        <!-- Basic Stats (Always Shown) -->
         <div class="stats">
           <ng-container *ngIf="!showingDetailedStats">
             <div class="stat-card">
@@ -160,7 +145,6 @@
             </div>
           </ng-container>
 
-          <!-- Detailed Stats (Only shown when a collection is selected) -->
           <ng-container *ngIf="showingDetailedStats">
             <div class="stat-card">
               <p class="stat-value">{{ userStats.issues }}</p>
@@ -185,7 +169,6 @@
           </ng-container>
         </div>
 
-        <!-- Most Popular Items (Only shown when a collection is selected) -->
         <div *ngIf="showingDetailedStats" class="most-popular mt-4">
           <h3 class="text-xl font-semibold text-white mb-3">Mais Populares na Coleção</h3>
           <div class="popular-stats-grid">

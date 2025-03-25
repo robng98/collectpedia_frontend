@@ -8,10 +8,9 @@
 .layout-container {
   display: flex;
   flex-direction: row;
-  height: calc(100vh - 150px); // Set a fixed height based on viewport minus header
+  height: calc(100vh - 150px);
 }
 
-// Left Column - User Sidebar
 .user-sidebar {
   display: flex;
   flex-direction: column;
@@ -19,18 +18,16 @@
   overflow-y: auto;
 }
 
-// Middle Column - Content Main
 .content-main {
-  min-width: 0; // Ensures content doesn't overflow in flexbox
+  min-width: 0;
   max-height: 100%;
   overflow-y: auto;
 }
 
-// Right Column - Stats Column
 .stats-column {
   display: flex;
   flex-direction: column;
-  min-width: 0; // Ensures content doesn't overflow in flexbox
+  min-width: 0;
   max-height: 100%;
   overflow-y: auto;
 }
@@ -39,17 +36,17 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 8px; // Reduced padding
-  margin-bottom: 12px; // Reduced margin
+  padding: 12px 8px;
+  margin-bottom: 12px;
   background-color: #213471;
   border-radius: 8px;
   text-align: center;
 
   img {
     border-radius: 50%;
-    width: 80px; // Smaller image
+    width: 80px;
     height: 80px;
-    margin-bottom: 8px; // Reduced margin
+    margin-bottom: 8px;
     border: 3px solid #1e40af;
     object-fit: cover;
   }
@@ -61,26 +58,26 @@
 
     h2 {
       margin: 0;
-      font-size: 18px; // Smaller font
+      font-size: 18px;
       color: #FFFFFF;
       font-weight: 700;
     }
 
     p {
-      margin: 2px 0 0; // Reduced margin
+      margin: 2px 0 0;
       color: #C4C4C4;
-      font-size: 12px; // Smaller font
+      font-size: 12px;
     }
   }
 }
 
 .quick-links {
-  margin-bottom: 12px; // Reduced margin
-  padding: 10px; // Reduced padding
+  margin-bottom: 12px;
+  padding: 10px;
 
   h3 {
-    margin-bottom: 10px; // Reduced margin
-    font-size: 16px; // Smaller font
+    margin-bottom: 10px;
+    font-size: 16px;
   }
 }
 
@@ -89,10 +86,10 @@
   align-items: center;
   gap: 10px;
   color: #C4C4C4;
-  padding: 6px; // Reduced padding
+  padding: 6px;
   border-radius: 4px;
   transition: background-color 0.2s;
-  font-size: 14px; // Smaller font
+  font-size: 14px;
 
   &:hover {
     background-color: #344887;
@@ -101,7 +98,7 @@
 
   mat-icon {
     color: #6E84BB;
-    font-size: 18px; // Smaller icons
+    font-size: 18px;
     width: 18px;
     height: 18px;
   }
@@ -109,10 +106,10 @@
 
 .selected-collection {
   transition: all 0.3s ease;
-  padding: 10px; // Reduced padding
+  padding: 10px;
 
   h3 {
-    font-size: 16px; // Smaller font
+    font-size: 16px;
   }
 
   &:hover {
@@ -120,18 +117,17 @@
   }
 }
 
-// Right Column - Content Main
 .content-main {
-  min-width: 0; // Ensures content doesn't overflow in flexbox
+  min-width: 0;
 }
 
 .section-title {
   color: #f5f5f5;
-  font-size: 18px; // Smaller font
+  font-size: 18px;
   font-weight: bold;
   line-height: 1.2;
   letter-spacing: -0.015em;
-  padding: 10px 0 8px; // Reduced padding
+  padding: 10px 0 8px;
   margin: 0;
 }
 
@@ -139,62 +135,60 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 12px; // Reduced margin
-  gap: 10px; // Reduced gap
+  margin-bottom: 12px;
+  gap: 10px;
 
   .stat-card {
     background-color: #213471;
-    padding: 10px; // Reduced padding
+    padding: 10px;
     border-radius: 8px;
     text-align: center;
     flex: 1;
-    min-width: 80px; // Smaller minimum width
+    min-width: 80px;
     transition: 0.3s;
 
     &:hover {
-      transform: translateY(-3px); // Less dramatic effect
+      transform: translateY(-3px);
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
 
     .stat-value {
       margin: 0;
-      font-size: 18px; // Smaller font
+      font-size: 18px;
       font-weight: 700;
       color: #FFFFFF;
     }
 
     .stat-label {
-      margin: 2px 0 0; // Reduced margin
+      margin: 2px 0 0;
       color: #C4C4C4;
-      font-size: 12px; // Smaller font
+      font-size: 12px;
     }
   }
 }
 
-// Chart Styles
 .issues-over-time {
   margin-top: 0.5rem;
-  margin-bottom: 1rem; // Reduced margin
+  margin-bottom: 1rem;
 
   .chart {
-    height: 200px; // Fixed smaller height
+    height: 200px;
     background-color: #213471;
     border-radius: 8px;
-    padding: 0.5rem; // Reduced padding
+    padding: 0.5rem;
   }
 
   .no-data {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px; // Consistent with chart height
+    height: 200px;
     color: #888;
     font-style: italic;
-    font-size: 14px; // Smaller font
+    font-size: 14px;
   }
 }
 
-// Dark theme chart styles
 ::ng-deep {
   .dark-theme-chart {
     .ngx-charts {
@@ -202,13 +196,13 @@
         fill: #ffffff !important;
         font-family: 'Roboto', sans-serif;
         font-weight: 400;
-        font-size: 10px; // Smaller font
+        font-size: 10px;
       }
 
       .tick {
         text {
           fill: #e2e8f0 !important;
-          font-size: 10px; // Smaller font
+          font-size: 10px;
         }
 
         line {
@@ -224,12 +218,12 @@
 
       .line-series {
         .line {
-          stroke-width: 2; // Thinner lines
+          stroke-width: 2;
         }
       }
 
       .line-highlight {
-        stroke-width: 3; // Thinner highlight
+        stroke-width: 3;
       }
 
       .tooltip-anchor {
@@ -281,7 +275,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem; // Reduced margin
+  margin-bottom: 0.5rem;
 
   .section-title {
     padding: 0;
@@ -290,7 +284,7 @@
 
 .chart-controls {
   display: flex;
-  gap: 0.5rem; // Reduced gap
+  gap: 0.5rem;
 }
 
 .toggle-button {
@@ -298,9 +292,9 @@
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 0.25rem 0.5rem; // Reduced padding
+  padding: 0.25rem 0.5rem;
   cursor: pointer;
-  font-size: 12px; // Smaller font
+  font-size: 12px;
   transition: background-color 0.3s;
 
   &:hover {
@@ -308,7 +302,6 @@
   }
 }
 
-// Table Styles
 .collections-table {
   width: 100%;
 
@@ -316,14 +309,14 @@
     color: #FFFFFF;
     font-weight: 500;
     background-color: #1e3a8a;
-    padding: 8px 12px; // Reduced padding
-    font-size: 14px; // Smaller font
+    padding: 8px 12px;
+    font-size: 14px;
   }
 
   td.mat-cell {
     color: #C4C4C4;
-    padding: 6px 12px; // Reduced padding
-    font-size: 13px; // Smaller font
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }
 
@@ -340,7 +333,7 @@
   background-color: #213471;
   color: white;
   height: auto;
-  min-height: 40px; // More compact paginator
+  min-height: 40px;
 }
 
 @media (max-width: 992px) {
@@ -372,7 +365,7 @@
 
 @media (max-width: 1100px) {
   .layout-container {
-    height: auto; // Remove fixed height for mobile
+    height: auto;
     flex-direction: column;
   }
 
@@ -390,7 +383,6 @@
 }
 
 @media (max-width: 768px) {
-  // ...existing code...
   
   .popular-stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -403,7 +395,6 @@
   }
 }
 
-// Keep Material overrides
 .paginator {
   display: flex;
   justify-content: center;
@@ -426,46 +417,45 @@
 ::ng-deep .mat-mdc-paginator-page-size-label,
 ::ng-deep .mat-mdc-paginator-range-label {
   color: #f8fafc;
-  font-size: 12px; // Smaller font
+  font-size: 12px;
 }
 
-// Most Popular items
 .most-popular {
-  margin-top: 12px; // Reduced margin
+  margin-top: 12px;
 
   h3 {
-    font-size: 16px; // Smaller font
-    margin-bottom: 8px; // Reduced margin
+    font-size: 16px;
+    margin-bottom: 8px;
   }
 }
 
 .popular-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); // Smaller cards
-  gap: 10px; // Reduced gap
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
 }
 
 .popular-stat-card {
   background-color: #213471;
-  padding: 10px; // Reduced padding
+  padding: 10px;
   border-radius: 8px;
   text-align: left;
   transition: 0.3s;
 
   &:hover {
-    transform: translateY(-2px); // Less dramatic effect
+    transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   }
 
   .popular-item-label {
     margin: 0;
-    font-size: 12px; // Smaller font
+    font-size: 12px;
     color: #c4c4c4;
   }
 
   .popular-item-value {
-    margin: 3px 0 0; // Reduced margin
-    font-size: 14px; // Smaller font
+    margin: 3px 0 0;
+    font-size: 14px;
     font-weight: 600;
     color: #FFFFFF;
     overflow: hidden;

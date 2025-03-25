@@ -70,10 +70,8 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     series: 0
   };
 
-  // Indicates if we're showing detailed stats for a specific collection
   showingDetailedStats: boolean = false;
 
-  // Collection table properties
   displayedColumns: string[] = ['name', 'issueCount'];
   collections: Collection[] = [];
   dataSource = new MatTableDataSource<Collection>([]);
@@ -82,13 +80,11 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   totalCollections = 0;
   selectedCollectionId: number | null = null;
 
-  // Chart properties
   displayMode: 'total' | 'byCollection' = 'total';
   private collectionsData: Collection[] = [];
   issuesOverTime: any[] = [];
   view: [number, number] = [520, 180];
   
-  // Chart options
   legend: boolean = false;
   showLabels: boolean = true;
   animations: boolean = true;
@@ -111,7 +107,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   isLoading = true;
   private loadingTimer$ = new Subject<void>();
 
-  // Temp storage during loading
   private tempUserStats: UserStats | null = null;
   private tempIssuesOverTime: any[] = [];
   private pendingCollectionId: number | null = null;
@@ -127,7 +122,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Set up sorting after view init
     this.dataSource.sort = this.sort;
   }
   
@@ -138,7 +132,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   private loadUserData(): void {
     if (this.isLoggedIn()) {
       this.isLoading = true;
-      // Start the loading timer
       this.loadingStartTime = Date.now();
       
       this.loadCollectionsData();
@@ -162,13 +155,9 @@ export class UserPageComponent implements OnInit, AfterViewInit {
           genres: 0,
           series: 0
         };
-        
-        // Don't set isLoading to false here to respect the minimum time
-        // The timer will handle this
       },
       error: (error) => {
         console.error('Error calculating aggregate statistics:', error);
-        // Still respect the minimum loading time on error
       }
     });
   }
@@ -181,7 +170,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     
     this.collectionService.getCollectionStatistics(collectionId).subscribe({
       next: (statistics) => {
-        // Store data in temporary variables
         this.tempUserStats = {
           collections: 1,
           issues: statistics.totalExemplares,
@@ -197,7 +185,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
           mostPopularDemografia: statistics.mostPopularDemografia
         };
         
-        // Handle filtered collection data
         if (this.pendingCollectionId) {
           const selectedCollection = this.collectionsData.find(c => c.id === this.pendingCollectionId);
           if (selectedCollection) {
@@ -205,18 +192,15 @@ export class UserPageComponent implements OnInit, AfterViewInit {
           }
         }
         
-        // Ensure minimum loading time
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(1500 - elapsed, 0);
         
         timer(remainingTime).subscribe(() => {
-          // Only update UI after loading is complete
           this.userStats = this.tempUserStats!;
           this.showingDetailedStats = true;
           this.selectedCollectionId = this.pendingCollectionId;
           this.issuesOverTime = this.tempIssuesOverTime;
           
-          // Reset temporary storage
           this.tempUserStats = null;
           this.tempIssuesOverTime = [];
           this.pendingCollectionId = null;
@@ -227,7 +211,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
       error: (error) => {
         console.error('Error fetching collection statistics:', error);
         
-        // Reset on error
         this.tempUserStats = null;
         this.tempIssuesOverTime = [];
         this.pendingCollectionId = null;
@@ -246,7 +229,7 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     this.isLoading = true;
     
     this.collectionService.getUserCollections({
-      pageNumber: this.pageIndex + 1, // MatPaginator is 0-based but API is 1-based
+      pageNumber: this.pageIndex + 1,
       pageSize: this.pageSize
     }).subscribe({
       next: (response) => {
@@ -257,7 +240,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
         
         this.processCollectionsData(response.data);
         
-        // Keep the timer approach for minimum loading time
         const elapsed = Date.now() - this.loadingStartTime;
         const remainingTime = Math.max(1500 - elapsed, 0);
         
@@ -267,7 +249,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         console.error('Error fetching collections:', error);
-        // Still respect the minimum loading time on error
         const elapsed = Date.now() - this.loadingStartTime;
         const remainingTime = Math.max(1500 - elapsed, 0);
         
@@ -385,19 +366,17 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadCollectionsData(); // Reload data with new pagination
+    this.loadCollectionsData();
   }
 
-  // Modified to handle the loading state properly
   selectCollection(collection: Collection): void {
     if (this.isLoading) {
-      return; // Prevent actions while loading
+      return;
     }
     
     if (this.selectedCollectionId === collection.id) {
       this.clearSelection();
     } else {
-      // Only start loading but don't update UI yet
       this.loadCollectionDetailedStats(collection.id);
     }
   }
@@ -410,16 +389,14 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     return new Date(date).toLocaleDateString();
   }
 
-  // Modified to handle the loading state properly
   clearSelection(): void {
     if (this.isLoading) {
-      return; // Prevent actions while loading
+      return;
     }
     
     this.isLoading = true;
     const startTime = Date.now();
     
-    // Clear selection immediately
     this.selectedCollectionId = null;
     this.showingDetailedStats = false;
     
@@ -440,16 +417,13 @@ export class UserPageComponent implements OnInit, AfterViewInit {
         
         this.prepareCollectionData(this.collectionsData);
         
-        // Ensure minimum loading time
         const elapsed = Date.now() - startTime;
         const remainingTime = Math.max(1500 - elapsed, 0);
         
         timer(remainingTime).subscribe(() => {
-          // Apply changes only after loading is complete
           this.userStats = this.tempUserStats!;
           this.issuesOverTime = this.tempIssuesOverTime;
           
-          // Reset temporary storage
           this.tempUserStats = null;
           this.tempIssuesOverTime = [];
           
@@ -472,7 +446,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Prepares collection data without updating the UI
   private prepareCollectionData(collections: Collection[]): void {
     const allExemplars: any[] = [];
     
@@ -508,8 +481,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // Password was changed successfully
-        // Could show a notification or update UI if needed
       }
     });
   }
@@ -522,8 +493,6 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // Email was changed successfully
-        // Could show a notification or update UI if needed
       }
     });
   }
@@ -536,9 +505,7 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Collection was created successfully
-        // Reload the collections data
-        this.pageIndex = 0; // Reset to first page
+        this.pageIndex = 0;
         this.loadUserData();
       }
     });
@@ -552,28 +519,22 @@ export class UserPageComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result === true) {
-        // Collection was deleted successfully
-        // Reload the collections data
-        this.pageIndex = 0; // Reset to first page
+        this.pageIndex = 0;
         this.loadUserData();
       }
     });
   }
 
-  // Track the start time of loading for minimum loading duration
   private loadingStartTime = 0;
 
-  // Add this new method to open the collection details dialog
   openCollectionIssuesDialog(collectionId: number): void {
     if (this.isLoading) {
-      return; // Prevent opening dialog while loading
+      return;
     }
     
-    // Create a responsive dialog size based on screen dimensions
     const dialogWidth = window.innerWidth > 1400 ? '70vw' : '85vw';
     const dialogHeight = window.innerHeight > 900 ? '80vh' : '85vh';
     
-    // Open the dialog with optimized dimensions
     const dialogRef = this.dialog.open(CollectionIssuesDialogComponent, {
       data: { collectionId: collectionId },
       panelClass: 'custom-dialog',
@@ -583,23 +544,17 @@ export class UserPageComponent implements OnInit, AfterViewInit {
       maxHeight: '88vh',
       autoFocus: false,
       restoreFocus: true,
-      // Don't close when clicking outside - we handle this in the component
       disableClose: false
     });
 
-    // Subscribe to the dialog close event
     dialogRef.afterClosed().subscribe(hasChanges => {
-      // If changes were made (exemplars were deleted), reload data
       if (hasChanges) {
-        // Show loading spinner while reloading data
         this.isLoading = true;
         
-        // Reset to first page when data is updated
         this.pageIndex = 0;
         
         this.loadUserData();
         
-        // If we had a selected collection, reload its detailed stats
         if (this.selectedCollectionId) {
           this.loadCollectionDetailedStats(this.selectedCollectionId);
         }

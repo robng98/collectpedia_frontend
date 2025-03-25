@@ -42,47 +42,37 @@ export class ComicsMangaPageComponent implements OnInit {
 
   private Math = Math;
 
-  // Content type
   contentType: string = 'comics';
   pageTitle: string = 'Acervo de Comics';
 
-  // Series data
   comicSeries: Serie[] = [];
   firstCovers: PrimeiraCapaSerie[] = [];
 
-  // Search parameters
   searchParams = new SearchParams();
 
-  // Pagination properties
   totalItems = 0;
   currentPage = 1;
   pageSize = 5;
   pageSizeOptions = [5, 10, 20, 50];
   isLoading = false;
 
-  // Temporary storage for newly loaded results
   private tempSeries: Serie[] = [];
   private tempTotalItems = 0;
   private tempCovers: PrimeiraCapaSerie[] = [];
 
-  // View mode state
   viewMode: 'card' | 'list' = 'card';
 
   ngOnInit(): void {
-    // Subscribe to route parameters to get the content type
     this.route.params.subscribe(params => {
       this.contentType = params['type'];
 
-      // Set page title based on content type
       if (this.contentType === 'mangas') {
         this.pageTitle = 'Acervo de Mangás';
       } else {
-        // Default to comics
         this.contentType = 'comics';
         this.pageTitle = 'Acervo de Comics';
       }
 
-      // Initialize searchParams for the selected type
       this.searchParams.type = this.contentType;
       this.searchParams.pageNumber = 1;
       this.searchParams.pageSize = this.pageSize;
@@ -90,7 +80,6 @@ export class ComicsMangaPageComponent implements OnInit {
       this.searchParams.isDescending = false;
       this.currentPage = 1;
 
-      // Load content for the selected type
       this.loadComicSeries();
     });
   }
@@ -102,17 +91,13 @@ export class ComicsMangaPageComponent implements OnInit {
   loadComicSeries() {
     this.isLoading = true;
 
-    // Fetch all comic series from the API
     this.serieService.searchByType(this.searchParams).pipe(
-      // Store results in temporary variables
       tap(response => {
         this.tempSeries = response.data;
         this.tempTotalItems = response.totalCount;
       }),
-      // Only proceed if we have results to process
       switchMap(response => {
         if (response.data.length > 0) {
-          // Process cover requests
           const coverRequests = response.data.map(serie =>
             this.edicaoService.getFirstCoverBySerieId(serie.id).pipe(
               map(response => ({
@@ -131,15 +116,12 @@ export class ComicsMangaPageComponent implements OnInit {
           return of([]);
         }
       }),
-      // Store the covers in a temporary variable
       tap(covers => {
         this.tempCovers = covers;
       }),
-      // Add a small delay before displaying results for better UX
       switchMap(() => timer(300)),
     ).subscribe({
       next: () => {
-        // After the delay, update the actual displayed data
         this.comicSeries = this.tempSeries;
         this.totalItems = this.tempTotalItems;
         this.firstCovers = this.tempCovers;
@@ -154,7 +136,6 @@ export class ComicsMangaPageComponent implements OnInit {
     });
   }
 
-  // Add method to check if search string is valid (not empty or just spaces)
   isValidSearch(searchString: string | undefined): boolean {
     return !!searchString && searchString.trim().length > 0;
   }
@@ -166,7 +147,6 @@ export class ComicsMangaPageComponent implements OnInit {
     }
   }
 
-  // Add method to clear search and reset series display
   clearSearch(): void {
     if (this.searchParams.search) {
       this.searchParams.search = '';
@@ -177,9 +157,6 @@ export class ComicsMangaPageComponent implements OnInit {
     }
   }
 
-  /**
-   * Handles page change events from the paginator
-   */
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
@@ -190,9 +167,6 @@ export class ComicsMangaPageComponent implements OnInit {
     this.loadComicSeries();
   }
 
-  /**
-   * Handles sorting change
-   */
   updateSorting(sortBy: string, isDescending: boolean) {
     this.searchParams.sortBy = sortBy;
     this.searchParams.isDescending = isDescending;
@@ -202,9 +176,6 @@ export class ComicsMangaPageComponent implements OnInit {
     this.loadComicSeries();
   }
 
-  /**
-   * Navigate to serie detail page
-   */
   navigateToDetail(id: number, editoraId: number, serie: Serie): void {
     this.router.navigate(['/serie', id], {
       state: {
@@ -215,32 +186,20 @@ export class ComicsMangaPageComponent implements OnInit {
     });
   }
 
-  /**
-   * Toggle between card and list view
-   */
   toggleViewMode(): void {
     this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
   }
 
-  /**
-   * Handle the Material Button Toggle change event
-   */
   onViewModeChange(event: MatButtonToggleChange): void {
     this.viewMode = event.value;
   }
 
-  /**
-   * Handle content type toggle change
-   */
   onContentTypeChange(event: MatButtonToggleChange): void {
     if (this.contentType !== event.value) {
       this.navigateToType(event.value);
     }
   }
 
-  /**
-   * Navigate to different content type
-   */
   navigateToType(type: string): void {
     this.router.navigate(['/summary/series', type]);
   }

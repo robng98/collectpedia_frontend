@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { SearchParams } from '../../shared/models/searchParams';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Edicao } from '../../shared/models/edicao';
 import { Pagination } from '../../shared/models/pagination';
@@ -17,20 +16,6 @@ export class EdicaoService {
   }
 
   getEdicoesBySerieId(serieId: number, params: HttpParams) {
-    // let params = new HttpParams();
-    // if (searchParams.search) {
-    //   params = params.append('NomeInter', searchParams.search);
-    // }
-
-    // params = params.append('PageSize', searchParams.pageSize);
-    // params = params.append('PageNumber', searchParams.pageNumber);
-    // params = params.append('SortBy', searchParams.sortBy);
-    // params = params.append('IsDescending', searchParams.isDescending);
-    // params = params.append('PageSize', 10);
-    // params = params.append('PageNumber', 1);
-    // params = params.append('SortBy', 'id');
-    // params = params.append('IsDescending', false);
-
     return this.http.get<Pagination<Edicao>>(this.baseUrl + 'edicao/serieId/' + serieId, {params});
   }
 

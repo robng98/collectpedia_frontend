@@ -1,5 +1,4 @@
 <div class="gap-1 px-6 py-5 pb-28 flex flex-1 justify-center">
-    <!-- Loading Indicator -->
     <div *ngIf="isLoading" class="centralized-spinner-container">
         <mat-spinner diameter="60" color="light"></mat-spinner>
     </div>
@@ -17,7 +16,6 @@
         </div>
 
         <div class="flex flex-wrap gap-6">
-            <!-- Selected Issues Panel -->
             <div class="flex-1 min-w-[300px]">
                 <div class="border-none rounded-t-md flex flex-col w-[100%] bg-[#213471] mb-4">
                     <div class="flex justify-between items-center px-4 py-3">
@@ -25,7 +23,6 @@
                             Edições Selecionadas
                         </h2>
 
-                        <!-- Toggle between batch and individual mode -->
                         <button mat-icon-button (click)="toggleIssueMode()" type="button" class="text-white"
                             [matTooltip]="useBatchMode ? 'Mudar para modo individual' : 'Mudar para modo em lote'">
                             <mat-icon>{{ useBatchMode ? 'view_list' : 'view_module' }}</mat-icon>
@@ -33,7 +30,6 @@
                     </div>
 
                     <div class="p-4">
-                        <!-- Master checkbox to select/deselect all -->
                         <div class="flex items-center mb-2 bg-blue-900 px-4 py-2 rounded">
                             <mat-checkbox [checked]="allIssuesSelected" [indeterminate]="someIssuesSelected"
                                 (change)="toggleAllIssues($event)" color="primary">
@@ -49,14 +45,12 @@
                             </span>
                         </div>
 
-                        <!-- Issue list with checkboxes -->
                         <form [formGroup]="registrationForm">
                             <div formArrayName="issues" class="issues-container max-h-[360px] overflow-y-auto pr-2">
                                 @for (issue of selectedIssues; track issue.id; let i = $index) {
                                 <div [formGroupName]="i" class="mb-2">
                                     <div class="flex items-center gap-4 bg-blue-950 px-4 min-h-[72px] py-2 rounded"
                                     [ngClass]="{'border-l-4 border-green-500': isIssueConfigured(i)}">
-                                    <!-- Selection checkbox -->
                                     <mat-checkbox formControlName="selected" color="primary"></mat-checkbox>
                     
                                     <div class="text-[#FFFFFF] flex items-center justify-center rounded bg-[#1e3a8a] shrink-0 size-12">
@@ -71,19 +65,16 @@
                                         </p>
                                     </div>
                     
-                                    <!-- Configured indicator with detailed tooltip -->
                                     <div *ngIf="isIssueConfigured(i)" class="mr-2" 
                                          matTooltip="Exemplar configurado: data de aquisição e estado de conservação definidos">
                                         <mat-icon class="text-green-500">check_circle</mat-icon>
                                     </div>
                     
-                                    <!-- Not configured indicator with tooltip -->
                                     <div *ngIf="!isIssueConfigured(i) && issuesFormArray.at(i).get('selected')?.value" class="mr-2"
                                          matTooltip="Exemplar não configurado: defina a data de aquisição e estado de conservação">
                                         <mat-icon class="text-yellow-500">warning</mat-icon>
                                     </div>
                     
-                                    <!-- Expander for individual controls -->
                                     @if (!useBatchMode) {
                                     <button mat-icon-button type="button"
                                         [attr.aria-label]="'Expandir edição ' + issue.numero"
@@ -93,7 +84,6 @@
                                     }
                                 </div>
 
-                                    <!-- Individual issue properties (shown when expanded) -->
                                     @if (!useBatchMode && issue.expanded) {
                                     <div class="pl-12 pr-4 py-3 bg-blue-900 rounded-b mb-1">
                                         <div class="mb-3">
@@ -132,7 +122,6 @@
                 </div>
             </div>
 
-            <!-- Registration Form Panel -->
             <div class="flex-1 min-w-[300px]">
                 <div class="border-none rounded-t-md flex flex-col w-[100%] bg-[#213471]">
                     <h2 class="text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 py-3">
@@ -145,10 +134,8 @@
                     </div>
                     }
 
-                    <!-- Batch form for all selected issues -->
                     @if (useBatchMode) {
                     <form [formGroup]="batchForm" class="p-4">
-                        <!-- Acquisition Date -->
                         <div class="mb-4">
                             <mat-form-field appearance="fill" class="w-full bg-[#1e3a8a] rounded">
                                 <mat-label class="text-[#FFFFFF]">Data de Aquisição</mat-label>
@@ -162,7 +149,6 @@
                             </mat-form-field>
                         </div>
 
-                        <!-- Conservation Grade -->
                         <div class="mb-4">
                             <mat-form-field appearance="fill" class="w-full bg-[#1e3a8a] rounded">
                                 <mat-label class="text-[#FFFFFF]">Estado de Conservação</mat-label>
@@ -177,7 +163,6 @@
                             </mat-form-field>
                         </div>
 
-                        <!-- Apply to selected issues button -->
                         <div class="mb-4">
                             <button mat-flat-button type="button" (click)="applyBatchValues()"
                                 class="w-full bg-indigo-700 text-[#FFFFFF]"
@@ -188,7 +173,6 @@
                     </form>
                     }
 
-                    <!-- Collection selection form -->
                     <div class="px-4 pb-4">
                         <div class="mb-4">
                             <mat-form-field appearance="fill" class="w-full bg-[#1e3a8a] rounded">
@@ -215,13 +199,11 @@
                             }
                         </div>
 
-                        <!-- Form Actions -->
                         <div class="flex justify-end gap-4 mt-6">
                             <button mat-flat-button type="button" (click)="cancelRegistration()"
                                 class="bg-[#383838] text-[#FFFFFF]">
                                 Cancelar
                             </button>
-                            <!-- Find the submit button and update its disabled condition -->
                             <button mat-flat-button type="button" (click)="onSubmit()"
                             class="bg-[#1e40af] text-[#FFFFFF]" [disabled]="useBatchMode 
                             ? (batchForm.invalid || selectedIssueCount === 0 || !batchValuesApplied)

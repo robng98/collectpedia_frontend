@@ -17,9 +17,9 @@
   height: 100%;
   width: 100%;
   min-height: var(--dialog-y-size);
-  max-height: var(--dialog-y-size); // Increased from 80vh for better use of screen real estate
-  max-width: 1200px; // Set a maximum width for very large screens
-  min-width: 800px; // Slightly increased minimum width for better content display
+  max-height: var(--dialog-y-size); 
+  max-width: 1200px; 
+  min-width: 800px; 
   color: #ffffff;
 }
 
@@ -27,9 +27,9 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  height: calc(var(--dialog-y-size)); // Adjusted to match new max-height
-  overflow: hidden; // Prevent overflow from the container itself
-  background-color: #1e3a8a; // Dark blue background matching serie component
+  height: calc(var(--dialog-y-size)); 
+  overflow: hidden; 
+  background-color: #1e3a8a; 
 }
 
 .loading-container, .error-message {
@@ -54,24 +54,24 @@
   height: 100%;
   width: 100%;
   gap: 20px;
-  overflow: hidden; // Prevent overflow from the content container
+  overflow: hidden; 
 }
 
 .issues-container {
-  flex: 0 0 60%; // Fixed width (45%) to ensure consistent layout
+  flex: 0 0 60%; 
   min-width: 300px;
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden; // Hide overflow, let child elements handle scrolling
+  overflow: hidden; 
 }
 
 .issues-accordion {
   overflow-y: auto;
-  overflow-x: hidden; // Hide horizontal overflow
+  overflow-x: hidden; 
   flex-grow: 1;
   margin-bottom: 10px;
-  padding-right: 4px; // Add padding for scrollbar
+  padding-right: 4px; 
   
   scrollbar-width: thin;
   scrollbar-color: #4263c3 #1e3a8a;
@@ -82,7 +82,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 8px 0;
-  width: 100%; // Ensure full width
+  width: 100%; 
 
   :hover .exemplar-title {
     color: #f1eded;
@@ -99,7 +99,7 @@
   border-radius: 4px;
   transition: background-color 0.2s;
   cursor: pointer;
-  width: 100%; // Ensure full width
+  width: 100%; 
   color: #ffffff;
 }
 
@@ -110,7 +110,7 @@
 .exemplar-item.selected {
   background-color: #213471;
   border-left: 4px solid rgb(43, 96, 201);
-  padding-left: 6px; // Compensate for the border
+  padding-left: 6px; 
 
   .exemplar-title {
     color: #e0e0e0;
@@ -123,7 +123,7 @@
 .exemplar-image {
   width: 50px;
   height: 75px;
-  min-width: 50px; // Add min-width to prevent shrinking
+  min-width: 50px; 
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -152,7 +152,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 0; // Allow text truncation
+  min-width: 0; 
 }
 
 .exemplar-title {
@@ -176,8 +176,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow-y: auto; // Allow vertical scrolling
-  overflow-x: hidden; // Hide horizontal overflow
+  overflow-y: auto; 
+  overflow-x: hidden; 
   
   
   scrollbar-width: thin;
@@ -188,7 +188,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 16px;
-  max-height: 350px; // Increased for better image display
+  max-height: 350px; 
   overflow: hidden;
   background-color: #213471;
   border-radius: 8px;
@@ -197,7 +197,7 @@
 
 .cover-image {
   max-width: 100%;
-  max-height: 350px; // Adjusted to match container
+  max-height: 350px; 
   object-fit: contain;
 }
 
@@ -255,7 +255,7 @@
 .info-value {
   color: #FFFFFF;
   flex: 1;
-  word-break: break-word; // Allow long text to wrap
+  word-break: break-word; 
 }
 
 .empty-state {
@@ -278,7 +278,7 @@ mat-paginator {
   margin-top: auto;
 }
 
-// Tooltip styles for long text
+
 .truncated-text {
   white-space: nowrap;
   overflow: hidden;
@@ -288,13 +288,13 @@ mat-paginator {
 .mat-expansion-panel .mat-expansion-panel-header-title{
   color:#1e3a8a
 }
-// Optimize Material expansion panel styles
+
 ::ng-deep .mat-expansion-panel-body {
-  padding: 0 16px 16px !important; // Reduce padding
+  padding: 0 16px 16px !important; 
 }
 
 ::ng-deep .mat-expansion-panel-header {
-  padding: 0 16px !important; // Reduce padding
+  padding: 0 16px !important; 
 }
 
 ::ng-deep .mat-expansion-panel {
@@ -323,7 +323,7 @@ mat-paginator {
   }
 }
 
-// Fix pagination appearance
+
 ::ng-deep .mat-paginator {
   background-color: transparent;
   
@@ -345,7 +345,7 @@ mat-paginator {
   }
 }
 
-// Custom scrollbar styles for better appearance
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -365,7 +365,7 @@ mat-paginator {
   background: rgba(85, 85, 85, 0.8);
 }
 
-// Add hover effect to close button
+
 ::ng-deep .mat-mdc-dialog-actions button {
   transition: background-color 0.2s;
   
@@ -374,7 +374,7 @@ mat-paginator {
   }
 }
 
-// Enhanced dark mode styling
+
 ::ng-deep.custom-dialog .mat-mdc-dialog-surface {
   background-color: #152547;
   color: white;
@@ -384,7 +384,7 @@ mat-paginator {
   color: white;
 }
 
-// Responsive layout
+
 @media screen and (max-width: 1200px) {
   .dialog-container {
     min-width: 85vw;

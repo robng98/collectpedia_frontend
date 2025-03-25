@@ -35,7 +35,6 @@ export class ChangeEmailDialogComponent implements OnInit {
     private contaService: ContaService,
     public dialogRef: MatDialogRef<ChangeEmailDialogComponent>
   ) {
-    // Get current user's email
     const user = this.contaService.currentUser();
     if (user) {
       this.currentEmail = user.email;
@@ -53,7 +52,6 @@ export class ChangeEmailDialogComponent implements OnInit {
     }, { validators: this.emailMatchValidator });
   }
 
-  // Custom validator to check if emails match
   emailMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
     const newEmail = group.get('newEmail')?.value;
     const confirmEmail = group.get('confirmEmail')?.value;
@@ -72,7 +70,6 @@ export class ChangeEmailDialogComponent implements OnInit {
       return;
     }
 
-    // Check if the new email is the same as the current one
     if (this.changeEmailForm.value.newEmail === this.currentEmail) {
       this.errorMessage = 'O novo email é igual ao email atual.';
       return;
@@ -90,9 +87,7 @@ export class ChangeEmailDialogComponent implements OnInit {
       next: (response) => {
         this.isSubmitting = false;
         this.successMessage = 'Email atualizado com sucesso!';
-        // Reset the form after successful submission
         this.changeEmailForm.reset();
-        // Close dialog after a short delay
         setTimeout(() => this.dialogRef.close(true), 1500);
       },
       error: (error) => {

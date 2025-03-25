@@ -4,22 +4,22 @@
   <div mat-dialog-content>
     <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmit()">
       <div class="form-content">
-        <!-- Error message -->
+         Error message -->
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
         </div>
 
-        <!-- Success message -->
+         Success message -->
         <div *ngIf="successMessage" class="success-message">
           {{ successMessage }}
         </div>
 
-        <!-- Current Email Display -->
+         Current Email Display -->
         <div class="current-email">
           <p>Email atual: <strong>{{ currentEmail }}</strong></p>
         </div>
 
-        <!-- New Email -->
+         New Email -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Novo Email</mat-label>
           <input 
@@ -37,7 +37,7 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Confirm Email field -->
+         Confirm Email field -->
         <mat-form-field appearance="fill" class="form-field">
           <mat-label>Confirmar Novo Email</mat-label>
           <input 
@@ -59,25 +59,8 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Current Password for verification -->
-        <!-- <mat-form-field appearance="fill" class="form-field">
-          <mat-label>Senha Atual</mat-label>
-          <input 
-            matInput 
-            type="password" 
-            formControlName="currentPassword"
-            [disabled]="isSubmitting">
-          <mat-error *ngIf="changeEmailForm.get('currentPassword')?.errors?.['required'] && 
-                            changeEmailForm.get('currentPassword')?.touched">
-            Senha atual é obrigatória para confirmar alteração
-          </mat-error>
-          <mat-error *ngIf="changeEmailForm.get('currentPassword')?.errors?.['incorrect']">
-            Senha incorreta. Por favor, tente novamente.
-          </mat-error>
-        </mat-form-field> -->
       </div>
 
-      <!-- Loading spinner during submission -->
       <div *ngIf="isSubmitting" class="spinner-container">
         <mat-spinner diameter="40"></mat-spinner>
       </div>

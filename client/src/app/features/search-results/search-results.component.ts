@@ -39,24 +39,20 @@ export class SearchResultsComponent implements OnInit {
   private edicaoService = inject(EdicaoService);
   private router = inject(Router);
   
-  // Add Math for pagination calculations
   private Math = Math;
   
   searchParams = new SearchParams();
   searchResults: Serie[] = [];
   firstCovers: PrimeiraCapaSerie[] = [];
   
-  // Pagination properties
   totalItems = 0;
   currentPage = 1;
   pageSize = 10;
   pageSizeOptions = [10, 25, 50];
   isLoading = false;
 
-  // View mode state (same as comics-manga-page)
   viewMode: 'card' | 'list' = 'list';
 
-  // Temporary storage for newly loaded results
   private tempResults: Serie[] = [];
   private tempTotalItems = 0;
   private tempCovers: PrimeiraCapaSerie[] = [];
@@ -79,17 +75,13 @@ export class SearchResultsComponent implements OnInit {
   loadResults() {
     this.isLoading = true;
     
-    // First, fetch the data from the API
     this.serieService.searchByType(this.searchParams).pipe(
-      // Store results in temporary variables
       tap(response => {
         this.tempResults = response.data;
         this.tempTotalItems = response.totalCount;
       }),
-      // Only proceed if we have results to process
       switchMap(response => {
         if (response.data.length > 0) {
-          // Process cover requests
           const coverRequests = response.data.map(serie => 
             this.edicaoService.getFirstCoverBySerieId(serie.id).pipe(
               map(response => ({
@@ -108,15 +100,12 @@ export class SearchResultsComponent implements OnInit {
           return of([]);
         }
       }),
-      // Store the covers in a temporary variable
       tap(covers => {
         this.tempCovers = covers;
       }),
-      // Add a fixed delay of 500ms before displaying results
       switchMap(() => timer(500)),
     ).subscribe({
       next: () => {
-        // After the delay, update the actual displayed data
         this.searchResults = this.tempResults;
         this.totalItems = this.tempTotalItems;
         this.firstCovers = this.tempCovers;
@@ -132,16 +121,10 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-  /**
-   * Calculates the upper bound for pagination display
-   */
   calculateUpperBound(): number {
     return Math.min((this.currentPage - 1) * this.pageSize + this.searchResults.length, this.totalItems);
   }
 
-  /**
-   * Handles page change events from the paginator
-   */
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
     this.pageSize = event.pageSize;
@@ -149,7 +132,6 @@ export class SearchResultsComponent implements OnInit {
     this.searchParams.pageNumber = this.currentPage;
     this.searchParams.pageSize = this.pageSize;
     
-    // Update URL with new pagination parameters
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -164,9 +146,6 @@ export class SearchResultsComponent implements OnInit {
     this.loadResults();
   }
 
-  /**
-   * Handles sorting change
-   */
   updateSorting(sortBy: string, isDescending: boolean) {
     this.searchParams.sortBy = sortBy;
     this.searchParams.isDescending = isDescending;
@@ -176,9 +155,6 @@ export class SearchResultsComponent implements OnInit {
     this.loadResults();
   }
   
-  /**
-   * Toggle between card and list view
-   */
   toggleViewMode(): void {
     this.viewMode = this.viewMode === 'card' ? 'list' : 'card';
   }
@@ -193,16 +169,10 @@ export class SearchResultsComponent implements OnInit {
     });
   }
 
-  /**
-   * Handle the Material Button Toggle change event for view mode
-   */
   onViewModeChange(event: MatButtonToggleChange): void {
     this.viewMode = event.value;
   }
 
-  /**
-   * Clear search and reload results
-   */
   clearSearch(): void {
     if (this.searchParams.search) {
       this.searchParams.search = '';
@@ -222,9 +192,6 @@ export class SearchResultsComponent implements OnInit {
     }
   }
 
-  /**
-   * Check if search string is valid
-   */
   isValidSearch(searchString: string | undefined): boolean {
     return !!searchString && searchString.trim().length > 0;
   }

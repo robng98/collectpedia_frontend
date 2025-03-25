@@ -12,7 +12,6 @@
     </div>
 
     <div *ngIf="!isLoading && !error" class="content-container">
-      <!-- Left side: Accordion of series with their issues -->
       <div class="issues-container">
         <div *ngIf="groupedExemplares.length === 0" class="empty-state">
           <mat-icon>library_books</mat-icon>
@@ -69,7 +68,6 @@
           </mat-expansion-panel>
         </mat-accordion>
         
-        <!-- Pagination for large collections -->
         <mat-paginator
           [length]="totalItems" 
           [pageSize]="pageSize" 
@@ -80,7 +78,6 @@
           class="paginator">
         </mat-paginator>
 
-         <!-- Action buttons for deletion -->
         <div class="actions-toolbar mb-3" align="end" *ngIf="groupedExemplares.length > 0">
           <button mat-raised-button color="warn" 
                   [disabled]="selection.isEmpty() || isDeleting"
@@ -92,7 +89,6 @@
 
       </div>
 
-      <!-- Right side: Selected issue details -->
       <div class="issue-details-container" *ngIf="selectedIssue">
         <div class="cover-container">
           <img *ngIf="selectedIssue.fotoCapa" [src]="selectedIssue.fotoCapa" 

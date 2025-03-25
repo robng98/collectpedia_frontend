@@ -45,30 +45,24 @@ interface GroupedExemplar {
 })
 export class CollectionIssuesDialogComponent implements OnInit {
   private router = inject(Router);
-  // Collection data
   collection: Collection | null = null;
   collectionIssues: any[] = [];
   isLoading = true;
   error: string | null = null;
   
-  // Grouped exemplares by serie
   groupedExemplares: GroupedExemplar[] = [];
   
-  // Selected issue details
   selectedIssue: any | null = null;
   selectedEdicao: Edicao | null = null;
   
-  // Pagination
   totalItems = 0;
   pageSize = 25;
   pageIndex = 0;
   pageSizeOptions = [25, 50, 100, 500];
 
-  // Selection properties
   selection = new SelectionModel<number>(true, []);
   isDeleting = false;
 
-  // Track if any changes were made
   hasChanges = false;
 
   constructor(
@@ -78,9 +72,7 @@ export class CollectionIssuesDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { collectionId: number },
     private snackBar: MatSnackBar
   ) {
-    // Set the return value for when the dialog is closed by clicking outside
     this.dialogRef.backdropClick().subscribe(() => {
-      // Close the dialog and pass back the hasChanges value
       this.dialogRef.close(this.hasChanges);
     });
   }
@@ -101,7 +93,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
       pageSize: 1,
       sortBy: 'id',
       isDescending: false,
-      // Filter to get only the selected collection
       nomeColecao: this.data.collectionId.toString()
     }).subscribe({
       next: (response) => {
@@ -135,7 +126,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
         this.collectionIssues = response.data;
         this.totalItems = response.totalCount;
         
-        // Process exemplars to fetch edicao details and group by series
         this.processExemplares(this.collectionIssues);
       },
       error: (error) => {
@@ -152,7 +142,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
       return;
     }
     
-    // Create a request for each exemplar to get its edicao details
     const edicaoRequests = exemplares.map(exemplar => 
       this.edicaoService.getEdicaoById(exemplar.edicaoId).pipe(
         map(edicao => ({ exemplar, edicao })),
@@ -165,13 +154,10 @@ export class CollectionIssuesDialogComponent implements OnInit {
     
     forkJoin(edicaoRequests).subscribe({
       next: (results) => {
-        // Group by series
         const seriesMap = new Map<number, GroupedExemplar>();
         
         results.forEach(result => {
           if (result.edicao) {
-            // Combine exemplar with its edicao data
-            // Important: preserve the original exemplar ID
             const enrichedExemplar = {
               ...result.exemplar,
               serieId: result.edicao.serieId,
@@ -181,7 +167,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
               preco: result.edicao.preco,
               unMonetaria: result.edicao.unMonetaria,
               fotoCapa: result.edicao.fotoCapa || result.exemplar.fotoCapa
-              // Don't override id or other key exemplar properties
             };
             
             const serieId = result.edicao.serieId;
@@ -199,15 +184,12 @@ export class CollectionIssuesDialogComponent implements OnInit {
           }
         });
         
-        // Convert map to array and sort by serie name
         this.groupedExemplares = Array.from(seriesMap.values())
           .sort((a, b) => a.serieName.localeCompare(b.serieName));
         
-        // If we have groups, expand the first one by default
         if (this.groupedExemplares.length > 0) {
           this.groupedExemplares[0].expanded = true;
           
-          // And select the first exemplar in that group
           if (this.groupedExemplares[0].exemplares.length > 0) {
             this.selectIssue(this.groupedExemplares[0].exemplares[0]);
           }
@@ -234,36 +216,29 @@ export class CollectionIssuesDialogComponent implements OnInit {
   }
 
   closeDialog(): void {
-    // Pass back whether changes were made
     this.dialogRef.close(this.hasChanges);
   }
 
-  // Format date for display
   formatDate(date: string): string {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString('pt-BR');
   }
 
-  // Return condition label
   getConditionLabel(condition: string): string {
     return condition === 'string' ? 'N/A' : condition;
   }
 
-  // Selection methods
   isSelected(exemplarId: number): boolean {
     return this.selection.isSelected(exemplarId);
   }
 
-  // Change parameter type to any to accept both MouseEvent and MatCheckboxChange
   toggleSelection(exemplar: any, event: any): void {
     if (event && event.stopPropagation) {
       event.stopPropagation();
     }
-    // Ensure we're using the exemplar's unique ID
     this.selection.toggle(exemplar.id);
   }
 
-  // Change parameter type to any to accept both MouseEvent and MatCheckboxChange
   masterToggle(serieId: number, event: any): void {
     if (event && event.stopPropagation) {
       event.stopPropagation();
@@ -273,10 +248,8 @@ export class CollectionIssuesDialogComponent implements OnInit {
     if (!group) return;
     
     if (this.isAllSelectedInGroup(serieId)) {
-      // Deselect all exemplars in this group by their unique IDs
       group.exemplares.forEach(exemplar => this.selection.deselect(exemplar.id));
     } else {
-      // Select all exemplars in this group by their unique IDs
       group.exemplares.forEach(exemplar => this.selection.select(exemplar.id));
     }
   }
@@ -285,7 +258,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
     const group = this.groupedExemplares.find(g => g.serieId === serieId);
     if (!group || group.exemplares.length === 0) return false;
     
-    // Check each exemplar by its unique ID
     return group.exemplares.every(exemplar => this.selection.isSelected(exemplar.id));
   }
 
@@ -293,7 +265,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
     const group = this.groupedExemplares.find(g => g.serieId === serieId);
     if (!group || group.exemplares.length === 0) return false;
     
-    // Check each exemplar by its unique ID
     return group.exemplares.some(exemplar => this.selection.isSelected(exemplar.id))
       && !this.isAllSelectedInGroup(serieId);
   }
@@ -312,7 +283,6 @@ export class CollectionIssuesDialogComponent implements OnInit {
       .pipe(finalize(() => this.isDeleting = false))
       .subscribe({
         next: () => {
-          // Set flag to indicate changes were made
           this.hasChanges = true;
           
           this.snackBar.open(`${selectedIds.length} exemplar(es) removido(s) com sucesso!`, 'Fechar', {

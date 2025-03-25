@@ -1,21 +1,17 @@
 <div class="flex flex-1 justify-center py-5 bg-blue-950">
-    <!-- Loading Indicator for whole page -->
     <div *ngIf="isLoading" class="centralized-spinner-container">
         <mat-spinner diameter="60" color="accent"></mat-spinner>
     </div>
 
     <div class="layout-container flex flex-1 max-w-[1200px] px-4" *ngIf="!isLoading">
-        <!-- Left Column - Serie Info -->
         <div class="serie-info flex-1 max-w-[300px] mr-6">
             @if (currentSerie && currentEditora && currentEdicao) {
-            <!-- Serie Header Section - Removed background color -->
             <div class="serie-header mb-6 ">
                 <h2 class="text-[#FFFFFF] text-[28px] font-bold leading-tight mb-2">
                     {{currentSerie.nomeInter}}
                 </h2>
                 <p class="text-[#C4C4C4] text-lg pl-3 mb-5">
                     {{dataInicioSerie.slice(0,4)}}
-                    <!-- {{currentEdicao.dataLancamento.slice(0,4)}} -->
                 </p>
 
                 @if (currentSerie.mangaStats) {
@@ -42,7 +38,6 @@
                     </div>
                 </div>
                 }
-                <!-- Serie Details with better spacing -->
                 <div class="serie-details">
                     <div class="flex flex-col mb-4">
                         <p class="text-[#FFF] text-base font-medium leading-normal border-b border-blue-700 pb-1 mb-2">
@@ -96,7 +91,6 @@
             }
         </div>
 
-        <!-- Middle Column - Edicoes Table (2/3) -->
         <div class="content-main flex-[2] flex flex-col ml-14 mr-8">
             <div class="section-header">
                 <h3 class="section-title text-[#FFFFFF] text-[22px] font-bold leading-tight tracking-[-0.015em] mb-3">
@@ -107,20 +101,17 @@
                 <div class="table-container border-none rounded-t-md flex flex-col w-[100%] bg-[#213471]">
                     <div>
                         <table mat-table [dataSource]="dataSource" [trackBy]="trackByEdicao">
-                            <!-- Name Column -->
                             <ng-container matColumnDef="titulo">
                                 <th mat-header-cell *matHeaderCellDef> Título </th>
                                 <td mat-cell *matCellDef="let edicao" class="text-neutral-100"> {{edicao.serieNome}}
                                 </td>
                             </ng-container>
 
-                            <!-- Position Column -->
                             <ng-container matColumnDef="numero">
                                 <th mat-header-cell *matHeaderCellDef> No. </th>
                                 <td mat-cell *matCellDef="let edicao"> {{edicao.numero}} </td>
                             </ng-container>
 
-                            <!-- Symbol Column -->
                             <ng-container matColumnDef="preco">
                                 <th mat-header-cell *matHeaderCellDef> Preço </th>
                                 <td mat-cell *matCellDef="let edicao"> {{edicao.unMonetaria}} {{edicao.preco}} </td>
@@ -160,15 +151,12 @@
             </form>
         </div>
 
-        <!-- Right Column - Edicao Details -->
         <div class="stats-column flex-1 flex flex-col relative">
-            <!-- Loading Indicator for issue details only - now using SCSS class -->
             <div *ngIf="isLoadingDetails" class="issue-details-spinner">
                 <mat-spinner diameter="40"></mat-spinner>
             </div>
 
             @if (currentEdicao) {
-            <!-- Remove opacity class as we're using bg-opacity on the overlay instead -->
             <div>
                 <div class="section-header">
                     <h2
@@ -177,13 +165,11 @@
                     </h2>
                 </div>
 
-                <!-- Cover Image - now using SCSS class with ngStyle -->
                 <div class="bg-[#213471] rounded-lg p-2 mb-4">
                     <div class="issue-cover" [ngStyle]="{'background-image': 'url(' + currentEdicao.fotoCapa + ')'}">
                     </div>
                 </div>
 
-                <!-- Issue Details as Cards -->
                 <div class="stats">
                     <div class="stat-card rounded-t-md ">
                         <p class="stat-value">#{{currentEdicao.numero}}</p>
@@ -195,7 +181,6 @@
                     </div>
                 </div>
 
-                <!-- Additional Details -->
                 <div class="bg-[#213471]">
                     @if (currentSerie.mangaStats) {
                     <div class="popular-stat-card">
@@ -225,10 +210,7 @@
                         <p class="popular-item-value">{{currentEdicao.dataLancamento.slice(0,7)}}</p>
                     </div>
 
-                    <!-- You can add this after the contributors section if you want to show pagination controls -->
-                    <!-- For example, after the "popular-stat-card" sections that display contributors -->
 
-                    <!-- Only add if there are a lot of contributors to display -->
                     <div *ngIf="contribuicoesTotalItems > contribuicoesPageSize" class="mt-4">
                         <mat-paginator [length]="contribuicoesTotalItems" [pageSize]="contribuicoesPageSize"
                             [pageIndex]="contribuicoesPage - 1" [pageSizeOptions]="[10, 25, 50, 100]"

@@ -44,52 +44,42 @@ export class PublisherDetailComponent implements OnInit {
 
     private Math = Math;
 
-    // Publisher data
     publisherId: number = 0;
     currentPublisher: Publisher | null = null;
 
-    // Series data
     publisherSeries: Serie[] = [];
     firstCovers: PrimeiraCapaSerie[] = [];
 
-    // Search params
     searchParams = new SearchParams();
 
-    // Pagination properties
     totalItems = 0;
     currentPage = 1;
     pageSize = 10;
     pageSizeOptions = [10, 25, 50];
     isLoading = false;
 
-    // View mode state
     viewMode: 'card' | 'list' = 'card';
 
-    // Temporary storage for newly loaded results
     private tempSeries: Serie[] = [];
     private tempTotalItems = 0;
     private tempCovers: PrimeiraCapaSerie[] = [];
 
     ngOnInit(): void {
-        // Set loading to true at the start
         this.isLoading = true;
 
         this.route.params.subscribe(params => {
-            this.publisherId = +params['id']; // Convert to number
+            this.publisherId = +params['id'];
 
             if (this.publisherId) {
-                // Initialize search parameters
                 this.searchParams.pageNumber = 1;
                 this.searchParams.pageSize = this.pageSize;
-                this.searchParams.sortBy = 'nomeInter'; // Default sort by series name
+                this.searchParams.sortBy = 'nomeInter';
                 this.searchParams.isDescending = false;
                 this.searchParams.search = '';
 
-                // Load publisher details and its series
                 this.loadPublisherDetails();
                 this.loadPublisherSeries();
             } else {
-                // If no ID, end loading state
                 this.isLoading = false;
             }
         });
@@ -99,16 +89,13 @@ export class PublisherDetailComponent implements OnInit {
         this.publisherService.getPublisherById(this.publisherId).subscribe({
             next: (publisher) => {
                 this.currentPublisher = publisher;
-                // Don't set isLoading = false here to wait for series to load
             },
             error: (error) => {
                 console.error('Error loading publisher details:', error);
-                // Don't set isLoading = false here to wait for series to load
             }
         });
     }
 
-    // Add method to check if search string is valid (not empty or just spaces)
     isValidSearch(searchString: string | undefined): boolean {
         return !!searchString && searchString.trim().length > 0;
     }
@@ -120,7 +107,6 @@ export class PublisherDetailComponent implements OnInit {
         }
     }
 
-    // Add method to clear search and reset series display
     clearSearch(): void {
         if (this.searchParams.search) {
             this.searchParams.search = '';
@@ -134,7 +120,6 @@ export class PublisherDetailComponent implements OnInit {
     loadPublisherSeries() {
 
 
-        // First, fetch the series from the publisher
         this.publisherService.getPublisherSeries
             (
                 this.publisherId,
@@ -144,15 +129,12 @@ export class PublisherDetailComponent implements OnInit {
                 this.searchParams.sortBy,
                 this.searchParams.isDescending
             ).pipe(
-                // Store results in temporary variables
                 tap(response => {
                     this.tempSeries = response.data;
                     this.tempTotalItems = response.totalCount;
                 }),
-                // Only proceed if we have results to process
                 switchMap(response => {
                     if (response.data.length > 0) {
-                        // Process cover requests
                         const coverRequests = response.data.map(serie =>
                             this.edicaoService.getFirstCoverBySerieId(serie.id).pipe(
                                 map(response => ({
@@ -171,15 +153,12 @@ export class PublisherDetailComponent implements OnInit {
                         return of([]);
                     }
                 }),
-                // Store the covers in a temporary variable
                 tap(covers => {
                     this.tempCovers = covers;
                 }),
-                // Add a small delay before displaying results for better UX
                 switchMap(() => timer(300)),
             ).subscribe({
                 next: () => {
-                    // After the delay, update the actual displayed data
                     this.publisherSeries = this.tempSeries;
                     console.log(this.tempSeries);
                     this.totalItems = this.tempTotalItems;

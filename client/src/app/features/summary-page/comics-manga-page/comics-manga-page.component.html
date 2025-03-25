@@ -1,5 +1,4 @@
 <div class="layout-container flex h-full grow flex-col">
-    <!-- Loading Indicator -->
     <div *ngIf="isLoading" class="centralized-spinner-container">
         <mat-spinner diameter="60" color="light"></mat-spinner>
     </div>
@@ -16,12 +15,9 @@
                     </p>
                 </div>
 
-                <!-- Controls Section with Content Type, Sorting and View Toggle - Updated to match publisher-detail style -->
                 <div class="flex flex-col gap-2">
-                    <!-- All controls moved to right side -->
                     <div class="controls-section flex-1 justify-end mr-4 mt-4">
 
-                        <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle">
                             <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
                             <div class="sort-options scale-[0.85]">
@@ -66,7 +62,6 @@
                             </div>
                         </div>
 
-                        <!-- Content Type Selector - Using Material Button Toggle -->
                         <div class="align-middle">
                             <div class="sort-label text-white text-sm font-semibold mb-[7px]">Estilo de publicação</div>
                             <div class=" scale-[0.85]">
@@ -82,7 +77,6 @@
                             </div>
                         </div>
 
-                        <!-- View Toggle Button - replaced with Material Button Toggle -->
                         <div class="align-middle">
                             <div class="sort-label text-white text-sm font-semibold mb-[7px]">Modo de visualização</div>
                             <div class=" scale-[0.85]">
@@ -100,7 +94,6 @@
                     </div>
 
                     <div class="flex flex-row">
-                        <!-- Search bar moved here from paginator -->
                         <div class="search-wrapper-header scale-[0.85]">
                             <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
                                 <div class="search-container">
@@ -109,7 +102,6 @@
                                     </div>
                                     <input class="search-input" placeholder="Buscar" name="search"
                                         [(ngModel)]="searchParams.search" required autocomplete="off" />
-                                    <!-- Clear button that only shows when there's text -->
                                     <button mat-icon-button type="button" *ngIf="searchParams.search"
                                         (click)="clearSearch()" class="clear-search-button">
                                         <mat-icon>close</mat-icon>
@@ -121,7 +113,6 @@
                 </div>
             </div>
 
-            <!-- Card View -->
             <div class="comics-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
                 @for (serie of comicSeries; track $index) {
                 @if (firstCovers.length === comicSeries.length) {
@@ -134,7 +125,6 @@
                         @if (contentType === 'comics') {
                         <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
                         }
-                        <!-- Manga-specific information -->
                         @if (contentType === 'mangas' && serie.mangaStats) {
                         <div class="manga-info">
                             <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
@@ -158,13 +148,11 @@
                 }
                 }
 
-                <!-- Empty State -->
                 <div *ngIf="comicSeries.length === 0 && !isLoading" class="empty-state">
                     <p>Nenhum título de quadrinhos encontrado.</p>
                 </div>
             </div>
 
-            <!-- List View with contained scrolling -->
             <div class="comics-list-container" *ngIf="viewMode === 'list'">
                 <div class="comics-list">
                     @for (serie of comicSeries; track $index) {
@@ -182,7 +170,6 @@
                             </p>
                             
                             <div class="comic-list-details">
-                                <!-- Manga-specific information -->
                                 @if (contentType === 'mangas' && serie.mangaStats) {
                                 {{serie.mangaStats.nomeJap}} - {{serie.mangaStats.demografia}} -
                                 }
@@ -201,14 +188,12 @@
                     }
                     }
 
-                    <!-- Empty State -->
                     <div *ngIf="comicSeries.length === 0 && !isLoading" class="empty-state">
                         <p>Nenhum título de quadrinhos encontrado.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Pagination Controls -->
             <mat-paginator *ngIf="totalItems > 0" [length]="totalItems" [pageSize]="pageSize"
                 [pageIndex]="currentPage - 1" (page)="onPageChange($event)" 
                 showFirstLastButtons class="comics-paginator mt-1">

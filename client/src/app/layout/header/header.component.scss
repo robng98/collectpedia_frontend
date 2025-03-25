@@ -4,7 +4,7 @@ header {
     justify-content: space-between;
     white-space: nowrap;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    background-color: #1e40af; // bg-blue-800
+    background-color: #1e40af; 
     padding: 0.75rem 2.5rem;
   }
   
@@ -35,17 +35,6 @@ header {
     }
 
   }
-
-  // a{
-  //   text-decoration: none !important;
-  // }
-
-  // nav{
-  //   div:hover{
-  //     cursor: pointer;
-  //     transform: translateY(-2px);
-  //   }
-  // }
   
   .logo-container:hover{
     cursor: pointer;
@@ -126,24 +115,20 @@ header {
         min-height: 0;
       }
 
-      // Fix select text color
       .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label, 
       .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-floating-label--float-above {
         color: #f5f5f5;
       }
 
-      // Style the select text
       .mat-mdc-select-value-text {
         color: #f5f5f5;
       }
 
-      // Remove underline
       .mdc-line-ripple::before, 
       .mdc-line-ripple::after {
         border-bottom-width: 0;
       }
 
-      // Style the dropdown icon
       .mat-mdc-select-arrow {
         color: #f5f5f5;
       }

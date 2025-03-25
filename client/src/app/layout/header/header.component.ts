@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   private router = inject(Router);
   searchParams = new SearchParams();
   private currentUrl: string = '';
-  private previousUrl: string = ''; // Added to track previous URL
+  private previousUrl: string = ''; 
   
   ngOnInit() {
     this.router.events.pipe(
@@ -40,7 +40,6 @@ export class HeaderComponent implements OnInit {
 
       console.log('Previous URL: ' + this.previousUrl);
       
-      // Check if user left the search page
       if (!this.currentUrl.includes('/search')) {
         console.log('Current URL: ' + this.currentUrl);
         this.resetSearch();
@@ -57,32 +56,26 @@ export class HeaderComponent implements OnInit {
   }
 
   onSearchChange() {
-    // Only navigate if search text is valid
     if (this.isValidSearch(this.searchParams.search)) {
       const queryParams = { 
         search: this.searchParams.search,
         type: this.searchParams.type
       };
       
-      // Check if we're already on the search page
       if (this.currentUrl.includes('/search')) {
-        // Force reload by first navigating to a different route then back
         this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
           this.router.navigate(['/search'], { queryParams });
         });
       } else {
-        // Normal navigation
         this.router.navigate(['/search'], { queryParams });
       }
     }
   }
 
-  // Add method to reset search parameters
   private resetSearch(): void {
     this.searchParams = new SearchParams();
   }
 
-  // Add method to check if search string is valid (not empty or just spaces)
   isValidSearch(searchString: string | undefined): boolean {
     return !!searchString && searchString.trim().length > 0;
   }

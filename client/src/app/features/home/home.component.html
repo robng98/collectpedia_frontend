@@ -1,6 +1,4 @@
 <div class="px-40 flex flex-1 justify-center py-5 bg-blue-950">
-
-  <!-- Loading Indicator (Centralized) -->
   <div *ngIf="isLoading" class="centralized-spinner-container">
     <mat-spinner diameter="60" color="light"></mat-spinner>
   </div>
@@ -50,8 +48,7 @@
       <div class="flex-1 max-w-[30%] min-h-full">
         <h2 class="section-title mb-5">Novas adições</h2>
 
-        <!-- In the swiper-container element (around line 49) -->
-          <swiper-container #swiperContainer
+        <swiper-container #swiperContainer
           pagination="true" 
           pagination-clickable="true" 
           keyboard="true" 
@@ -60,16 +57,13 @@
           mousewheel="true" 
           autoplay-delay="5000" 
           autoplay-disable-on-interaction="false"
-          slides-per-view="1">  <!-- Explicitly set slidesPerView -->
+          slides-per-view="1">
           <swiper-slide class="flex ml-6 justify-center" *ngFor="let issue of lastAddedIssues; let i = index"
             [attr.data-swiper-slide-index]="i" >
             <div class="issue-card">
               <div class="issue-image" style='background-image: url("{{issue.fotoCapa}}");'
                 (click)="goToSerieByIssue(issue.serieId)">
               </div>
-              <!-- <div class="text-center">
-                <p class="issue-title">{{issue.serieNome}}<br>#{{issue.numero}}</p>
-              </div> -->
             </div>
           </swiper-slide>
         </swiper-container>
@@ -134,8 +128,6 @@
         </div>
 
       </div>
-
-      <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
-
     </div>
   </div>
+</div>

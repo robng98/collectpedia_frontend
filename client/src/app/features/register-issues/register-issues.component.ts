@@ -50,7 +50,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 })
 export class RegisterIssuesComponent implements OnInit {
   registrationForm: FormGroup;
-  batchForm: FormGroup; // For batch operations
+  batchForm: FormGroup; 
   selectedIssues: Edicao[] = [];
   collections: Collection[] = [];
   grades: string[] = [
@@ -84,7 +84,7 @@ export class RegisterIssuesComponent implements OnInit {
   maxDate: Date = new Date();
   isSubmitting = false;
   errorMessage: string | null = null;
-  useBatchMode = true; // Default to batch mode
+  useBatchMode = true; 
   batchValuesApplied = false;
 
   isLoading = false;
@@ -95,17 +95,16 @@ export class RegisterIssuesComponent implements OnInit {
     private router: Router,
     private collectionService: CollectionService,
     private comicService: ComicService,
-    private contaService: ContaService // Add conta service
+    private contaService: ContaService 
   ) 
   {
-    // Initialize batch form
+    
     this.batchForm = this.fb.group({
       acquisitionDate: [new Date().toISOString().split("T")[0], Validators.required],
       grade: ["", Validators.required],
       collectionId: ["", Validators.required],
     });
     
-    // Initialize main form with issues array
     this.registrationForm = this.fb.group({
       collectionId: ["", Validators.required],
       issues: this.fb.array([])
@@ -118,9 +117,8 @@ export class RegisterIssuesComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    // Check if user is logged in first, before doing anything else
+
     if (!this.contaService.currentUser()) {
-      // Redirect to login page with return URL
       this.router.navigate(['/account/login'], {
         queryParams: {
           returnUrl: this.router.url
@@ -129,7 +127,6 @@ export class RegisterIssuesComponent implements OnInit {
       return;
     }
 
-    // Keep existing code for loading issues and collections
     this.route.queryParams.subscribe((params) => {
       const issueIdsParam = params["issueIds"];
       if (issueIdsParam) {
@@ -146,7 +143,6 @@ export class RegisterIssuesComponent implements OnInit {
 
     this.loadCollections();
 
-    // Add this code to track batch form changes
     this.batchForm.valueChanges.subscribe(() => {
       this.batchValuesApplied = false;
     });
@@ -166,42 +162,28 @@ export class RegisterIssuesComponent implements OnInit {
       .subscribe(
         (issues: Edicao[]) => {
           this.selectedIssues = issues;
-          // Initialize form controls for each issue
           this.initializeIssueForms();
         }
       );
   }
 
   initializeIssueForms(): void {
-    // Clear existing form array
     while (this.issuesFormArray.length) {
       this.issuesFormArray.removeAt(0);
     }
 
-    // Create form group for each issue
     this.selectedIssues.forEach(issue => {
-      issue.expanded = false; // Initialize expanded property
+      issue.expanded = false; 
       this.issuesFormArray.push(
         this.fb.group({
           id: [issue.id],
-          selected: [true], // All issues selected by default
-          acquisitionDate: [null, Validators.required], // Start with null instead of default
-          grade: [null, Validators.required]  // Start with null instead of default
+          selected: [true], 
+          acquisitionDate: [null, Validators.required], 
+          grade: [null, Validators.required]  
         })
       );
     });
     
-    // Create form group for each issue
-    // this.selectedIssues.forEach(issue => {
-    //   this.issuesFormArray.push(
-    //     this.fb.group({
-    //       id: [issue.id],
-    //       selected: [true], // All issues selected by default
-    //       acquisitionDate: [new Date().toISOString().split("T")[0], Validators.required],
-    //       grade: ["Near Mint", Validators.required]
-    //     })
-    //   );
-    // });
   }
 
   loadCollections(): void {
@@ -222,7 +204,6 @@ export class RegisterIssuesComponent implements OnInit {
       .subscribe(
         (response: Pagination<Collection>) => {
           this.collections = response.data;
-          // Set default collection if available
           if (response.data.length > 0) {
             this.registrationForm.patchValue({
               collectionId: response.data[0].id,
@@ -238,16 +219,13 @@ export class RegisterIssuesComponent implements OnInit {
   isIssueConfigured(index: number): boolean {
     const issueControl = this.issuesFormArray.at(index);
     
-    // First check if this issue is selected
     if (!issueControl.get('selected')?.value) {
       return false;
     }
     
-    // Get form control values
     const acquisitionDateControl = issueControl.get('acquisitionDate');
     const gradeControl = issueControl.get('grade');
     
-    // Return true only if both controls exist, have values, and are valid
     return !!(
       acquisitionDateControl && 
       gradeControl && 
@@ -255,19 +233,17 @@ export class RegisterIssuesComponent implements OnInit {
       gradeControl.value &&
       !acquisitionDateControl.invalid &&
       !gradeControl.invalid &&
-      acquisitionDateControl.touched &&  // Ensure user has interacted with the field
-      gradeControl.touched               // Ensure user has interacted with the field
+      acquisitionDateControl.touched &&  
+      gradeControl.touched               
     );
   }
   
-  // Also add this method to check all configured issues
   get configuredIssueCount(): number {
     return this.issuesFormArray.controls
       .filter((control, index) => this.isIssueConfigured(index))
       .length;
   }
 
-  // Toggle all issues selection
   toggleAllIssues(event: MatCheckboxChange): void {
     const selected = event.checked;
     this.issuesFormArray.controls.forEach(control => {
@@ -275,42 +251,35 @@ export class RegisterIssuesComponent implements OnInit {
     });
   }
 
-  // Apply batch values to all selected issues
   applyBatchValues(): void {
     const batchValues = this.batchForm.value;
     
     this.issuesFormArray.controls.forEach(control => {
       if (control.get('selected')?.value) {
-        // Set values
         control.patchValue({
           acquisitionDate: batchValues.acquisitionDate,
           grade: batchValues.grade
         });
         
-        // Mark fields as touched so they're recognized as configured
         control.get('acquisitionDate')?.markAsTouched();
         control.get('grade')?.markAsTouched();
       }
     });
 
-    // Set the flag when values have been successfully applied
     this.batchValuesApplied = true;
   }
 
-  // Check if all issues are selected
   get allIssuesSelected(): boolean {
     if (!this.issuesFormArray.length) return false;
     return this.issuesFormArray.controls.every(control => control.get('selected')?.value);
   }
 
-  // Check if some but not all issues are selected
   get someIssuesSelected(): boolean {
     if (!this.issuesFormArray.length) return false;
     const selectedCount = this.issuesFormArray.controls.filter(control => control.get('selected')?.value).length;
     return selectedCount > 0 && selectedCount < this.issuesFormArray.length;
   }
 
-  // Get count of selected issues
   get selectedIssueCount(): number {
     return this.issuesFormArray.controls.filter(control => control.get('selected')?.value).length;
   }
@@ -339,18 +308,15 @@ export class RegisterIssuesComponent implements OnInit {
     this.isSubmitting = true;
     this.errorMessage = null;
     
-    // Get selected issue IDs
     const selectedIssueIds = this.issuesFormArray.controls
       .filter(control => control.get('selected')?.value)
       .map(control => control.get('id')?.value);
     
-    // Process each issue ID individually
     let successCount = 0;
     let processedCount = 0;
     
     const processIssue = (index: number) => {
       if (index >= selectedIssueIds.length) {
-        // All done
         if (successCount === selectedIssueIds.length) {
           this.router.navigate(["/user"]);
         } else {
@@ -360,7 +326,7 @@ export class RegisterIssuesComponent implements OnInit {
       }
       
       const formData = {
-        edicaoId: selectedIssueIds[index],  // Single ID, not array
+        edicaoId: selectedIssueIds[index],
         colecaoId: this.batchForm.value.collectionId,
         estadoConservacao: this.batchForm.value.grade,
         dataAquisicao: this.batchForm.value.acquisitionDate
@@ -402,17 +368,15 @@ export class RegisterIssuesComponent implements OnInit {
     const selectedIssues = this.issuesFormArray.controls.filter(control => control.get('selected')?.value);
     const requests = selectedIssues.map(control => {
       return {
-        edicaoId: control.get('id')?.value,  // Changed from edicaoIds array
+        edicaoId: control.get('id')?.value,
         colecaoId: this.registrationForm.value.collectionId,
         estadoConservacao: control.get('grade')?.value,
         dataAquisicao: control.get('acquisitionDate')?.value
       };
     });
 
-    // Process each request sequentially
     const processRequests = (index = 0) => {
       if (index >= requests.length) {
-        // All done, navigate to collection
         this.router.navigate(["/user"]);
         return;
       }
@@ -438,11 +402,10 @@ export class RegisterIssuesComponent implements OnInit {
   }
 
   processSubmission(formData: any): void {
-    // Ensure formData has the correct property names before passing to the service
     const exemplarRequest = {
       edicaoId: Array.isArray(formData.edicaoIds) 
         ? formData.edicaoIds[0] 
-        : formData.edicaoIds,   // Take the first ID
+        : formData.edicaoIds,
       colecaoId: formData.colecaoId || formData.collectionId,
       estadoConservacao: formData.estadoConservacao || formData.grade,
       dataAquisicao: formData.dataAquisicao || formData.acquisitionDate
@@ -462,7 +425,6 @@ export class RegisterIssuesComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response) {
-            // Navigate to collection detail page
             this.router.navigate(["/user"]);
           }
         }

@@ -69,9 +69,7 @@ export class ChangePasswordDialogComponent implements OnInit {
       next: (response) => {
         this.isSubmitting = false;
         this.successMessage = 'Senha atualizada com sucesso!';
-        // Reset the form after successful submission
         this.changePasswordForm.reset();
-        // Close dialog after a short delay
         setTimeout(() => this.dialogRef.close(true), 1500);
       },
       error: (error) => {

@@ -4,7 +4,6 @@
             <mat-spinner diameter="60"></mat-spinner>
         </div>
         <div class="layout-content-container" *ngIf="!isLoading">
-            <!-- Header section with title and controls -->
             <div class="publisher-header">
                 <div class="publisher-info">
                     <h1 class="publisher-title">{{currentPublisher?.nome || 'Carregando...' }}</h1>
@@ -15,11 +14,8 @@
                     </p>
                 </div>
                 <div class="flex flex-col gap-2">
-                    <!-- All controls moved to right side -->
                     <div class="controls-section flex-1 justify-end mr-2">
-                        <!-- Removed the search-wrapper from here -->
 
-                        <!-- Sorting Controls -->
                         <div class="sorting-controls align-middle ">
                             <div class="sort-label text-white font-semibold mt-0">Ordenar por</div>
                             <div class="sort-options scale-[0.85]">
@@ -59,7 +55,6 @@
                             </div>
                         </div>
 
-                        <!-- View Toggle Button - replaced with Material Button Toggle -->
                         <div class="align-middle">
                             <div class="sort-label text-white text-sm font-semibold ">Modo de visualização</div>
                             <div class="scale-[0.85]">
@@ -78,7 +73,6 @@
                     </div>
 
                     <div class="flex flex-row">
-                        <!-- Search bar moved here from paginator -->
                         <div class="search-wrapper-header scale-[0.85]">
                             <form #searchForm="ngForm" (ngSubmit)="onSearchChange()">
                                 <div class="search-container">
@@ -87,7 +81,6 @@
                                     </div>
                                     <input class="search-input" placeholder="Buscar" name="search"
                                         [(ngModel)]="searchParams.search" required autocomplete="off" />
-                                    <!-- Clear button that only shows when there's text -->
                                     <button mat-icon-button type="button" *ngIf="searchParams.search"
                                         (click)="clearSearch()" class="clear-search-button">
                                         <mat-icon>close</mat-icon>
@@ -99,7 +92,6 @@
                 </div>
             </div>
 
-            <!-- Card View -->
             <div class="comics-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
                 @for (serie of publisherSeries; track $index) {
                 @if (firstCovers.length === publisherSeries.length) {
@@ -112,7 +104,6 @@
                         @if(serie.mangaStats === null) {
                         <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
                         }
-                        <!-- Manga-specific information -->
                         @if (serie.mangaStats) {
                         <div class="manga-info">
                             <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
@@ -136,13 +127,11 @@
                 }
                 }
 
-                <!-- Empty State -->
                 <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
                     <p>Nenhuma série encontrada para esta editora.</p>
                 </div>
             </div>
 
-            <!-- List View -->
             <div class="comics-list-container" *ngIf="viewMode === 'list'">
                 <div class="comics-list">
                     @for (serie of publisherSeries; track $index) {
@@ -178,21 +167,17 @@
                     }
                     }
 
-                    <!-- Empty State -->
                     <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
                         <p>Nenhuma série encontrada para esta editora.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Custom Paginator with Voltar Button -->
             <div *ngIf="totalItems > 0" class="custom-paginator-container">
-                <!-- Back button moved here from header -->
                 <button class="back-button-paginator px-4 py-1 rounded-2xl" (click)="goBack()">
                     <span class="items-center">Voltar</span>
                 </button>
 
-                <!-- Pagination Controls -->
                 <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
                     [pageIndex]="currentPage - 1" (page)="onPageChange($event)" showFirstLastButtons
                     class="comics-paginator">

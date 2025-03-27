@@ -12,7 +12,7 @@ export class EdicaoService {
   private http = inject(HttpClient);
   
   getFirstCoverBySerieId(serieId: number){
-    return this.http.get<Pagination<Edicao>>(this.baseUrl + 'edicao/serieId/' + serieId + '?PageSize=1&SortBy=id&IsDescending=false');
+    return this.http.get<Pagination<Edicao>>(this.baseUrl + 'edicao/serieId/' + serieId + '?PageSize=1&SortBy=dataLancamento&IsDescending=false');
   }
 
   getEdicoesBySerieId(serieId: number, params: HttpParams) {

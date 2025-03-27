@@ -75,44 +75,88 @@
                 </div>
             </div>
 
-            <div class="comics-grid mx-20 mb-[20rem]" *ngIf="viewMode === 'card'">
-                @for (result of searchResults; track $index) {
-                @if (firstCovers.length === searchResults.length) {
-                <div class="comic-card w-4/5" (click)="navigateToDetail(result.id, result.editoraId, result)">
-                    <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
-                        <div class="comic-overlay"></div>
-                    </div>
-                    <div class="comic-info">
-                        <h3 class="comic-title">{{result.nomeInter}}</h3>
-                        <p class="comic-volume">Vol. {{result.cicloNum}}</p>
-
-                        @if (result.mangaStats) {
-                        <div class="manga-info">
-                            <p class="manga-jp-title">{{result.mangaStats.nomeJap}}</p>
-                            <p class="manga-demographics">{{result.mangaStats.demografia}}</p>
+            @if (calculateUpperBound() / 5 <= 1) {
+                <div class="comics-grid mx-20 mb-[19rem]" *ngIf="viewMode === 'card'">
+                    @for (result of searchResults; track $index) {
+                    @if (firstCovers.length === searchResults.length) {
+                    <div class="comic-card w-4/5" (click)="navigateToDetail(result.id, result.editoraId, result)">
+                        <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                            <div class="comic-overlay"></div>
                         </div>
-                        }
+                        <div class="comic-info">
+                            <h3 class="comic-title">{{result.nomeInter}}</h3>
+                            <p class="comic-volume">Vol. {{result.cicloNum}}</p>
 
-                        <div class="comic-details">
-                            <p class="comic-status">{{result.estadoPubAtual | lowercase}}</p>
-                            <p class="comic-issues">{{result.numEdicoes}}
-                                @if (result.mangaStats) {
-                                tankos
-                                }
-                                @else {
-                                edições
-                                }
-                            </p>
+                            @if (result.mangaStats) {
+                            <div class="manga-info">
+                                <p class="manga-jp-title">{{result.mangaStats.nomeJap}}</p>
+                                <p class="manga-demographics">{{result.mangaStats.demografia}}</p>
+                            </div>
+                            }
+
+                            <div class="comic-details">
+                                <p class="comic-status">{{result.estadoPubAtual | lowercase}}</p>
+                                <p class="comic-issues">{{result.numEdicoes}}
+                                    @if (result.mangaStats) {
+                                    tankos
+                                    }
+                                    @else {
+                                    edições
+                                    }
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                }
-                }
+                    }
+                    }
 
-                <div *ngIf="searchResults.length === 0 && !isLoading" class="empty-state">
-                    <p>Nenhum resultado encontrado para sua busca.</p>
+                    <div *ngIf="searchResults.length === 0 && !isLoading" class="empty-state">
+                        <p>Nenhum resultado encontrado para sua busca.</p>
+                    </div>
+
                 </div>
-            </div>
+            }
+            @else{
+                <div class="comics-grid mx-20 mb-4" *ngIf="viewMode === 'card'">
+                    @for (result of searchResults; track $index) {
+                    @if (firstCovers.length === searchResults.length) {
+                    <div class="comic-card w-4/5" (click)="navigateToDetail(result.id, result.editoraId, result)">
+                        <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                            <div class="comic-overlay"></div>
+                        </div>
+                        <div class="comic-info">
+                            <h3 class="comic-title">{{result.nomeInter}}</h3>
+                            <p class="comic-volume">Vol. {{result.cicloNum}}</p>
+
+                            @if (result.mangaStats) {
+                            <div class="manga-info">
+                                <p class="manga-jp-title">{{result.mangaStats.nomeJap}}</p>
+                                <p class="manga-demographics">{{result.mangaStats.demografia}}</p>
+                            </div>
+                            }
+
+                            <div class="comic-details">
+                                <p class="comic-status">{{result.estadoPubAtual | lowercase}}</p>
+                                <p class="comic-issues">{{result.numEdicoes}}
+                                    @if (result.mangaStats) {
+                                    tankos
+                                    }
+                                    @else {
+                                    edições
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    }
+
+                    <div *ngIf="searchResults.length === 0 && !isLoading" class="empty-state">
+                        <p>Nenhum resultado encontrado para sua busca.</p>
+                    </div>
+
+                </div>
+            }
 
             <div class="comics-list-container" *ngIf="viewMode === 'list'">
                 <div class="comics-list">

@@ -28,6 +28,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { forkJoin, timer } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ContaService } from '../../core/services/conta.service';
+import { linspace_int } from '../../shared/helpers/linspace';
 
 @Component({
   selector: 'app-serie',
@@ -104,7 +105,7 @@ export class SerieComponent implements OnInit {
   totalItems = -1;
   pageSize = 10;
   pageNumber = 1;
-  pageSizeOptions = [10, 25];
+  pageSizeOptions = [10, 25, 50, 100];
   displayedColumns: string[] = ['titulo', 'numero', 'preco', 'selecao'];
   dataSource = new MatTableDataSource<Edicao>(this.edicoesResults);
 
@@ -194,7 +195,7 @@ export class SerieComponent implements OnInit {
         this.currentEdicao = response.data[0];
         this.dataSource = new MatTableDataSource<Edicao>(this.edicoesResults);
         this.totalItems = response.totalCount;
-        this.pageSizeOptions = this.totalItems >= 25 ? [10, this.totalItems] : [10, 25];
+        this.pageSizeOptions = this.totalItems >= 100 ? linspace_int(this.pageSizeOptions[0], this.totalItems, 4) : this.pageSizeOptions;
 
         if (this.currentSerie.mangaStats) {
           this.onTankobonChange(this.currentEdicao.id);

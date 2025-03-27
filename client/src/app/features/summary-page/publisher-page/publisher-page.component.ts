@@ -41,8 +41,8 @@ export class PublisherPageComponent implements OnInit {
 
   totalItems = 0;
   currentPage = 1;
-  pageSize = 10;
-  pageSizeOptions = [10, 25, 50];
+  pageSize = 8;
+  pageSizeOptions = [8, 16, 40];
   isLoading = false;
 
   viewMode: 'card' | 'list' = 'card';

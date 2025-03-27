@@ -75,30 +75,58 @@
                 </div>
             </div>
 
-            <div class="publishers-grid mx-20 mb-[2rem]" *ngIf="viewMode === 'card'">
-                @for (publisher of publishers; track publisher.id) {
-                <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">
-                    <div class="publisher-logo">
-                        <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'"
-                            class="logo-image rounded-md">
-                        <div *ngIf="!publisher.logo" class="logo-placeholder">
-                            {{publisher.nome.charAt(0)}}
+            @if (calculateUpperBound() / 4 <= 1) {
+                <div class="publishers-grid mx-20 mb-[17rem]" *ngIf="viewMode === 'card'">
+                    @for (publisher of publishers; track publisher.id) {
+                    <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">
+                        <div class="publisher-logo">
+                            <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'"
+                                class="logo-image rounded-md">
+                            <div *ngIf="!publisher.logo" class="logo-placeholder">
+                                {{publisher.nome.charAt(0)}}
+                            </div>
+                        </div>
+                        <div class="publisher-info-card">
+                            <h3 class="publisher-name">{{publisher.nome}}</h3>
+                            <div class="publisher-details">
+                                <p class="publisher-year">Desde {{publisher.anoCriacao | slice:0:4}}</p>
+                                <p class="publisher-series-count">{{publisher.totalSeries}} séries</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="publisher-info-card">
-                        <h3 class="publisher-name">{{publisher.nome}}</h3>
-                        <div class="publisher-details">
-                            <p class="publisher-year">Desde {{publisher.anoCriacao | slice:0:4}}</p>
-                            <p class="publisher-series-count">{{publisher.totalSeries}} séries</p>
-                        </div>
+                    }
+    
+                    <div *ngIf="publishers.length === 0 && !isLoading" class="empty-state">
+                        <p>Nenhuma editora encontrada.</p>
                     </div>
                 </div>
-                }
-
-                <div *ngIf="publishers.length === 0 && !isLoading" class="empty-state">
-                    <p>Nenhuma editora encontrada.</p>
+            }
+            @else {
+                <div class="publishers-grid mx-20 mb-[2rem]" *ngIf="viewMode === 'card'">
+                    @for (publisher of publishers; track publisher.id) {
+                    <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">
+                        <div class="publisher-logo">
+                            <img *ngIf="publisher.logo" [src]="publisher.logo" [alt]="publisher.nome + ' logo'"
+                                class="logo-image rounded-md">
+                            <div *ngIf="!publisher.logo" class="logo-placeholder">
+                                {{publisher.nome.charAt(0)}}
+                            </div>
+                        </div>
+                        <div class="publisher-info-card">
+                            <h3 class="publisher-name">{{publisher.nome}}</h3>
+                            <div class="publisher-details">
+                                <p class="publisher-year">Desde {{publisher.anoCriacao | slice:0:4}}</p>
+                                <p class="publisher-series-count">{{publisher.totalSeries}} séries</p>
+                            </div>
+                        </div>
+                    </div>
+                    }
+    
+                    <div *ngIf="publishers.length === 0 && !isLoading" class="empty-state">
+                        <p>Nenhuma editora encontrada.</p>
+                    </div>
                 </div>
-            </div>
+            }
 
             <div class="publishers-list-container" *ngIf="viewMode === 'list'">
                 <div class="publishers-list">

@@ -186,7 +186,7 @@ export class SerieComponent implements OnInit {
     
     this.params = this.params.set('PageSize', this.pageSize.toString());
     this.params = this.params.set('PageNumber', this.pageNumber.toString());
-    this.params = this.params.set('SortBy', 'id');
+    this.params = this.params.set('SortBy', 'dataLancamento');
     this.params = this.params.set('IsDescending', 'false');
     this.edicoesService.getEdicoesBySerieId(this.serieIdParam, this.params).subscribe({
       next: (response) => {

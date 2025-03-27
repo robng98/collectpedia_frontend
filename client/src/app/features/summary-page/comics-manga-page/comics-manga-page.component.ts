@@ -52,7 +52,7 @@ export class ComicsMangaPageComponent implements OnInit {
 
   totalItems = 0;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   pageSizeOptions = [5, 10, 20, 50];
   isLoading = false;
 

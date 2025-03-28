@@ -112,8 +112,9 @@
               <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [results]="issuesOverTime" [gradient]="true"
                 [xAxis]="xAxis" [yAxis]="yAxis" [legend]="legend" [showXAxisLabel]="showXAxisLabel"
                 [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
-                 [autoScale]="true" [curve]="curve" [animations]="animations"
-                [tooltipDisabled]="false" [legendTitle]="'Coleções'" class="dark-theme-chart">
+                [autoScale]="true" [curve]="curve" [animations]="animations"
+                [tooltipDisabled]="false" [legendTitle]="'Coleções'" class="dark-theme-chart"
+                [xAxisTickFormatting]="xAxisTickFormatting">
               </ngx-charts-line-chart>
               } @else {
               <div class="no-data">

@@ -111,11 +111,15 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   private tempIssuesOverTime: any[] = [];
   private pendingCollectionId: number | null = null;
 
+  xAxisTickFormatting: (val: any) => string;
+
   constructor(
     public contaService: ContaService,
     private collectionService: CollectionService,
     private dialog: MatDialog
-  ) { }
+  ) { 
+    this.xAxisTickFormatting = this.formatDateToPortuguese.bind(this);
+  }
 
   ngOnInit(): void {
     this.loadUserData();
@@ -386,7 +390,16 @@ export class UserPageComponent implements OnInit, AfterViewInit {
   }
 
   formatDate(date: string): string {
-    return new Date(date).toLocaleDateString();
+    return  new Date(date).toLocaleDateString();
+  }
+
+  formatDateToPortuguese(date: Date): string {
+    const monthsInPortuguese = [
+       new Date(date).getFullYear().toString(), 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ];
+    
+    return `${monthsInPortuguese[date.getMonth()]}`;
   }
 
   clearSelection(): void {

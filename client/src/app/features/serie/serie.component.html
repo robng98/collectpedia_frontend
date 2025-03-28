@@ -256,10 +256,7 @@
                     <div class="popular-stat-card">
                         <p class="popular-item-label">Mês de Publicação</p>
                         <p class="popular-item-value">
-                            <!-- Turn dataLancamento do Date format -->
-                            {{currentEdicao.dataLancamento | date: 'MMMM, yyyy'}}
-
-                            <!-- {{currentEdicao.dataLancamento}} -->
+                            {{currentEdicao.dataLancamento | date: 'MMMM, yyyy':'':'pt-BR' | titlecase}}
                         </p>
                     </div>
 

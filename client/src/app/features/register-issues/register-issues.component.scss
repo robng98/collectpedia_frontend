@@ -1,22 +1,35 @@
 .issues-container {
-    scrollbar-width: thin;
-    scrollbar-color: #4263c3 #1e3a8a;
+  scrollbar-width: thin;
+  scrollbar-color: #4263c3 #1e3a8a;
+}
+
+.issues-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.issues-container::-webkit-scrollbar-track {
+  background: #1e3a8a;
+  border-radius: 4px;
+}
+
+.issues-container::-webkit-scrollbar-thumb {
+  background-color: #4263c3;
+  border-radius: 4px;
+}
+
+.issues-container::-webkit-scrollbar {
+  display: auto;
+}
+
+button {
+  .mat-icon.notranslate.material-icons.mat-ligature-font.mat-icon-no-color {
+    color: #FFF;
   }
-  
-  .issues-container::-webkit-scrollbar {
-    width: 8px;
+}
+
+.button-alt-disabled-color {
+
+  &:disabled {
+    background-color: rgba(50, 99, 199, 0.226);
   }
-  
-  .issues-container::-webkit-scrollbar-track {
-    background: #1e3a8a;
-    border-radius: 4px;
-  }
-  
-  .issues-container::-webkit-scrollbar-thumb {
-    background-color: #4263c3;
-    border-radius: 4px;
-  }
-  
-  .issues-container::-webkit-scrollbar {
-    display: auto;
-  }
+}

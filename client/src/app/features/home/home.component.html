@@ -19,7 +19,9 @@
             </div>
             <input class="search-input" placeholder="Digite sua busca aqui" name="search"
               [(ngModel)]="searchParams.search" required #searchInput="ngModel" autocomplete="off" />
-            <div class="search-button-container">
+            <div class="search-button-container"
+            matTooltip="Digite sua busca e selecione o tipo de publicação primeiro!"
+            [matTooltipDisabled]="isValidSearch(searchParams.search) && searchParams.type">
               <button mat-raised-button class="search-button"
                 [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
                 <span>Buscar</span>
@@ -29,6 +31,7 @@
         </div>
         <div class="flex justify-center w-full">
           <mat-form-field appearance="fill" class="search-input-group mt-2 max-w-44">
+            <mat-label class="text-neutral-600">Comics/Mangá</mat-label>
             <mat-select [(ngModel)]="searchParams.type" name="type" required #typeSelect="ngModel">
               <mat-option value="comics">
                 <mat-icon>menu_book</mat-icon>

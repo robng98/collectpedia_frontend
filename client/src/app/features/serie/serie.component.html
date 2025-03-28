@@ -143,15 +143,25 @@
                 </mat-paginator>
 
                 <div class="flex justify-end mt-4">
-                    <button mat-flat-button type="button" class="submit-button rounded-md mr-4" 
+                    <div matTooltip="Logue na conta para habilitar função!"
+                        [matTooltipDisabled]="contaService.currentUser() ? true : false "
+                        [matTooltipShowDelay]="showDelay"
+                        [matTooltipHideDelay]="hideDelay" >
+                        <button mat-flat-button type="button" class="submit-button rounded-md mr-4" 
                             (click)="addCompleteSeries()"
                             [disabled]="!contaService.currentUser()">
-                        <span>Adicionar Série Completa</span>
-                    </button>
-                    <button mat-flat-button class="submit-button rounded-md"
+                            <span>Adicionar Série Completa</span>
+                        </button>
+                    </div>
+                    <div matTooltip="Logue na conta e clique nas check-boxes para habilitar função!" 
+                        [matTooltipDisabled]="contaService.currentUser() ? true : false "
+                        [matTooltipShowDelay]="showDelay"
+                        [matTooltipHideDelay]="hideDelay" >
+                        <button mat-flat-button class="submit-button rounded-md"
                         [disabled]="!isSomeSelected() && !isAllSelected() || !contaService.currentUser()">
-                        <span>Adicionar à coleção</span>
-                    </button>
+                            <span>Adicionar à coleção</span>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

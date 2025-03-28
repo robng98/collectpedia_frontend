@@ -32,6 +32,7 @@ import { linspace_int } from '../../shared/helpers/linspace';
 
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 registerLocaleData(localePt);
 
@@ -51,6 +52,7 @@ registerLocaleData(localePt);
     CommonModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatTooltipModule
   ],
   templateUrl: './serie.component.html',
   styleUrl: './serie.component.scss'
@@ -122,6 +124,9 @@ export class SerieComponent implements OnInit {
   contribuicoesTotalItems = 0;
   contribuicoesSorting = 'funcao';
   contribuicoesIsDescending = false;
+
+  showDelay = 250;
+  hideDelay = 500;
 
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();

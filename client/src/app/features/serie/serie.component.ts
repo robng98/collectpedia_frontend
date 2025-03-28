@@ -30,6 +30,11 @@ import { finalize } from 'rxjs/operators';
 import { ContaService } from '../../core/services/conta.service';
 import { linspace_int } from '../../shared/helpers/linspace';
 
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
+
 @Component({
   selector: 'app-serie',
   standalone: true,
@@ -45,7 +50,7 @@ import { linspace_int } from '../../shared/helpers/linspace';
     MatFormFieldModule,
     CommonModule,
     MatProgressSpinnerModule,
-    MatChipsModule
+    MatChipsModule,
   ],
   templateUrl: './serie.component.html',
   styleUrl: './serie.component.scss'
@@ -271,6 +276,7 @@ export class SerieComponent implements OnInit {
       next: (response) => {
         this.currentContribuicoes = response.data;
         this.contribuicoesTotalItems = response.totalCount;
+        console.log(response.data);
       },
       error: (error) => {
         console.log(error);
@@ -304,6 +310,16 @@ export class SerieComponent implements OnInit {
 
   getCurrentContribuicao(funcao: string) {
     return this.currentContribuicoes.find(contribuicao => contribuicao.funcao === funcao)?.contribuidorNome;
+  }
+
+  getContribuidoresByFuncao(funcao: string): string[] {
+    return this.currentContribuicoes
+      .filter(contribuicao => contribuicao.funcao === funcao)
+      .map(contribuicao => contribuicao.contribuidorNome);
+  }
+
+  hasMultipleContributors(funcao: string): boolean {
+    return this.getContribuidoresByFuncao(funcao).length > 1;
   }
 
   isAllSelected(): boolean {

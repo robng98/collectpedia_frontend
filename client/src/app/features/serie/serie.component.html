@@ -184,17 +184,65 @@
                 <div class="bg-[#213471]">
                     @if (currentSerie.mangaStats) {
                     <div class="popular-stat-card">
-                        <p class="popular-item-label">Mangaká</p>
-                        <p class="popular-item-value">{{getCurrentContribuicao('Mangaká')}}</p>
+                        <div class="popular-item-label flex flex-row justify-between">
+                            <div>
+                                Mangaká(s)
+                            </div>
+                            @if (getContribuidoresByFuncao('Mangaká').length > 1) {
+                                <div class="font-extrabold rounded-md bg-[#344887] px-2 text-sm">
+                                    {{getContribuidoresByFuncao('Mangaká').length}}
+                                </div>
+                            }
+                        </div>
+                        <div class="popular-item-value">
+                            @for (contributor of getContribuidoresByFuncao('Mangaká'); track $index) {
+                                <p>{{contributor}}</p>
+                            }
+                            @if (getContribuidoresByFuncao('Mangaká').length === 0) {
+                                <p>-</p>
+                            }
+                        </div>
                     </div>
                     } @else {
                     <div class="popular-stat-card">
-                        <p class="popular-item-label">Roteirista</p>
-                        <p class="popular-item-value">{{getCurrentContribuicao('Roteirista')}}</p>
+                        <div class="popular-item-label flex flex-row justify-between">
+                            <div>
+                                Roteirista(s)
+                            </div>
+                            @if (getContribuidoresByFuncao('Roteirista').length > 1) {
+                                <div class="font-extrabold rounded-md bg-[#344887] px-2 text-sm">
+                                    {{getContribuidoresByFuncao('Roteirista').length}}
+                                </div>
+                            }
+                        </div>
+                        <div class="popular-item-value">
+                            @for (contributor of getContribuidoresByFuncao('Roteirista'); track $index) {
+                                <p>{{contributor}}</p>
+                            }
+                            @if (getContribuidoresByFuncao('Roteirista').length === 0) {
+                                <p>-</p>
+                            }
+                        </div>
                     </div>
                     <div class="popular-stat-card">
-                        <p class="popular-item-label">Desenhista</p>
-                        <p class="popular-item-value">{{getCurrentContribuicao('Desenhista')}}</p>
+                        <div class="popular-item-label flex flex-row justify-between">
+                            <div>
+                                Desenhista(s)
+                            </div>
+                            @if (getContribuidoresByFuncao('Desenhista').length > 1) {
+                                <div class="font-extrabold rounded-md bg-[#344887] px-2 text-sm">
+                                    {{getContribuidoresByFuncao('Desenhista').length}}
+                                </div>
+                            }
+                        </div>
+                        <div class="popular-item-value">
+                            @for (contributor of getContribuidoresByFuncao('Desenhista'); track $index) {
+                                <p>{{contributor}}</p>
+                            }
+                            @if (getContribuidoresByFuncao('Desenhista').length === 0) {
+                                <p>-</p>
+                            }
+                        </div>
                     </div>
                     }
 
@@ -207,7 +255,12 @@
 
                     <div class="popular-stat-card">
                         <p class="popular-item-label">Mês de Publicação</p>
-                        <p class="popular-item-value">{{currentEdicao.dataLancamento.slice(0,7)}}</p>
+                        <p class="popular-item-value">
+                            <!-- Turn dataLancamento do Date format -->
+                            {{currentEdicao.dataLancamento | date: 'MMMM, yyyy'}}
+
+                            <!-- {{currentEdicao.dataLancamento}} -->
+                        </p>
                     </div>
 
 

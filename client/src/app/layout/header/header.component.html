@@ -15,8 +15,8 @@
                     <div class="search-icon-container">
                         <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
                     </div>
-                    <input class="search-input" placeholder="Buscar" name="search"
-                        [(ngModel)]="searchParams.search" required autocomplete="off" />
+                    <input class="search-input" placeholder="Buscar" name="search" [(ngModel)]="searchParams.search"
+                        required autocomplete="off" />
                     <div class="flex items-center mt-2">
                         <div class="mt-2">
                             <mat-form-field appearance="fill" class="max-w-24">
@@ -26,9 +26,13 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
-                        <button type="submit" mat-icon-button [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
-                            <mat-icon>arrow_forward</mat-icon>
-                        </button>
+                        <div matTooltip="Digite sua busca e selecione o tipo de publicação primeiro!"
+                            [matTooltipDisabled]="isValidSearch(searchParams.search) && searchParams.type">
+                            <button type="submit" mat-icon-button
+                                [disabled]="!isValidSearch(searchParams.search) || !searchParams.type">
+                                <mat-icon>arrow_forward</mat-icon>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -51,7 +55,7 @@
                     <span>Login</span>
                 </button>
             </ng-container>
-            
+
             <ng-container *ngIf="currentUser">
                 <div class="welcome-text">Olá, {{ currentUser.fullName || currentUser.email }}!</div>
                 <button class="login-button" routerLink="/user">
@@ -60,9 +64,9 @@
                 <button class="login-button" (click)="logout()">
                     <span>Logout</span>
                 </button>
-                
+
             </ng-container>
         </div>
-        
+
     </div>
 </header>

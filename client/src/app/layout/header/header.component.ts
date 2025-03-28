@@ -3,12 +3,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ContaService } from '../../core/services/conta.service';
-import { User } from '../../shared/models/user';
 import { SearchParams } from '../../shared/models/searchParams';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { filter } from 'rxjs/operators';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +19,8 @@ import { filter } from 'rxjs/operators';
     CommonModule,
     FormsModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTooltipModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -37,11 +38,8 @@ export class HeaderComponent implements OnInit {
     ).subscribe((event: any) => {
       this.previousUrl = this.currentUrl;
       this.currentUrl = event.url;
-
-      console.log('Previous URL: ' + this.previousUrl);
       
       if (!this.currentUrl.includes('/search')) {
-        console.log('Current URL: ' + this.currentUrl);
         this.resetSearch();
       }
     });

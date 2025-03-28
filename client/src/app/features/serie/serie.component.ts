@@ -62,7 +62,7 @@ export class SerieComponent implements OnInit {
   private publisherService = inject(PublisherService);
   private tankobonService = inject(TankobonService);
   private contribuicoesService = inject(ContribuidorService);
-  private contaService = inject(ContaService);
+  contaService = inject(ContaService); // Changed from private to public for template access
   params = new HttpParams();
   
   isLoading = false;
@@ -390,4 +390,45 @@ export class SerieComponent implements OnInit {
     }
   }
 
+  addCompleteSeries(): void {
+    if (!this.contaService.currentUser()) {
+      this.router.navigate(['/account/login'], {
+        queryParams: {
+          returnUrl: this.router.url
+        }
+      });
+      return;
+    }
+
+    // Show loading indicator
+    this.isLoading = true;
+
+    // Get all issues for the current series
+    const params = new HttpParams()
+      .set('PageSize', this.totalItems.toString())
+      .set('PageNumber', '1')
+      .set('SortBy', 'dataLancamento')
+      .set('IsDescending', 'false');
+
+    this.edicoesService.getEdicoesBySerieId(this.serieIdParam, params).subscribe({
+      next: (response) => {
+        const allEdicoes = response.data.map(edicao => edicao.id);
+        
+        if (allEdicoes.length > 0) {
+          this.router.navigate(['/register-issues'], {
+            queryParams: {
+              issueIds: allEdicoes.join(',')
+            }
+          });
+        } else {
+          console.error('No issues found in this series');
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error fetching all issues:', error);
+        this.isLoading = false;
+      }
+    });
+  }
 }

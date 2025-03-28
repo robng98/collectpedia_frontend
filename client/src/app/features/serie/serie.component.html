@@ -143,8 +143,13 @@
                 </mat-paginator>
 
                 <div class="flex justify-end mt-4">
-                    <button mat-flat-button class="submit-button rounde-md mr-4"
-                        [disabled]="!isSomeSelected() && !isAllSelected()">
+                    <button mat-flat-button type="button" class="submit-button rounded-md mr-4" 
+                            (click)="addCompleteSeries()"
+                            [disabled]="!contaService.currentUser()">
+                        <span>Adicionar Série Completa</span>
+                    </button>
+                    <button mat-flat-button class="submit-button rounded-md"
+                        [disabled]="!isSomeSelected() && !isAllSelected() || !contaService.currentUser()">
                         <span>Adicionar à coleção</span>
                     </button>
                 </div>

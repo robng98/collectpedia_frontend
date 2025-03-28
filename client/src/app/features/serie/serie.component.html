@@ -244,6 +244,40 @@
                             }
                         </div>
                     </div>
+                    <div class="popular-stat-card" *ngIf="getContribuidoresByFuncao('Arte-Finalista').length !== 0">
+                        <div class="popular-item-label flex flex-row justify-between">
+                            <div>
+                                Arte-Finalista(s)
+                            </div>
+                            @if (getContribuidoresByFuncao('Arte-Finalista').length > 1) {
+                                <div class="font-extrabold rounded-md bg-[#344887] px-2 text-sm">
+                                    {{getContribuidoresByFuncao('Arte-Finalista').length}}
+                                </div>
+                            }
+                        </div>
+                        <div class="popular-item-value">
+                            @for (contributor of getContribuidoresByFuncao('Arte-Finalista'); track $index) {
+                                <p>{{contributor}}</p>
+                            }
+                        </div>
+                    </div>
+                    <div class="popular-stat-card" *ngIf="getContribuidoresByFuncao('Colorista').length !== 0">
+                        <div class="popular-item-label flex flex-row justify-between">
+                            <div>
+                                Colorista(s)
+                            </div>
+                            @if (getContribuidoresByFuncao('Colorista').length > 1) {
+                                <div class="font-extrabold rounded-md bg-[#344887] px-2 text-sm">
+                                    {{getContribuidoresByFuncao('Colorista').length}}
+                                </div>
+                            }
+                        </div>
+                        <div class="popular-item-value">
+                            @for (contributor of getContribuidoresByFuncao('Colorista'); track $index) {
+                                <p>{{contributor}}</p>
+                            }
+                        </div>
+                    </div>
                     }
 
                     @if (currentTankobon.id != -1) {

@@ -248,6 +248,19 @@
   }
 }
 
+.contributors-container {
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  
+  .mat-paginator {
+    border-radius: 0 0 8px 8px;
+  }
+  
+  &:last-child {
+    margin-bottom: 16px;
+  }
+}
+
 ::ng-deep .mat-mdc-select-value-text {
   color: #f8fafc !important;
 }

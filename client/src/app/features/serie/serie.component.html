@@ -181,7 +181,13 @@
                 </div>
 
                 <div class="bg-[#213471] rounded-lg p-2 mb-4">
-                    <div class="issue-cover" [ngStyle]="{'background-image': 'url(' + currentEdicao.fotoCapa + ')'}">
+                    <img ngClass="issue-cover" *ngIf="currentEdicao.fotoCapa" [src]="currentEdicao.fotoCapa" 
+                        alt="Capa da edição" class="cover-image" matTooltip="Clique para ampliar" [matTooltipPositionAtOrigin]="true"
+                        (click)="openCoverImageDialog(currentEdicao.fotoCapa)"
+                        [style.cursor]="currentEdicao.fotoCapa ? 'pointer' : 'default'">
+                    <div *ngIf="!currentEdicao.fotoCapa" class="no-cover">
+                        <mat-icon>image_not_supported</mat-icon>
+                        <p>Sem capa disponível</p>
                     </div>
                 </div>
 

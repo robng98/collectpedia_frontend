@@ -352,6 +352,32 @@ mat-form-field {
   }
 }
 
+.fullscreen-dialog .mat-mdc-dialog-container {
+  --mdc-dialog-container-color: rgba(21, 37, 71, 0.95);
+  color: white;
+  padding: 0;
+
+  .mat-mdc-dialog-surface {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.fullscreen-dialog .mdc-dialog__container {
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreen-dialog .mdc-dialog__surface {
+  width: auto;
+  height: auto;
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+}
+
 .mat-mdc-dialog-container::-webkit-scrollbar {
   width: 8px;
   height: 8px;

@@ -33,6 +33,8 @@ import { linspace_int } from '../../shared/helpers/linspace';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 
 registerLocaleData(localePt);
 
@@ -52,7 +54,8 @@ registerLocaleData(localePt);
     CommonModule,
     MatProgressSpinnerModule,
     MatChipsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   templateUrl: './serie.component.html',
   styleUrl: './serie.component.scss'
@@ -65,6 +68,7 @@ export class SerieComponent implements OnInit {
   private tankobonService = inject(TankobonService);
   private contribuicoesService = inject(ContribuidorService);
   contaService = inject(ContaService); // Changed from private to public for template access
+  private dialog = inject(MatDialog);
   params = new HttpParams();
   
   isLoading = false;
@@ -434,6 +438,23 @@ export class SerieComponent implements OnInit {
         console.error('Error fetching all issues:', error);
         this.isLoading = false;
       }
+    });
+  }
+
+  openCoverImageDialog(imageUrl: string): void {
+    if (!imageUrl) return;
+    
+    this.dialog.open(ImageDialogComponent, {
+      data: { 
+        imageUrl: imageUrl,
+        title: `${this.currentSerie.nomeInter} #${this.currentEdicao.numero}`
+      },
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      width: 'auto',
+      height: 'auto',
+      panelClass: 'fullscreen-dialog',
+      autoFocus: false
     });
   }
 }

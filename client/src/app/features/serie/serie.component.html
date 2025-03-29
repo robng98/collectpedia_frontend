@@ -153,8 +153,8 @@
                             <span>Adicionar Série Completa</span>
                         </button>
                     </div>
-                    <div matTooltip="Logue na conta e clique nas check-boxes para habilitar função!" 
-                        [matTooltipDisabled]="contaService.currentUser() ? true : false "
+                    <div matTooltip="Logue na conta e/ou clique nas check-boxes para habilitar função!" 
+                        [matTooltipDisabled]="(isSomeSelected() || isAllSelected() && contaService.currentUser()) ? true : false "
                         [matTooltipShowDelay]="showDelay"
                         [matTooltipHideDelay]="hideDelay" >
                         <button mat-flat-button class="submit-button rounded-md"

@@ -241,7 +241,7 @@ export class SerieComponent implements OnInit {
   onEdicaoChange(edicaoId: number) {
     this.isLoadingDetails = true;
     
-    const loadingTimer = timer(1250);
+    const loadingTimer = timer(2000);
     
     this.edicoesService.getEdicaoById(edicaoId).subscribe({
       next: (response) => {

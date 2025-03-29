@@ -118,7 +118,7 @@ export class PublisherDetailComponent implements OnInit {
     }
 
     loadPublisherSeries() {
-
+        this.isLoading = true;
 
         this.publisherService.getPublisherSeries
             (

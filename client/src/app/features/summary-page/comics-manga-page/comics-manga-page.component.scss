@@ -57,8 +57,13 @@
 .comics-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr); // Exactly 5 columns
-    column-gap: 0px; // Horizontal gap remains the same
+    column-gap: 2rem; // Horizontal gap remains the same
     row-gap: 2rem; // Vertical gap is 2x larger
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
+    width: 100%;
+
 }
 
 // Comic card
@@ -131,7 +136,7 @@
             display: flex;
             flex-direction: column;
             margin-bottom: 4px;
-            
+
             .manga-jp-title {
                 color: #a5b4fc; // Light indigo color for Japanese title
                 font-size: 11px;
@@ -139,7 +144,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
-            
+
             .manga-demographics {
                 color: #93c5fd; // Light blue color for demographics
                 font-size: 10px;
@@ -152,14 +157,14 @@
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
-            
+
             .comic-status {
                 color: #8E8E8E;
                 font-size: 11px;
                 text-transform: capitalize;
                 margin-top: 0;
             }
-            
+
             .comic-issues {
                 color: #8E8E8E;
                 font-size: 11px;
@@ -205,11 +210,11 @@
     background-color: rgba(255, 255, 255, 0.1);
     color: #C4C4C4;
     transition: all 0.2s ease;
-    
+
     &:hover {
         background-color: rgba(255, 255, 255, 0.2);
     }
-    
+
     &.active {
         background-color: #344887;
         color: white;
@@ -219,11 +224,12 @@
 // List view container with flexible height
 .comics-list-container {
     position: relative;
-    margin: 0 20px;
-    height: calc(100vh - 40vh); // More flexible calculation
-    min-height: 400px; // Ensure minimum height
+    margin: 0 10px;
+    height: calc(100vh - 40vh);
+    min-height: 400px;
     display: flex;
     flex-direction: column;
+    border-bottom: #344887 2px solid;
 }
 
 // List view with scrolling
@@ -235,22 +241,22 @@
     overflow-y: auto;
     padding-right: 8px; // Add space for scrollbar
     max-height: 100%; // Ensure it doesn't overflow its container
-    
+
     // Scrollbar styling
     &::-webkit-scrollbar {
         width: 8px;
     }
-    
+
     &::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.1);
         border-radius: 4px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
         background: rgba(255, 255, 255, 0.2);
         border-radius: 4px;
     }
-    
+
     &::-webkit-scrollbar-thumb:hover {
         background: rgba(255, 255, 255, 0.3);
     }
@@ -261,24 +267,24 @@
     align-items: center;
     gap: 16px;
     padding: 8px 16px; // Reduced top/bottom padding from 12px
-    min-height: 54px; // Reduced from 72px for more compact rows
+    min-height: 91px; // Reduced from 72px for more compact rows
     background-color: #1a2a4d;
     border-radius: 8px;
     transition: all 0.3s ease;
-    
+
     &:hover {
         transition: 0.3s;
         background-color: #344887;
         cursor: pointer;
     }
-    
+
     &:active {
         transition: 0.1s;
         background-color: rgb(39, 52, 94);
         transform: scale(1);
         box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
     }
-    
+
     .comic-list-image {
         background-position: center;
         background-repeat: no-repeat;
@@ -288,12 +294,12 @@
         width: 50px; // Reduced from 64px
         height: 75px; // Reduced from 96px
     }
-    
+
     .comic-list-content {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        
+
         .comic-list-title {
             color: #FFFFFF;
             font-size: 15px; // Slightly reduced from 16px
@@ -304,7 +310,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        
+
         .comic-list-details {
             color: #C4C4C4;
             font-size: 13px; // Slightly reduced from 14px
@@ -377,12 +383,12 @@
         color: #C4C4C4;
         transition: all 0.2s ease;
         white-space: nowrap;
-        
+
         &.active {
             background-color: #344887;
             color: white;
         }
-        
+
         &:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
@@ -470,7 +476,7 @@
     .comics-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .comics-list-container {
         height: calc(100vh - 280px);
         margin: 0 8px;

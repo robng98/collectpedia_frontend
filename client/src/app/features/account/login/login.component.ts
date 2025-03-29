@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         this.router.navigateByUrl('/user');
       },
       error: error => {
-        this.errorMessage = error.error || 'Login failed';
+        this.errorMessage = error.error || 'Login falhou. Tente novamente.';
         this.isSubmitting = false;
       }
     });

@@ -39,8 +39,6 @@ export class SearchResultsComponent implements OnInit {
   private edicaoService = inject(EdicaoService);
   private router = inject(Router);
   
-  private Math = Math;
-  
   searchParams = new SearchParams();
   searchResults: Serie[] = [];
   firstCovers: PrimeiraCapaSerie[] = [];
@@ -109,7 +107,6 @@ export class SearchResultsComponent implements OnInit {
         this.searchResults = this.tempResults;
         this.totalItems = this.tempTotalItems;
         this.firstCovers = this.tempCovers;
-        console.log("All covers loaded in correct order:", this.firstCovers);
       },
       error: (error) => {
         console.log(error);
@@ -131,17 +128,6 @@ export class SearchResultsComponent implements OnInit {
     
     this.searchParams.pageNumber = this.currentPage;
     this.searchParams.pageSize = this.pageSize;
-    
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {
-        search: this.searchParams.search,
-        type: this.searchParams.type,
-        pageNumber: this.currentPage,
-        pageSize: this.pageSize
-      },
-      queryParamsHandling: 'merge'
-    });
     
     this.loadResults();
   }
@@ -171,28 +157,5 @@ export class SearchResultsComponent implements OnInit {
 
   onViewModeChange(event: MatButtonToggleChange): void {
     this.viewMode = event.value;
-  }
-
-  clearSearch(): void {
-    if (this.searchParams.search) {
-      this.searchParams.search = '';
-      this.searchParams.pageNumber = 1;
-      this.currentPage = 1;
-      
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: {
-          search: '',
-          pageNumber: 1
-        },
-        queryParamsHandling: 'merge'
-      });
-      
-      this.loadResults();
-    }
-  }
-
-  isValidSearch(searchString: string | undefined): boolean {
-    return !!searchString && searchString.trim().length > 0;
   }
 }

@@ -91,6 +91,16 @@
   }
 }
 
+mat-form-field {
+  mat-error {
+      display: none !important;
+  }
+
+  mat-error:first-child {
+      display: block !important;
+  }
+}
+
 .centralized-spinner-container .mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,
 .centralized-spinner-container .mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic {
   stroke: #ffffff;

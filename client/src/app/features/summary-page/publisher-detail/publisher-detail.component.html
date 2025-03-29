@@ -94,84 +94,88 @@
             
             @if (calculateUpperBound() / 5 <= 1) {
                 
-                <div class="comics-grid mx-20 mb-[19rem]" *ngIf="viewMode === 'card'">
-                    @for (serie of publisherSeries; track $index) {
-                    @if (firstCovers.length === publisherSeries.length) {
-                    <div class="comic-card w-4/5" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
-                        <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
-                            <div class="comic-overlay"></div>
-                        </div>
-                        <div class="comic-info">
-                            <h3 class="comic-title">{{serie.nomeInter}}</h3>
-                            @if(serie.mangaStats === null) {
-                            <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
-                            }
-                            @if (serie.mangaStats) {
-                            <div class="manga-info">
-                                <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
-                                <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
+                <div class="mx-20">
+                    <div class="comics-grid mb-[18rem]" *ngIf="viewMode === 'card'">
+                        @for (serie of publisherSeries; track $index) {
+                        @if (firstCovers.length === publisherSeries.length) {
+                        <div class="comic-card w-full" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
+                            <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                                <div class="comic-overlay"></div>
                             </div>
-                            }
-
-                            <div class="comic-details">
-                                <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
-                                <p class="comic-issues">{{serie.numEdicoes}}
-                                    @if (serie.mangaStats) {
-                                    tankos
-                                    }
-                                    @else {
-                                    edições
-                                    }
-                                </p>
+                            <div class="comic-info">
+                                <h3 class="comic-title">{{serie.nomeInter}}</h3>
+                                @if(serie.mangaStats === null) {
+                                <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
+                                }
+                                @if (serie.mangaStats) {
+                                <div class="manga-info">
+                                    <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
+                                    <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
+                                </div>
+                                }
+    
+                                <div class="comic-details">
+                                    <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
+                                    <p class="comic-issues">{{serie.numEdicoes}}
+                                        @if (serie.mangaStats) {
+                                        tankos
+                                        }
+                                        @else {
+                                        edições
+                                        }
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    }
-                    }
-
-                    <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
-                        <p>Nenhuma série encontrada para esta editora.</p>
+                        }
+                        }
+    
+                        <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
+                            <p>Nenhuma série encontrada para esta editora.</p>
+                        </div>
                     </div>
                 </div>
                 }
             @else {
-                <div class="comics-grid mx-20 mb-4" *ngIf="viewMode === 'card'">
-                    @for (serie of publisherSeries; track $index) {
-                    @if (firstCovers.length === publisherSeries.length) {
-                    <div class="comic-card w-4/5" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
-                        <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
-                            <div class="comic-overlay"></div>
-                        </div>
-                        <div class="comic-info">
-                            <h3 class="comic-title">{{serie.nomeInter}}</h3>
-                            @if(serie.mangaStats === null) {
-                            <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
-                            }
-                            @if (serie.mangaStats) {
-                            <div class="manga-info">
-                                <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
-                                <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
+                <div class="mx-20">
+                    <div class="comics-grid mb-4" *ngIf="viewMode === 'card'">
+                        @for (serie of publisherSeries; track $index) {
+                        @if (firstCovers.length === publisherSeries.length) {
+                        <div class="comic-card w-full" (click)="navigateToDetail(serie.id, serie.editoraId, serie)">
+                            <div class="comic-cover" [style.background-image]="'url(' + firstCovers[$index].fotoCapa + ')'">
+                                <div class="comic-overlay"></div>
                             </div>
-                            }
-
-                            <div class="comic-details">
-                                <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
-                                <p class="comic-issues">{{serie.numEdicoes}}
-                                    @if (serie.mangaStats) {
-                                    tankos
-                                    }
-                                    @else {
-                                    edições
-                                    }
-                                </p>
+                            <div class="comic-info">
+                                <h3 class="comic-title">{{serie.nomeInter}}</h3>
+                                @if(serie.mangaStats === null) {
+                                <p class="comic-volume">Vol. {{serie.cicloNum}}</p>
+                                }
+                                @if (serie.mangaStats) {
+                                <div class="manga-info">
+                                    <p class="manga-jp-title">{{serie.mangaStats.nomeJap}}</p>
+                                    <p class="manga-demographics">{{serie.mangaStats.demografia}}</p>
+                                </div>
+                                }
+    
+                                <div class="comic-details">
+                                    <p class="comic-status">{{serie.estadoPubAtual | lowercase}}</p>
+                                    <p class="comic-issues">{{serie.numEdicoes}}
+                                        @if (serie.mangaStats) {
+                                        tankos
+                                        }
+                                        @else {
+                                        edições
+                                        }
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    }
-                    }
-
-                    <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
-                        <p>Nenhuma série encontrada para esta editora.</p>
+                        }
+                        }
+    
+                        <div *ngIf="publisherSeries.length === 0 && !isLoading" class="empty-state">
+                            <p>Nenhuma série encontrada para esta editora.</p>
+                        </div>
                     </div>
                 </div>
             }

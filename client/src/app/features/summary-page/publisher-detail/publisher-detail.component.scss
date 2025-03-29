@@ -280,11 +280,17 @@
   }
 }
 
+// Comics grid
 .comics-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  column-gap: 0px;
-  row-gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); // Exactly 5 columns
+    column-gap: 2rem; // Horizontal gap remains the same
+    row-gap: 2rem; // Vertical gap is 2x larger
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
+    width: 100%;
+    
 }
 
 .comic-card {
@@ -393,6 +399,7 @@
   min-height: 400px;
   display: flex;
   flex-direction: column;
+  border-bottom: #344887 2px solid;
 }
 
 .comics-list {
@@ -428,7 +435,7 @@
   align-items: center;
   gap: 16px;
   padding: 8px 16px;
-  min-height: 54px;
+  min-height: 91px;
   background-color: #1a2a4d;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -557,7 +564,6 @@
 }
 
 .comics-paginator {
-  margin-top: 32px;
   background-color: #1a2a4d;
 }
 
@@ -579,7 +585,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 32px;
   background-color: #1a2a4d;
   border-radius: 4px;
   padding: 0 16px;

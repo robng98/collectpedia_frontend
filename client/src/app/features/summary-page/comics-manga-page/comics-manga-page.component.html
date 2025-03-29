@@ -112,7 +112,7 @@
                     </div>
                 </div>
             </div>
-            @if (calculateUpperBound() / 5 <= 1) { 
+            @if (comicSeries.length <= 5) { 
             <div class='mx-20'>
                 <div class="comics-grid mb-[18rem]" *ngIf="viewMode === 'card'">
                     @for (serie of comicSeries; track $index) {

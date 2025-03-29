@@ -92,7 +92,7 @@
                 </div>
             </div>
             
-            @if (calculateUpperBound() / 5 <= 1) {
+            @if (publisherSeries.length <= 5) {
                 
                 <div class="mx-20">
                     <div class="comics-grid mb-[18rem]" *ngIf="viewMode === 'card'">

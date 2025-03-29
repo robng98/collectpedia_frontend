@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            @if (calculateUpperBound() / 4 <= 1) {
+            @if (publishers.length <= 4) {
                 <div class="publishers-grid mx-20 mb-[17rem]" *ngIf="viewMode === 'card'">
                     @for (publisher of publishers; track publisher.id) {
                     <div class="publisher-card" (click)="navigateToPublisher(publisher.id)">

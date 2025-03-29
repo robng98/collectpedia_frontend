@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            @if (calculateUpperBound() / 5 <= 1) {
+            @if (searchResults.length <= 5) {
                 <div class="mx-20">
                     <div class="comics-grid mb-[18rem]" *ngIf="viewMode === 'card'">
                         @for (result of searchResults; track $index) {
